@@ -8,7 +8,7 @@ namespace VocabWebApp.Models
         public int Id { get; set; }
 
         public string? UserId { get; set; }
-        public IdentityUser? User { get; set; }
+        public ApplicationUser? User { get; set; }
 
         [Required]
         [MaxLength(255)]

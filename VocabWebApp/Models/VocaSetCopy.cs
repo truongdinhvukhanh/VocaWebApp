@@ -13,7 +13,7 @@ namespace VocabWebApp.Models
 
         [Required]
         public string CopiedByUserId { get; set; }
-        public IdentityUser CopiedByUser { get; set; }
+        public ApplicationUser CopiedByUser { get; set; }
 
         public DateTime CopiedAt { get; set; } = DateTime.UtcNow;
     }

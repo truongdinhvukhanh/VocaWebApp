@@ -5,7 +5,7 @@ using VocabWebApp.Models;
 
 namespace VocabWebApp.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -58,7 +58,7 @@ namespace VocabWebApp.Data
 
             // ========== CẤU HÌNH FOREIGN KEY - TRÁNH CASCADE VÒNG ==========
             modelBuilder.Entity<Folder>()
-                .HasOne<IdentityUser>()
+                .HasOne<ApplicationUser>()
                 .WithMany()
                 .HasForeignKey(f => f.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -82,7 +82,7 @@ namespace VocabWebApp.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<VocaItemHistory>()
-                .HasOne<IdentityUser>()
+                .HasOne<ApplicationUser>()
                 .WithMany()
                 .HasForeignKey(h => h.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -94,7 +94,7 @@ namespace VocabWebApp.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ReviewReminder>()
-                .HasOne<IdentityUser>()
+                .HasOne<ApplicationUser>()
                 .WithMany()
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -106,7 +106,7 @@ namespace VocabWebApp.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AuditLog>()
-                .HasOne<IdentityUser>()
+                .HasOne<ApplicationUser>()
                 .WithMany()
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.SetNull);
@@ -118,7 +118,7 @@ namespace VocabWebApp.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<VocaSetCopy>()
-                .HasOne<IdentityUser>()
+                .HasOne<ApplicationUser>()
                 .WithMany()
                 .HasForeignKey(v => v.CopiedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
