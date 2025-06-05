@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VocabWebApp.Models
 {
-    public class VocaSetCopy
+    public class VocabSetCopy
     {
         public int Id { get; set; }
 
         [Required]
         public int OriginalSetId { get; set; }
-        public VocaSet OriginalSet { get; set; }
+        public VocabSet OriginalSet { get; set; }
 
         [Required]
         public string CopiedByUserId { get; set; }

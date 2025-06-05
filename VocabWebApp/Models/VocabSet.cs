@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VocabWebApp.Models
 {
-    public class VocaSet
+    public class VocabSet
     {
         public int Id { get; set; }
 
@@ -28,9 +28,9 @@ namespace VocabWebApp.Models
         public DateTime? LastAccessed { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public ICollection<VocaItem> VocaItems { get; set; }
+        public ICollection<VocabItem> VocaItems { get; set; }
         public ICollection<ReviewReminder> ReviewReminders { get; set; }
-        public ICollection<VocaSetCopy> Copies { get; set; }
+        public ICollection<VocabSetCopy> Copies { get; set; }
     }
 
 }

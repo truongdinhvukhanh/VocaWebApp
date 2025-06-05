@@ -17,7 +17,7 @@ namespace VocabWebApp.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public ICollection<VocaSet> VocaSets { get; set; }
+        public ICollection<VocabSet> VocaSets { get; set; }
     }
 
 }

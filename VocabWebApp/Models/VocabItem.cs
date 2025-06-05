@@ -2,13 +2,13 @@
 
 namespace VocabWebApp.Models
 {
-    public class VocaItem
+    public class VocabItem
     {
         public int Id { get; set; }
 
         [Required]
         public int VocaSetId { get; set; }
-        public VocaSet VocaSet { get; set; }
+        public VocabSet VocaSet { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -31,7 +31,7 @@ namespace VocabWebApp.Models
         [MaxLength(20)]
         public string Status { get; set; } = "not_learned";
 
-        public ICollection<VocaItemHistory> Histories { get; set; }
+        public ICollection<VocabItemHistory> Histories { get; set; }
     }
 
 }

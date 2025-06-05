@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VocabWebApp.Models
 {
-    public class VocaItemHistory
+    public class VocabItemHistory
     {
         public int Id { get; set; }
 
@@ -13,7 +13,7 @@ namespace VocabWebApp.Models
 
         [Required]
         public int VocaItemId { get; set; }
-        public VocaItem VocaItem { get; set; }
+        public VocabItem VocaItem { get; set; }
 
         [Required]
         [MaxLength(20)]

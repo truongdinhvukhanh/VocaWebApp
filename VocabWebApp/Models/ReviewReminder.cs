@@ -13,7 +13,7 @@ namespace VocabWebApp.Models
 
         [Required]
         public int VocaSetId { get; set; }
-        public VocaSet VocaSet { get; set; }
+        public VocabSet VocaSet { get; set; }
 
         public DateTime ReviewDate { get; set; }
 
