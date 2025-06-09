@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VocaWebApp.Data;
 using VocaWebApp.Models;
-using VocaWebApp.Repositories;
 
-namespace VocabWebApp.Repositories
+namespace VocaWebApp.Repositories
 {
     public class VocaSetRepository : IVocaSetRepository
     {

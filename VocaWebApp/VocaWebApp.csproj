@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-VocabWebApp-de3a887d-442d-4157-99f8-a21e269a62d2</UserSecretsId>
+    <UserSecretsId>aspnet-VocaWebApp-de3a887d-442d-4157-99f8-a21e269a62d2</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
