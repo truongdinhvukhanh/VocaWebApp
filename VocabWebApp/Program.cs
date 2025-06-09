@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using VocabWebApp.Data;
-using VocabWebApp.Models;
+using VocaWebApp.Data;
+using VocaWebApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

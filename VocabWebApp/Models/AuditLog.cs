@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace VocabWebApp.Models
+namespace VocaWebApp.Models
 {
     public class AuditLog
     {

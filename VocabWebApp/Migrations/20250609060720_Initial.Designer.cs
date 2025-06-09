@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using VocabWebApp.Data;
+using VocaWebApp.Data;
 
 #nullable disable
 
-namespace VocabWebApp.Data.Migrations
+namespace VocaWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250609060720_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,7 +162,7 @@ namespace VocabWebApp.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.ApplicationUser", b =>
+            modelBuilder.Entity("VocaWebApp.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -229,7 +232,7 @@ namespace VocabWebApp.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.AuditLog", b =>
+            modelBuilder.Entity("VocaWebApp.Models.AuditLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -263,7 +266,7 @@ namespace VocabWebApp.Data.Migrations
                     b.ToTable("AuditLogs");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.Folder", b =>
+            modelBuilder.Entity("VocaWebApp.Models.Folder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -296,7 +299,7 @@ namespace VocabWebApp.Data.Migrations
                     b.ToTable("Folders");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.ReviewReminder", b =>
+            modelBuilder.Entity("VocaWebApp.Models.ReviewReminder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -355,7 +358,7 @@ namespace VocabWebApp.Data.Migrations
                     b.ToTable("ReviewReminders");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.VocaItem", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocaItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -415,7 +418,7 @@ namespace VocabWebApp.Data.Migrations
                     b.ToTable("VocaItems");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.VocaItemHistory", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocaItemHistory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -458,7 +461,7 @@ namespace VocabWebApp.Data.Migrations
                     b.ToTable("VocaItemHistories");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.VocaSet", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocaSet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -504,7 +507,7 @@ namespace VocabWebApp.Data.Migrations
                     b.ToTable("VocaSets");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.VocaSetCopy", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocabSetCopy", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -553,7 +556,7 @@ namespace VocabWebApp.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", null)
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -562,7 +565,7 @@ namespace VocabWebApp.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", null)
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -577,7 +580,7 @@ namespace VocabWebApp.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", null)
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -586,36 +589,36 @@ namespace VocabWebApp.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", null)
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.AuditLog", b =>
+            modelBuilder.Entity("VocaWebApp.Models.AuditLog", b =>
                 {
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", null)
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", "User")
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.Folder", b =>
+            modelBuilder.Entity("VocaWebApp.Models.Folder", b =>
                 {
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", null)
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", "User")
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId1")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -624,27 +627,27 @@ namespace VocabWebApp.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.ReviewReminder", b =>
+            modelBuilder.Entity("VocaWebApp.Models.ReviewReminder", b =>
                 {
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", null)
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", "User")
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.VocaSet", "VocaSet")
+                    b.HasOne("VocaWebApp.Models.VocaSet", "VocaSet")
                         .WithMany()
                         .HasForeignKey("VocaSetId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.VocaSet", null)
+                    b.HasOne("VocaWebApp.Models.VocaSet", null)
                         .WithMany("ReviewReminders")
                         .HasForeignKey("VocaSetId1");
 
@@ -653,42 +656,42 @@ namespace VocabWebApp.Data.Migrations
                     b.Navigation("VocaSet");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.VocaItem", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocaItem", b =>
                 {
-                    b.HasOne("VocabWebApp.Models.VocaSet", "VocaSet")
+                    b.HasOne("VocaWebApp.Models.VocaSet", "VocaSet")
                         .WithMany()
                         .HasForeignKey("VocaSetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.VocaSet", null)
+                    b.HasOne("VocaWebApp.Models.VocaSet", null)
                         .WithMany("VocaItems")
                         .HasForeignKey("VocaSetId1");
 
                     b.Navigation("VocaSet");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.VocaItemHistory", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocaItemHistory", b =>
                 {
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", null)
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", "User")
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.VocaItem", "VocaItem")
+                    b.HasOne("VocaWebApp.Models.VocaItem", "VocaItem")
                         .WithMany()
                         .HasForeignKey("VocaItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.VocaItem", null)
+                    b.HasOne("VocaWebApp.Models.VocaItem", null)
                         .WithMany("Histories")
                         .HasForeignKey("VocaItemId1");
 
@@ -697,14 +700,14 @@ namespace VocabWebApp.Data.Migrations
                     b.Navigation("VocaItem");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.VocaSet", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocaSet", b =>
                 {
-                    b.HasOne("VocabWebApp.Models.Folder", "Folder")
+                    b.HasOne("VocaWebApp.Models.Folder", "Folder")
                         .WithMany("VocaSets")
                         .HasForeignKey("FolderId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", "User")
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -715,27 +718,27 @@ namespace VocabWebApp.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.VocaSetCopy", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocabSetCopy", b =>
                 {
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", null)
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("CopiedByUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.ApplicationUser", "CopiedByUser")
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", "CopiedByUser")
                         .WithMany()
                         .HasForeignKey("CopiedByUserId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.VocaSet", "OriginalSet")
+                    b.HasOne("VocaWebApp.Models.VocaSet", "OriginalSet")
                         .WithMany()
                         .HasForeignKey("OriginalSetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VocabWebApp.Models.VocaSet", null)
+                    b.HasOne("VocaWebApp.Models.VocaSet", null)
                         .WithMany("Copies")
                         .HasForeignKey("VocaSetId");
 
@@ -744,17 +747,17 @@ namespace VocabWebApp.Data.Migrations
                     b.Navigation("OriginalSet");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.Folder", b =>
+            modelBuilder.Entity("VocaWebApp.Models.Folder", b =>
                 {
                     b.Navigation("VocaSets");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.VocaItem", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocaItem", b =>
                 {
                     b.Navigation("Histories");
                 });
 
-            modelBuilder.Entity("VocabWebApp.Models.VocaSet", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocaSet", b =>
                 {
                     b.Navigation("Copies");
 

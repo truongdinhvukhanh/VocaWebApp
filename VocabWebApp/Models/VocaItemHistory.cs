@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace VocabWebApp.Models
+namespace VocaWebApp.Models
 {
-    public class VocabItemHistory
+    public class VocaItemHistory
     {
         public int Id { get; set; }
 
@@ -13,7 +13,7 @@ namespace VocabWebApp.Models
 
         [Required]
         public int VocaItemId { get; set; }
-        public VocabItem VocaItem { get; set; }
+        public VocaItem VocaItem { get; set; }
 
         [Required]
         [MaxLength(20)]

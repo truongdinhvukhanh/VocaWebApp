@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace VocabWebApp.Models
+namespace VocaWebApp.Models
 {
-    public class VocabSet
+    public class VocaSet
     {
         public int Id { get; set; }
 
@@ -28,9 +28,9 @@ namespace VocabWebApp.Models
         public DateTime? LastAccessed { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public ICollection<VocabItem> VocaItems { get; set; }
+        public ICollection<VocaItem> VocaItems { get; set; }
         public ICollection<ReviewReminder> ReviewReminders { get; set; }
-        public ICollection<VocabSetCopy> Copies { get; set; }
+        public ICollection<VocaSetCopy> Copies { get; set; }
     }
 
 }

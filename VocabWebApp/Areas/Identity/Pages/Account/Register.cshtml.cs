@@ -18,9 +18,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using VocabWebApp.Models;
+using VocaWebApp.Models;
 
-namespace VocabWebApp.Areas.Identity.Pages.Account
+namespace VocaWebApp.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {

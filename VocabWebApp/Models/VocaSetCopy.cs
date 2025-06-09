@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace VocabWebApp.Models
+namespace VocaWebApp.Models
 {
-    public class VocabSetCopy
+    public class VocaSetCopy
     {
         public int Id { get; set; }
 
         [Required]
         public int OriginalSetId { get; set; }
-        public VocabSet OriginalSet { get; set; }
+        public VocaSet OriginalSet { get; set; }
 
         [Required]
         public string CopiedByUserId { get; set; }

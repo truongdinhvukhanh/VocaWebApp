@@ -1,4 +1,4 @@
-namespace VocabWebApp.Models
+namespace VocaWebApp.Models
 {
     public class ErrorViewModel
     {

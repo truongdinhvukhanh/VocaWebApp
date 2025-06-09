@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace VocabWebApp.Models
+namespace VocaWebApp.Models
 {
     public class Folder
     {
@@ -17,7 +17,7 @@ namespace VocabWebApp.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public ICollection<VocabSet> VocaSets { get; set; }
+        public ICollection<VocaSet> VocaSets { get; set; }
     }
 
 }

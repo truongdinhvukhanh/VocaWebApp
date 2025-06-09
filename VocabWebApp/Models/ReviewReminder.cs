@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace VocabWebApp.Models
+namespace VocaWebApp.Models
 {
     public class ReviewReminder
     {
@@ -13,7 +13,7 @@ namespace VocabWebApp.Models
 
         [Required]
         public int VocaSetId { get; set; }
-        public VocabSet VocaSet { get; set; }
+        public VocaSet VocaSet { get; set; }
 
         public DateTime ReviewDate { get; set; }
 
