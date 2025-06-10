@@ -12,7 +12,7 @@ using VocaWebApp.Data;
 namespace VocaWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250609060720_Initial")]
+    [Migration("20250610050136_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -507,7 +507,7 @@ namespace VocaWebApp.Migrations
                     b.ToTable("VocaSets");
                 });
 
-            modelBuilder.Entity("VocaWebApp.Models.VocabSetCopy", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocaSetCopy", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -718,7 +718,7 @@ namespace VocaWebApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VocaWebApp.Models.VocabSetCopy", b =>
+            modelBuilder.Entity("VocaWebApp.Models.VocaSetCopy", b =>
                 {
                     b.HasOne("VocaWebApp.Models.ApplicationUser", null)
                         .WithMany()
