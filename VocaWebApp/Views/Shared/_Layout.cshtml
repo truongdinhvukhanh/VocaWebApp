@@ -1,50 +1,57 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="vi" class="h-full">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - VocaWebApp</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/VocaWebApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">VocaWebApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+<body class="bg-gray-50 font-inter min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo và main navigation -->
+                <div class="flex items-center space-x-8">
+                    <span class="text-2xl font-poppins font-bold text-indigo-600">VocaWebApp</span>
+                    <nav class="hidden md:flex space-x-6">
+                        <a href="/" class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium rounded-lg transition-all duration-300 hover:bg-indigo-50">
+                            <i class="mr-2">🏠</i> Trang chủ
+                        </a>
+                        <a href="/mysets" class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium rounded-lg transition-all duration-300 hover:bg-indigo-50">
+                            <i class="mr-2">📚</i> Bộ từ vựng
+                        </a>
+                        <a href="/explore" class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium rounded-lg transition-all duration-300 hover:bg-indigo-50">
+                            <i class="mr-2">🌐</i> Khám phá
+                        </a>
+                    </nav>
+                </div>
+                <!-- User section đã tách ra partial -->
+                <div class="flex items-center space-x-4">
                     <partial name="_LoginPartial" />
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - VocaWebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <!-- Main Content -->
+    <main class="flex-1 py-8">
+        <div class="container mx-auto px-6">
+            @RenderBody()
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-8">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500 text-sm">
+            &copy; 2025 VocaWebApp - Hệ thống học từ vựng tiếng Anh thông minh
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

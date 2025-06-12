@@ -25,7 +25,6 @@ namespace VocaWebApp.Controllers
             }
             var vocaItems = await _vocaItemRepository.GetByUserAsync(user.Id);
 
-            // Giả sử thuộc tính đánh dấu đã học là IsLearned
             int learnedCount = vocaItems.Count(item => item.Status == "learned");
 
             ViewBag.LearnedVocaCount = learnedCount;

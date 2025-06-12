@@ -21,4 +21,13 @@
     <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css" />
+    <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
+  </ItemGroup>
+
+  <Target Name="BuildTailwindCss" BeforeTargets="Build">
+    <Exec Command="npm run css:build" WorkingDirectory="$(ProjectDir)" />
+  </Target>
+
 </Project>
