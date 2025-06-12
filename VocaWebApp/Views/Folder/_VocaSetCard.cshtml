@@ -1,0 +1,64 @@
+﻿@*
+    Model của Partial View này là một đối tượng VocaSet.
+    Ví dụ: @model VocaWebApp.Models.VocaSetViewModel
+*@
+
+@{
+    // Tính toán tiến độ để demo. Trong thực tế, giá trị này nên được truyền từ Controller.
+    var progress = 75;
+    var status = "public-copy"; // Các giá trị có thể là: "private", "public-view", "public-copy"
+    var lastAccessed = "3 ngày trước";
+}
+
+@*
+    Card Bộ Từ Vựng (Spec 2.1)
+    - Styling: Nền trắng, bo góc 16px (rounded-2xl), shadow, padding 24px (p-6). 
+    - Hiệu ứng hover: Nâng card, đổi shadow, scale 1.02. 
+*@
+<div class="bg-white rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 flex flex-col group">
+
+    <div class="p-6 flex flex-col space-y-4 h-full">
+
+        <div class="flex justify-between items-start">
+
+            <h5 class="font-bold text-gray-800 text-lg leading-tight" title="Keywords: academic, ielts, advanced">
+                IELTS Academic Words
+            </h5>
+
+            <button class="flex-shrink-0 text-gray-400 hover:text-primary p-1 opacity-0 group-hover:opacity-100 transition-opacity" aria-label="More options">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                    <path d="M10 3.75a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5ZM10 8.75a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5ZM10 13.75a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5Z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="flex-grow">
+            @switch (status)
+            {
+                case "public-copy":
+                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-accent-green/10 text-accent-green">Public - Copyable</span>
+                    break;
+                case "public-view":
+                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary/10 text-primary">Public - View Only</span>
+                    break;
+                default: // private
+                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">Private</span>
+                    break;
+            }
+        </div>
+
+        <div class="space-y-1.5 pt-2">
+            <div class="flex justify-between text-sm font-medium text-gray-500">
+                <span>Progress</span>
+                <span>@progress%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-accent-pink rounded-full h-2" style="width: @(progress)%"></div>
+            </div>
+        </div>
+
+        <p class="text-xs text-gray-400 pt-2">
+            Last accessed: @lastAccessed
+        </p>
+    </div>
+</div>

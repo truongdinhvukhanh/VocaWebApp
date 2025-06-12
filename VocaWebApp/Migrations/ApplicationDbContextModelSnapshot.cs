@@ -251,14 +251,9 @@ namespace VocaWebApp.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("AuditLogs");
                 });
@@ -274,6 +269,11 @@ namespace VocaWebApp.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -283,15 +283,9 @@ namespace VocaWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Folders");
                 });
@@ -329,14 +323,7 @@ namespace VocaWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("VocaSetId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("VocaSetId1")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -346,11 +333,7 @@ namespace VocaWebApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("UserId1");
-
                     b.HasIndex("VocaSetId");
-
-                    b.HasIndex("VocaSetId1");
 
                     b.ToTable("ReviewReminders");
                 });
@@ -392,9 +375,6 @@ namespace VocaWebApp.Migrations
                     b.Property<int>("VocaSetId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("VocaSetId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("Word")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -409,8 +389,6 @@ namespace VocaWebApp.Migrations
 
                     b.HasIndex("VocaSetId")
                         .HasDatabaseName("IDX_VocaItem_VocaSetId");
-
-                    b.HasIndex("VocaSetId1");
 
                     b.ToTable("VocaItems");
                 });
@@ -435,25 +413,14 @@ namespace VocaWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("VocaItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("VocaItemId1")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("UserId1");
-
                     b.HasIndex("VocaItemId");
-
-                    b.HasIndex("VocaItemId1");
 
                     b.ToTable("VocaItemHistories");
                 });
@@ -519,25 +486,14 @@ namespace VocaWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CopiedByUserId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("OriginalSetId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("VocaSetId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CopiedByUserId");
 
-                    b.HasIndex("CopiedByUserId1");
-
                     b.HasIndex("OriginalSetId");
-
-                    b.HasIndex("VocaSetId");
 
                     b.ToTable("VocaSetCopies");
                 });
@@ -595,30 +551,20 @@ namespace VocaWebApp.Migrations
 
             modelBuilder.Entity("VocaWebApp.Models.AuditLog", b =>
                 {
-                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
-                        .WithMany()
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
+                        .WithMany("AuditLogs")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("VocaWebApp.Models.Folder", b =>
                 {
-                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
-                        .WithMany()
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
+                        .WithMany("Folders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -626,27 +572,17 @@ namespace VocaWebApp.Migrations
 
             modelBuilder.Entity("VocaWebApp.Models.ReviewReminder", b =>
                 {
-                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
-                        .WithMany()
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
+                        .WithMany("ReviewReminders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("VocaWebApp.Models.VocaSet", "VocaSet")
-                        .WithMany()
+                        .WithMany("ReviewReminders")
                         .HasForeignKey("VocaSetId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("VocaWebApp.Models.VocaSet", null)
-                        .WithMany("ReviewReminders")
-                        .HasForeignKey("VocaSetId1");
 
                     b.Navigation("User");
 
@@ -656,41 +592,27 @@ namespace VocaWebApp.Migrations
             modelBuilder.Entity("VocaWebApp.Models.VocaItem", b =>
                 {
                     b.HasOne("VocaWebApp.Models.VocaSet", "VocaSet")
-                        .WithMany()
+                        .WithMany("VocaItems")
                         .HasForeignKey("VocaSetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("VocaWebApp.Models.VocaSet", null)
-                        .WithMany("VocaItems")
-                        .HasForeignKey("VocaSetId1");
 
                     b.Navigation("VocaSet");
                 });
 
             modelBuilder.Entity("VocaWebApp.Models.VocaItemHistory", b =>
                 {
-                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
-                        .WithMany()
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
+                        .WithMany("VocaItemHistories")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("VocaWebApp.Models.VocaItem", "VocaItem")
-                        .WithMany()
+                        .WithMany("Histories")
                         .HasForeignKey("VocaItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("VocaWebApp.Models.VocaItem", null)
-                        .WithMany("Histories")
-                        .HasForeignKey("VocaItemId1");
 
                     b.Navigation("User");
 
@@ -705,7 +627,7 @@ namespace VocaWebApp.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("VocaWebApp.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("VocaSets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -717,31 +639,36 @@ namespace VocaWebApp.Migrations
 
             modelBuilder.Entity("VocaWebApp.Models.VocaSetCopy", b =>
                 {
-                    b.HasOne("VocaWebApp.Models.ApplicationUser", null)
-                        .WithMany()
+                    b.HasOne("VocaWebApp.Models.ApplicationUser", "CopiedByUser")
+                        .WithMany("VocaSetCopies")
                         .HasForeignKey("CopiedByUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VocaWebApp.Models.ApplicationUser", "CopiedByUser")
-                        .WithMany()
-                        .HasForeignKey("CopiedByUserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("VocaWebApp.Models.VocaSet", "OriginalSet")
-                        .WithMany()
+                        .WithMany("Copies")
                         .HasForeignKey("OriginalSetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VocaWebApp.Models.VocaSet", null)
-                        .WithMany("Copies")
-                        .HasForeignKey("VocaSetId");
-
                     b.Navigation("CopiedByUser");
 
                     b.Navigation("OriginalSet");
+                });
+
+            modelBuilder.Entity("VocaWebApp.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("AuditLogs");
+
+                    b.Navigation("Folders");
+
+                    b.Navigation("ReviewReminders");
+
+                    b.Navigation("VocaItemHistories");
+
+                    b.Navigation("VocaSetCopies");
+
+                    b.Navigation("VocaSets");
                 });
 
             modelBuilder.Entity("VocaWebApp.Models.Folder", b =>

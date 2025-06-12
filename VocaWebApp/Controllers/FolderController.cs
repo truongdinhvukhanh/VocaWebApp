@@ -5,7 +5,7 @@ using VocaWebApp.Repositories;
 
 namespace VocaWebApp.Controllers
 {
-    [Route("folders")]
+    [Route("folder")]
     public class FolderController : Controller
     {
         private readonly IFolderRepository _folderRepository;

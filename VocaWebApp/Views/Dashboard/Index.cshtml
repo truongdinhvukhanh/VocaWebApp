@@ -1,5 +1,482 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Voca Web App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Applying fonts and focus ring from the UI Spec */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB;
+        }
+        /* Nền: Gray-50  */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Focus ring style from Spec 5 */
+        *:focus-visible {
+            outline: 2px solid #FACC15;
+            outline-offset: 2px;
+            border-radius: 6px;
+        }
+    </style>
+    <script>
+        // Customizing Tailwind theme to match the UI Spec
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#4F46E5',     // Indigo-600
+                        'accent-pink': '#EC4899', // Pink-500
+                        'accent-green': '#22C55E',// Green-500
+                        'light-gray': '#F9FAFB'   // Gray-50
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="p-4 sm:p-6 lg:p-8">
+
+    <div class="max-w-screen-xl mx-auto">
+
+        <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">Welcome Back!</h1>
+                <p class="text-gray-500 mt-1">Let's continue your learning journey.</p>
+            </div>
+            <div class="hidden md:block">
+                <img src="https://www.gstatic.com/identity/boq/accountsettingsmobile/learning_light.svg" alt="Learning Illustration" class="w-48 h-auto">
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <div class="lg:col-span-2 flex flex-col gap-6">
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center justify-center text-center" x-data="progressRing(6, 10)">
+                        <h3 class="font-bold text-gray-700 mb-4">Learned Today</h3>
+                        <div class="relative w-32 h-32">
+                            <svg class="w-full h-full" viewBox="0 0 36 36">
+                                <path class="text-gray-200" stroke-width="4" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                                <path class="text-accent-pink" stroke-width="4" fill="none" stroke-linecap="round" :stroke-dasharray="circumference" :stroke-dashoffset="offset" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span class="text-2xl font-bold text-gray-800" x-text="learned"></span>
+                                <span class="text-sm text-gray-500" x-text="'/ ' + total + ' words'"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-center">
+                        <h3 class="font-bold text-gray-700 mb-2">Total Learned</h3>
+                        <p class="text-4xl font-bold text-primary">1,240</p>
+                        <p class="text-sm text-accent-green font-semibold mt-1">+15 this week</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-center">
+                        <h3 class="font-bold text-gray-700 mb-2">Active Sets</h3>
+                        <p class="text-4xl font-bold text-primary">8</p>
+                        <p class="text-sm text-gray-500 mt-1">in 2 folders</p>
+                    </div>
+
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="font-bold text-lg text-gray-700 mb-4">Weekly Activity</h3>
+                    <div>
+                        <canvas id="weeklyActivityChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Achievements/Badges Section -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg text-gray-700">Recent Achievements</h3>
+                        <button class="text-primary hover:text-indigo-700 text-sm font-semibold">View All</button>
+                    </div>
+
+                    <!-- Achievement Animation Container -->
+                    <div id="achievementModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50" x-data="{ show: false }" x-show="show" x-transition>
+                        <div class="bg-white p-8 rounded-2xl text-center max-w-sm mx-4" @@click.away="show = false">
+                            <div class="w-24 h-24 mx-auto mb-4 relative">
+                                <div class="absolute inset-0 bg-gradient-to-br from-accent-pink to-primary rounded-full animate-pulse"></div>
+                                <div class="absolute inset-2 bg-white rounded-full flex items-center justify-center">
+                                    <svg class="w-10 h-10 text-accent-pink" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <h4 class="font-bold text-xl text-gray-800 mb-2">Congratulations!</h4>
+                            <p class="text-gray-600 mb-4">You've earned the "First Steps" badge!</p>
+                            <button @@click="show = false" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Awesome!</button>
+                        </div>
+                    </div>
+
+                    <!-- Badges Grid -->
+                    <div class="grid grid-cols-4 gap-4">
+                        <!-- Badge 1 - Earned -->
+                        <div class="flex flex-col items-center p-3 rounded-xl bg-gradient-to-br from-accent-pink/10 to-primary/10 border border-accent-pink/20">
+                            <div class="w-12 h-12 bg-gradient-to-br from-accent-pink to-primary rounded-full flex items-center justify-center mb-2 shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                            </div>
+                            <span class="text-xs font-semibold text-gray-700 text-center">First Steps</span>
+                        </div>
+
+                        <!-- Badge 2 - Earned -->
+                        <div class="flex flex-col items-center p-3 rounded-xl bg-gradient-to-br from-accent-green/10 to-primary/10 border border-accent-green/20">
+                            <div class="w-12 h-12 bg-gradient-to-br from-accent-green to-primary rounded-full flex items-center justify-center mb-2 shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                                </svg>
+                            </div>
+                            <span class="text-xs font-semibold text-gray-700 text-center">Week Warrior</span>
+                        </div>
+
+                        <!-- Badge 3 - Locked -->
+                        <div class="flex flex-col items-center p-3 rounded-xl bg-gray-50 border border-gray-200">
+                            <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center mb-2">
+                                <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" />
+                                </svg>
+                            </div>
+                            <span class="text-xs font-semibold text-gray-500 text-center">Scholar</span>
+                        </div>
+
+                        <!-- Badge 4 - Locked -->
+                        <div class="flex flex-col items-center p-3 rounded-xl bg-gray-50 border border-gray-200">
+                            <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center mb-2">
+                                <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" />
+                                </svg>
+                            </div>
+                            <span class="text-xs font-semibold text-gray-500 text-center">Master</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Streak Tracker Section -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg text-gray-700">Learning Streak</h3>
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">🔥</span>
+                            <span class="font-bold text-xl text-accent-pink">7 days</span>
+                        </div>
+                    </div>
+
+                    <!-- Current Streak Stats -->
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-primary">7</p>
+                            <p class="text-sm text-gray-500">Current</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-accent-green">15</p>
+                            <p class="text-sm text-gray-500">Longest</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-gray-700">42</p>
+                            <p class="text-sm text-gray-500">Total Days</p>
+                        </div>
+                    </div>
+
+                    <!-- Weekly Calendar -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs font-semibold text-gray-500 px-1">
+                            <span>Mon</span>
+                            <span>Tue</span>
+                            <span>Wed</span>
+                            <span>Thu</span>
+                            <span>Fri</span>
+                            <span>Sat</span>
+                            <span>Sun</span>
+                        </div>
+
+                        <!-- Week 1 -->
+                        <div class="flex justify-between gap-1">
+                            <div class="w-8 h-8 rounded-lg bg-accent-pink/20 flex items-center justify-center">
+                                <span class="text-lg">🔥</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-accent-pink/20 flex items-center justify-center">
+                                <span class="text-lg">🔥</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-accent-pink/20 flex items-center justify-center">
+                                <span class="text-lg">🔥</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-accent-pink/20 flex items-center justify-center">
+                                <span class="text-lg">🔥</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-accent-pink/20 flex items-center justify-center">
+                                <span class="text-lg">🔥</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-accent-pink/20 flex items-center justify-center">
+                                <span class="text-lg">🔥</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-accent-pink flex items-center justify-center shadow-lg animate-pulse">
+                                <span class="text-lg">🔥</span>
+                            </div>
+                        </div>
+
+                        <!-- Week 2 (Previous) -->
+                        <div class="flex justify-between gap-1 opacity-60">
+                            <div class="w-8 h-8 rounded-lg bg-gray-200 flex items-center justify-center">
+                                <span class="text-sm text-gray-400">5</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-gray-200 flex items-center justify-center">
+                                <span class="text-sm text-gray-400">6</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-accent-green/30 flex items-center justify-center">
+                                <span class="text-sm">✓</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-accent-green/30 flex items-center justify-center">
+                                <span class="text-sm">✓</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-gray-200 flex items-center justify-center">
+                                <span class="text-sm text-gray-400">9</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-accent-green/30 flex items-center justify-center">
+                                <span class="text-sm">✓</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-lg bg-accent-green/30 flex items-center justify-center">
+                                <span class="text-sm">✓</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Streak Motivation -->
+                    <div class="mt-4 p-3 bg-gradient-to-r from-accent-pink/10 to-primary/10 rounded-lg border border-accent-pink/20">
+                        <p class="text-sm text-gray-700 text-center">
+                            <span class="font-semibold">Keep it up!</span> Study today to maintain your streak 🔥
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="lg:col-span-1 flex flex-col gap-6">
+
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="font-bold text-lg text-gray-700 mb-4">Review Suggestions</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-800">Common Phrasal Verbs</p>
+                                <p class="text-sm text-gray-500">Last reviewed: 3 days ago</p>
+                            </div>
+                            <button class="flex-shrink-0 bg-primary/10 text-primary font-semibold px-4 py-2 rounded-lg hover:bg-primary/20 transition-colors">Study</button>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-800">Business English Idioms</p>
+                                <p class="text-sm text-gray-500">Last reviewed: 1 week ago</p>
+                            </div>
+                            <button class="flex-shrink-0 bg-primary/10 text-primary font-semibold px-4 py-2 rounded-lg hover:bg-primary/20 transition-colors">Study</button>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-800">TOEIC Essential Vocab</p>
+                                <p class="text-sm text-gray-500">Strength: Weak</p>
+                            </div>
+                            <button class="flex-shrink-0 bg-primary/10 text-primary font-semibold px-4 py-2 rounded-lg hover:bg-primary/20 transition-colors">Study</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Challenge Section -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg text-gray-700">Daily Challenge</h3>
+                        <div class="w-8 h-8 bg-gradient-to-br from-accent-pink to-primary rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-bold">!</span>
+                        </div>
+                    </div>
+
+                    <!-- Challenge Card -->
+                    <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary/10 via-accent-pink/10 to-accent-green/10 border border-primary/20 p-4 mb-4">
+                        <!-- Background Pattern -->
+                        <div class="absolute top-0 right-0 w-20 h-20 opacity-10">
+                            <svg viewBox="0 0 100 100" class="w-full h-full text-primary">
+                                <circle cx="50" cy="50" r="40" fill="currentColor" />
+                                <circle cx="50" cy="50" r="25" fill="white" />
+                            </svg>
+                        </div>
+
+                        <div class="relative">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-gradient-to-br from-accent-green to-primary rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Word Master</h4>
+                                    <p class="text-sm text-gray-600">Learn 15 new words</p>
+                                </div>
+                            </div>
+
+                            <!-- Progress Bar -->
+                            <div class="mb-3">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-gray-600">Progress</span>
+                                    <span class="font-semibold text-primary">6/15</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-accent-green to-primary h-2 rounded-full transition-all duration-300" style="width: 40%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Reward -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-lg">🏆</span>
+                                    <span class="text-sm font-semibold text-gray-700">+50 XP</span>
+                                </div>
+                                <div class="text-xs text-gray-500">
+                                    ⏰ 18h 24m left
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="space-y-2">
+                        <button class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">
+                            Continue Challenge
+                        </button>
+                        <button class="w-full bg-gray-100 text-gray-700 font-semibold py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm">
+                            View All Challenges
+                        </button>
+                    </div>
+
+                    <!-- Challenge Stats -->
+                    <div class="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-100">
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-accent-green">12</p>
+                            <p class="text-xs text-gray-500">Completed</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-accent-pink">3</p>
+                            <p class="text-xs text-gray-500">This Week</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                    <h3 class="font-bold text-lg text-gray-700">Expand Your Vocabulary</h3>
+                    <p class="text-gray-500 text-sm mt-1 mb-4">Create a new set or explore public sets from the community.</p>
+                    <button class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">Create New Set</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Alpine.js logic for the Progress Ring
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('progressRing', (learned, total) => ({
+                learned: learned,
+                total: total,
+                circumference: 30 * 2 * Math.PI,
+                get offset() {
+                    const percentage = this.learned / this.total;
+                    return this.circumference * (1 - percentage);
+                }
+            }));
+        });
+
+        // Chart.js configuration
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('weeklyActivityChart');
+            if (!ctx) return;
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Words Learned',
+                        data: [12, 19, 3, 5, 6, 3, 15], // Demo data
+                        backgroundColor: '#6366F120', // Primary color with opacity
+                        borderColor: '#4F46E5', // Primary color
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        hoverBackgroundColor: '#4F46E560'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false,
+                            },
+                            ticks: {
+                                padding: 10,
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false,
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // Achievement Animation Trigger
+        function showAchievement() {
+            const modal = document.getElementById('achievementModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // Auto hide after 3 seconds
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 3000);
+        }
+
+        // Simulate achievement unlock (for demo)
+        setTimeout(() => {
+            // showAchievement(); // Uncomment to test
+        }, 2000);
+
+        // Streak animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const streakElements = document.querySelectorAll('.animate-pulse');
+            streakElements.forEach(el => {
+                setInterval(() => {
+                    el.classList.toggle('animate-pulse');
+                }, 2000);
+            });
+        });
+    </script>
+
+
+</body>
+</html>

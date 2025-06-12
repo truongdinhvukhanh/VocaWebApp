@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Vocabulary Sets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Applying fonts from the UI Spec */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+    <script>
+        // Customizing Tailwind theme to match the UI Spec
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Using the second, more refined style guide
+                        'primary': '#4F46E5', // Indigo-600
+                        'accent-pink': '#EC4899', // Pink-500
+                        'accent-green': '#22C55E', // Green-500
+                        'light-gray': '#F9FAFB' // Gray-50 for background
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-light-gray p-4 sm:p-6 lg:p-8">
+
+    <div class="max-w-screen-xl mx-auto">
+        <header class="mb-6">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">
+                    My Voca Sets
+                </h2>
+                <a href="@Url.Action("Create", "Folder")"
+                   class="inline-flex items-center px-6 py-3 bg-white rounded-2xl shadow transition-all duration-150 hover:shadow-lg hover:scale-105 border border-gray-200 font-semibold text-gray-700 text-base gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Create New Set
+                </a>
+            </div>
+        </header>
+        <div class="flex flex-col md:flex-row gap-8">
+            <aside class="md:w-64 flex-shrink-0" x-data="{ openFolder: 1 }">
+                <h2 class="text-lg font-bold mb-3 text-gray-700">Folders</h2>
+                <div class="space-y-2">
+                    <div>
+                        <button onclick="openFolder = openFolder === 1 ? null : 1" class="w-full flex justify-between items-center text-left p-3 rounded-lg transition-all" :class="openFolder === 1 ? 'bg-primary/10 text-primary' : 'hover:bg-gray-200/60'">
+                            <span class="font-semibold">Default</span>
+                            <span class="text-xs bg-gray-200 text-gray-600 font-medium rounded-full px-2 py-0.5">5</span>
+                        </button>
+                        <div class="pl-4 mt-2 space-y-2" x-show="openFolder === 1" x-transition>
+                            <p class="text-sm text-gray-600 p-2 rounded-md hover:bg-gray-200/50 cursor-pointer">IELTS Speaking Topics</p>
+                            <p class="text-sm text-gray-600 p-2 rounded-md hover:bg-gray-200/50 cursor-pointer">Common Phrasal Verbs</p>
+                        </div>
+                    </div>
+                    <div>
+                        <button onclick="openFolder = openFolder === 2 ? null : 2" class="w-full flex justify-between items-center text-left p-3 rounded-lg transition-all" :class="openFolder === 2 ? 'bg-primary/10 text-primary' : 'hover:bg-gray-200/60'">
+                            <span class="font-semibold">IELTS</span>
+                            <span class="text-xs bg-gray-200 text-gray-600 font-medium rounded-full px-2 py-0.5">12</span>
+                        </button>
+                        <div class="pl-4 mt-2" x-show="openFolder === 2" x-transition>
+                            <p class="text-xs italic text-gray-500">/* Drag and drop zone */</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <section class="flex-1 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <partial name="_VocaSetCard" model='new { Name = "IELTS Academic Words", Status = "public-copy", Progress = 75, LastAccessed = "2 hours ago" }' />
+                <partial name="_VocaSetCard" model='new { Name = "Common Phrasal Verbs", Status = "private", Progress = 30, LastAccessed = "3 days ago" }' />
+                <partial name="_VocaSetCard" model='new { Name = "Business English Idioms", Status = "public-view", Progress = 95, LastAccessed = "1 month ago" }' />
+                <partial name="_VocaSetCard" model='new { Name = "TOEIC Essential Vocab", Status = "private", Progress = 10, LastAccessed = "5 minutes ago" }' />
+            </section>
+        </div>
+    </div>
+
+
+    <template id="vocaset-card-template">
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col p-6 space-y-4">
+
+            <div class="flex justify-between items-start">
+                <h5 class="font-bold text-gray-800 text-lg leading-tight" title="Keywords: academic, ielts, advanced">
+                    {{ name }}
+                </h5>
+                <button class="text-gray-400 hover:text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                        <path d="M10 3.75a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5ZM10 8.75a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5ZM10 13.75a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5Z" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex-grow">
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full"
+                      :class="{
+                        'bg-primary/10 text-primary': '{{ status }}' === 'public-view',
+                        'bg-accent-green/10 text-accent-green': '{{ status }}' === 'public-copy',
+                        'bg-gray-100 text-gray-600': '{{ status }}' === 'private'
+                    }">
+                    {{ status.replace('-', ' ') }}
+                </span>
+            </div>
+
+            <div class="space-y-1.5">
+                <div class="flex justify-between text-sm font-medium text-gray-500">
+                    <span>Progress</span>
+                    <span>{{ progress }}%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-accent-pink rounded-full h-2" style="width: {{ progress }}%"></div>
+                </div>
+            </div>
+
+            <p class="text-xs text-gray-400 pt-2">{{ lastAccessed }}</p>
+        </div>
+    </template>
+
+    <script>
+        // Simple script to populate the cards from the template for demo purposes
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('section.grid');
+            const models = [
+                { name: "IELTS Academic Words", status: "public-copy", progress: 75, lastAccessed: "2 hours ago" },
+                { name: "Common Phrasal Verbs", status: "private", progress: 30, lastAccessed: "3 days ago" },
+                { name: "Business English Idioms", status: "public-view", progress: 95, lastAccessed: "1 month ago" },
+                { name: "TOEIC Essential Vocab", status: "private", progress: 10, lastAccessed: "5 minutes ago" }
+            ];
+            const template = document.getElementById('vocaset-card-template').innerHTML;
+
+            container.innerHTML = ''; // Clear placeholder partials
+
+            models.forEach(model => {
+                let cardHtml = template;
+                for (const key in model) {
+                    cardHtml = cardHtml.replace(new RegExp(`{{ ${key} }}`, 'g'), model[key]);
+                }
+                // AlpineJS compatibility fix for dynamic content
+                let tempDiv = document.createElement('div');
+                tempDiv.innerHTML = cardHtml;
+                tempDiv.firstElementChild.setAttribute('x-data', JSON.stringify(model));
+                container.appendChild(tempDiv.firstElementChild);
+            });
+        });
+    </script>
+
+    @* ... các @using, @addTagHelper ... *@
+    @{
+        ViewData["Title"] = "My Vocabulary Sets";
+    }
+
+    <div x-data="{ isLoading: true }" x-init="setTimeout(() => { isLoading = false }, 2000)">
+
+        <div class="flex flex-col md:flex-row gap-6">
+
+            <aside class="md:w-64">
+                <h2 class="text-lg font-semibold mb-3">Folders</h2>
+            </aside>
+
+            <section class="flex-1">
+                <div x-show="isLoading"
+                     class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                     x-transition>
+
+                    <template x-for="i in 8" :key="i">
+                        <partial name="_VocaSetCardSkeleton" />
+                    </template>
+                </div>
+
+                <div x-show="!isLoading"
+                     class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                     x-transition:enter="transition ease-out duration-500"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100">
+
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        <partial name="_VocaSetCard" />
+                    }
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

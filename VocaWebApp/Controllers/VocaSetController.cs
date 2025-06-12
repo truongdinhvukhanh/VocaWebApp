@@ -4,7 +4,6 @@ using VocaWebApp.Repositories;
 
 namespace VocaWebApp.Controllers
 {
-    [Route("vocasets")]
     public class VocaSetController : Controller
     {
         private readonly IVocaSetRepository _vocaSetRepository;

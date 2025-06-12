@@ -58,14 +58,14 @@ namespace VocaWebApp.Data
 
             // ========== CẤU HÌNH FOREIGN KEY - TRÁNH CASCADE VÒNG ==========
             modelBuilder.Entity<Folder>()
-                .HasOne<ApplicationUser>()
-                .WithMany()
+                .HasOne(f => f.User)
+                .WithMany(u => u.Folders)
                 .HasForeignKey(f => f.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<VocaSet>()
                 .HasOne(v => v.User)
-                .WithMany()
+                .WithMany(u => u.VocaSets)
                 .HasForeignKey(v => v.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -73,55 +73,56 @@ namespace VocaWebApp.Data
                 .HasOne(v => v.Folder)
                 .WithMany(f => f.VocaSets)
                 .HasForeignKey(v => v.FolderId)
-                .OnDelete(DeleteBehavior.SetNull); // nếu Folder bị xoá, VocaSet giữ nguyên
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<VocaItem>()
                 .HasOne(v => v.VocaSet)
-                .WithMany()
+                .WithMany(s => s.VocaItems) 
                 .HasForeignKey(v => v.VocaSetId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<VocaItemHistory>()
-                .HasOne<ApplicationUser>()
-                .WithMany()
+                .HasOne(h => h.User)
+                .WithMany(u => u.VocaItemHistories)
                 .HasForeignKey(h => h.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<VocaItemHistory>()
                 .HasOne(h => h.VocaItem)
-                .WithMany()
+                .WithMany(i => i.Histories)
                 .HasForeignKey(h => h.VocaItemId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ReviewReminder>()
-                .HasOne<ApplicationUser>()
-                .WithMany()
+                .HasOne(r => r.User)
+                .WithMany(u => u.ReviewReminders)
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ReviewReminder>()
                 .HasOne(r => r.VocaSet)
-                .WithMany()
+                .WithMany(s => s.ReviewReminders)
                 .HasForeignKey(r => r.VocaSetId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AuditLog>()
-                .HasOne<ApplicationUser>()
-                .WithMany()
+                .HasOne(a => a.User)
+                .WithMany(u => u.AuditLogs)
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<VocaSetCopy>()
-                .HasOne(v => v.OriginalSet)
-                .WithMany()
-                .HasForeignKey(v => v.OriginalSetId)
+                .HasOne(c => c.OriginalSet)
+                .WithMany(s => s.Copies)
+                .HasForeignKey(c => c.OriginalSetId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<VocaSetCopy>()
-                .HasOne<ApplicationUser>()
-                .WithMany()
-                .HasForeignKey(v => v.CopiedByUserId)
+                .HasOne(c => c.CopiedByUser)
+                .WithMany(u => u.VocaSetCopies)
+                .HasForeignKey(c => c.CopiedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
 
             // ========== INDEXES ==========
             modelBuilder.Entity<VocaSet>()
