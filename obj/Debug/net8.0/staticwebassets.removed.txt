@@ -1,0 +1,5 @@
+C:\Users\User\OneDrive\My Documents\VocaWebApp\wwwroot\css\components.css
+C:\Users\User\OneDrive\My Documents\VocaWebApp\wwwroot\css\layout.css
+C:\Users\User\OneDrive\My Documents\VocaWebApp\wwwroot\css\main.css
+C:\Users\User\OneDrive\My Documents\VocaWebApp\wwwroot\css\register-page.css
+C:\Users\User\OneDrive\My Documents\VocaWebApp\wwwroot\images\default-avatar.svg

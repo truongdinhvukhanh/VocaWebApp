@@ -1,0 +1,474 @@
+﻿@import "tailwindcss";
+
+/* Additional custom animations */
+.animation-delay-2000 {
+    animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+    animation-delay: 4s;
+}
+
+/* Enhanced glassmorphism */
+.backdrop-blur-lg {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* Navigation link active state với màu cam #FF6F20 */
+.nav-link.active {
+    color: #FF6F20 !important;
+    background-color: rgba(255, 111, 32, 0.1);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Smooth focus transitions với màu xanh dương chính */
+input:focus {
+    transform: translateY(-1px);
+    transition: all 0.3s ease;
+    border-color: #205493;
+    box-shadow: 0 0 0 3px rgba(32, 84, 147, 0.1);
+}
+
+/* Button hover effects */
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* Card hover effects */
+.group:hover {
+    transform: translateY(-4px);
+}
+
+/* Form styles với bảng màu chính */
+.form-input {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+    .form-input:focus {
+        border-color: #205493;
+        box-shadow: 0 0 0 3px rgba(32, 84, 147, 0.1);
+        outline: none;
+    }
+
+.form-label {
+    color: #666666;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Primary button styles */
+.btn-primary {
+    background-color: #205493;
+    color: #FFFFFF;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+    .btn-primary:hover {
+        background-color: #1C4E80;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(32, 84, 147, 0.4);
+    }
+
+/* Secondary button styles */
+.btn-secondary {
+    background-color: #4A8BDF;
+    color: #FFFFFF;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+    .btn-secondary:hover {
+        background-color: #3A7BD5;
+        transform: translateY(-2px);
+    }
+
+/* Accent button styles với màu cam */
+.btn-accent {
+    background-color: #FF6F20;
+    color: #FFFFFF;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+    .btn-accent:hover {
+        background-color: #E55A11;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(255, 111, 32, 0.4);
+    }
+
+/* Success styles */
+.text-success {
+    color: #4CAF50;
+}
+
+.bg-success {
+    background-color: #4CAF50;
+}
+
+.border-success {
+    border-color: #4CAF50;
+}
+
+/* Warning styles */
+.text-warning {
+    color: #FFC107;
+}
+
+.bg-warning {
+    background-color: #FFC107;
+}
+
+.border-warning {
+    border-color: #FFC107;
+}
+
+/* Error styles */
+.text-error {
+    color: #F44336;
+}
+
+.bg-error {
+    background-color: #F44336;
+}
+
+.border-error {
+    border-color: #F44336;
+}
+
+/* Password strength indicator với màu sắc phù hợp */
+.password-strength {
+    height: 4px;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+    .password-strength.weak {
+        background: linear-gradient(90deg, #F44336 0%, #F44336 33%, #E0E0E0 33%, #E0E0E0 100%);
+    }
+
+    .password-strength.medium {
+        background: linear-gradient(90deg, #FFC107 0%, #FFC107 66%, #E0E0E0 66%, #E0E0E0 100%);
+    }
+
+    .password-strength.strong {
+        background: linear-gradient(90deg, #4CAF50 0%, #4CAF50 100%);
+    }
+
+/* Navigation animations với màu cam highlight */
+.nav-link {
+    position: relative;
+}
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -4px;
+        left: 50%;
+        background: linear-gradient(90deg, #FF6F20, #E55A11);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+/* Dropdown animations */
+[data-dropdown-menu] {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+}
+
+    [data-dropdown-menu]:not(.hidden) {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+/* Mobile menu slide animation */
+#mobile-menu {
+    transition: all 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+    #mobile-menu:not(.hidden) {
+        max-height: 300px;
+    }
+
+/* Card styles */
+.card {
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+
+/* Flashcard styles cho vocabulary */
+.flashcard {
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+    .flashcard:hover {
+        transform: rotateY(5deg);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+
+/* Word type colors */
+.word-type-noun {
+    color: #9C27B0;
+    background-color: rgba(156, 39, 176, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.word-type-verb {
+    color: #4CAF50;
+    background-color: rgba(76, 175, 80, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.word-type-adjective {
+    color: #FF6F20;
+    background-color: rgba(255, 111, 32, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.word-type-adverb {
+    color: #2196F3;
+    background-color: rgba(33, 150, 243, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Level badges */
+.level-beginner {
+    background-color: #4CAF50;
+    color: #FFFFFF;
+}
+
+.level-intermediate {
+    background-color: #FFC107;
+    color: #212121;
+}
+
+.level-advanced {
+    background-color: #FF6F20;
+    color: #FFFFFF;
+}
+
+.level-expert {
+    background-color: #9C27B0;
+    color: #FFFFFF;
+}
+
+/* Progress bars */
+.progress-bar {
+    background-color: #E0E0E0;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background-color: #4CAF50;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* Search bar styles */
+.search-bar {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 9999px;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+    .search-bar:focus {
+        border-color: #205493;
+        box-shadow: 0 0 0 3px rgba(32, 84, 147, 0.1);
+        outline: none;
+    }
+
+/* Filter styles */
+.filter-active {
+    background-color: #205493;
+    color: #FFFFFF;
+}
+
+.filter-inactive {
+    background-color: #FFFFFF;
+    color: #666666;
+    border: 1px solid #E0E0E0;
+}
+
+    .filter-inactive:hover {
+        background-color: #E3F2FD;
+        color: #205493;
+    }
+
+/* Avatar pulse animation */
+.avatar-pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* Smooth transitions for mobile */
+@media (max-width: 768px) {
+    .mobile-nav-item {
+        transform: translateX(-20px);
+        opacity: 0;
+        animation: slideIn 0.3s ease forwards;
+    }
+
+        .mobile-nav-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .mobile-nav-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .mobile-nav-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .mobile-nav-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Focus states for accessibility */
+button:focus,
+a:focus {
+    outline: 2px solid #205493;
+    outline-offset: 2px;
+}
+
+/* Loading spinner với màu chính */
+.spinner {
+    border: 2px solid #F5F5F5;
+    border-top: 2px solid #205493;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Utility classes cho các màu thiết kế */
+.text-primary {
+    color: #205493;
+}
+
+.text-secondary {
+    color: #4A8BDF;
+}
+
+.text-accent {
+    color: #FF6F20;
+}
+
+.text-muted {
+    color: #666666;
+}
+
+.bg-primary {
+    background-color: #205493;
+}
+
+.bg-secondary {
+    background-color: #4A8BDF;
+}
+
+.bg-accent {
+    background-color: #FF6F20;
+}
+
+.bg-light {
+    background-color: #F5F5F5;
+}
+
+.border-primary {
+    border-color: #205493;
+}
+
+.border-secondary {
+    border-color: #4A8BDF;
+}
+
+.border-accent {
+    border-color: #FF6F20;
+}
+
+.border-light {
+    border-color: #E0E0E0;
+}

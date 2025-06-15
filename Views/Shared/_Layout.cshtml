@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - VocaWebApp</title>
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-white min-h-screen text-gray-800">
+    <!-- Navigation Bar với màu xanh dương đậm #205493 -->
+    <nav class="bg-[#205493] border-b border-[#1C4E80] sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-gradient-to-r from-[#4A8BDF] to-[#FF6F20] rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-white">VocaWeb</span>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a asp-area="" asp-controller="Home" asp-action="Index"
+                       class="text-white hover:text-[#4A8BDF] transition-colors duration-200 font-medium nav-link">
+                        Trang chủ
+                    </a>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-area="" asp-controller="Dashboard" asp-action="Index"
+                           class="text-white hover:text-[#4A8BDF] transition-colors duration-200 font-medium nav-link">
+                            Dashboard
+                        </a>
+                        <a asp-area="" asp-controller="Vocabulary" asp-action="MyVocabulary"
+                           class="text-white hover:text-[#4A8BDF] transition-colors duration-200 font-medium nav-link">
+                            Bộ từ vựng của tôi
+                        </a>
+                    }
+
+                    <a asp-area="" asp-controller="Explore" asp-action="Index"
+                       class="text-white hover:text-[#4A8BDF] transition-colors duration-200 font-medium nav-link">
+                        Khám phá
+                    </a>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    @await Html.PartialAsync("_LoginPartial")
+
+                    <button type="button" class="md:hidden text-white hover:text-[#4A8BDF] focus:outline-none focus:text-[#4A8BDF]"
+                            onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden pb-4">
+                <div class="flex flex-col space-y-2">
+                    <a asp-area="" asp-controller="Home" asp-action="Index"
+                       class="text-white hover:text-[#4A8BDF] transition-colors duration-200 font-medium py-2 px-4 rounded-lg hover:bg-[#4A8BDF]/10 mobile-nav-item">
+                        Trang chủ
+                    </a>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-area="" asp-controller="Dashboard" asp-action="Index"
+                           class="text-white hover:text-[#4A8BDF] transition-colors duration-200 font-medium py-2 px-4 rounded-lg hover:bg-[#4A8BDF]/10 mobile-nav-item">
+                            Dashboard
+                        </a>
+                        <a asp-area="" asp-controller="Vocabulary" asp-action="MyVocabulary"
+                           class="text-white hover:text-[#4A8BDF] transition-colors duration-200 font-medium py-2 px-4 rounded-lg hover:bg-[#4A8BDF]/10 mobile-nav-item">
+                            Bộ từ vựng của tôi
+                        </a>
+                    }
+
+                    <a asp-area="" asp-controller="Explore" asp-action="Index"
+                       class="text-white hover:text-[#4A8BDF] transition-colors duration-200 font-medium py-2 px-4 rounded-lg hover:bg-[#4A8BDF]/10 mobile-nav-item">
+                        Khám phá
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main role="main" class="flex-1">
+        @RenderBody()
+    </main>
+
+    <!-- Footer với màu xanh navy đậm #1C4E80 -->
+    <footer class="bg-[#1C4E80] border-t border-[#205493] mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-r from-[#4A8BDF] to-[#FF6F20] rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-white">VocaWeb</span>
+                    </div>
+                    <p class="text-[#A5D8DD] mb-4">Nền tảng học từ vựng hiện đại giúp bạn nâng cao kỹ năng ngôn ngữ một cách hiệu quả và thú vị.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Liên kết</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-[#A5D8DD] hover:text-[#FF6F20] transition-colors">Về chúng tôi</a></li>
+                        <li><a href="#" class="text-[#A5D8DD] hover:text-[#FF6F20] transition-colors">Điều khoản</a></li>
+                        <li><a href="#" class="text-[#A5D8DD] hover:text-[#FF6F20] transition-colors">Chính sách</a></li>
+                        <li><a href="#" class="text-[#A5D8DD] hover:text-[#FF6F20] transition-colors">Liên hệ</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Hỗ trợ</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-[#A5D8DD] hover:text-[#FF6F20] transition-colors">Trung tâm trợ giúp</a></li>
+                        <li><a href="#" class="text-[#A5D8DD] hover:text-[#FF6F20] transition-colors">FAQ</a></li>
+                        <li><a href="#" class="text-[#A5D8DD] hover:text-[#FF6F20] transition-colors">Báo lỗi</a></li>
+                        <li><a href="#" class="text-[#A5D8DD] hover:text-[#FF6F20] transition-colors">Phản hồi</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-[#205493] mt-8 pt-8 text-center">
+                <p class="text-[#A5D8DD]">
+                    © 2025 VocaWeb. Tất cả quyền được bảo lưu.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileButton = event.target.closest('button');
+
+            if (!mobileButton && !mobileMenu.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdowns = document.querySelectorAll('[data-dropdown]');
+            dropdowns.forEach(dropdown => {
+                if (!dropdown.contains(event.target)) {
+                    const menu = dropdown.querySelector('[data-dropdown-menu]');
+                    if (menu) {
+                        menu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
