@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "n8Xq5ph7xu9KwUh7JuIpMbFozd5jdDeCNTZtRy41TM4=",
+  "Hash": "D1ZSI39+rYF3fd9wtElUDXgO7H9hAWNOi+jq0v22v5Q=",
   "Source": "VocaWebApp",
   "BasePath": "_content/VocaWebApp",
   "Mode": "Default",
@@ -1354,8 +1354,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "0ghpusp2t3",
-      "Integrity": "cP3kGMj51bbTL1YzwTO9c3NuqrMDwumtRP5auH4K6ss=",
+      "Fingerprint": "2s6v6c7tgs",
+      "Integrity": "7qVJrwovcrqJTr0N7buEmH4152ZHO1U/lYF++IeNj/k=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\styles.css"
@@ -2684,7 +2684,7 @@
       ]
     },
     {
-      "Route": "css/styles.0ghpusp2t3.css",
+      "Route": "css/styles.2s6v6c7tgs.css",
       "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\css\\styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -2694,7 +2694,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "41803"
+          "Value": "48817"
         },
         {
           "Name": "Content-Type",
@@ -2702,11 +2702,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"cP3kGMj51bbTL1YzwTO9c3NuqrMDwumtRP5auH4K6ss=\""
+          "Value": "\"7qVJrwovcrqJTr0N7buEmH4152ZHO1U/lYF++IeNj/k=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 15 Jun 2025 10:47:33 GMT"
+          "Value": "Sun, 15 Jun 2025 11:59:58 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2716,7 +2716,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "0ghpusp2t3"
+          "Value": "2s6v6c7tgs"
         },
         {
           "Name": "label",
@@ -2724,7 +2724,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-cP3kGMj51bbTL1YzwTO9c3NuqrMDwumtRP5auH4K6ss="
+          "Value": "sha256-7qVJrwovcrqJTr0N7buEmH4152ZHO1U/lYF++IeNj/k="
         }
       ]
     },
@@ -2739,7 +2739,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "41803"
+          "Value": "48817"
         },
         {
           "Name": "Content-Type",
@@ -2747,11 +2747,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"cP3kGMj51bbTL1YzwTO9c3NuqrMDwumtRP5auH4K6ss=\""
+          "Value": "\"7qVJrwovcrqJTr0N7buEmH4152ZHO1U/lYF++IeNj/k=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 15 Jun 2025 10:47:33 GMT"
+          "Value": "Sun, 15 Jun 2025 11:59:58 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2761,7 +2761,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-cP3kGMj51bbTL1YzwTO9c3NuqrMDwumtRP5auH4K6ss="
+          "Value": "sha256-7qVJrwovcrqJTr0N7buEmH4152ZHO1U/lYF++IeNj/k="
         }
       ]
     },
