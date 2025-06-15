@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\OneDrive\\My Documents\\VocaWebApp\\VocaWebApp.csproj": {}
+    "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\VocaWebApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\OneDrive\\My Documents\\VocaWebApp\\VocaWebApp.csproj": {
+    "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\VocaWebApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\OneDrive\\My Documents\\VocaWebApp\\VocaWebApp.csproj",
+        "projectUniqueName": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\VocaWebApp.csproj",
         "projectName": "VocaWebApp",
-        "projectPath": "C:\\Users\\User\\OneDrive\\My Documents\\VocaWebApp\\VocaWebApp.csproj",
+        "projectPath": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\VocaWebApp.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\OneDrive\\My Documents\\VocaWebApp\\obj\\",
+        "outputPath": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

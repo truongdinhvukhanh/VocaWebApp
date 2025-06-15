@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using VocaWebApp.Data;
 using VocaWebApp.Models;
 using VocaWebApp.Models.ManageViewModels;
 
@@ -9,7 +11,7 @@ namespace VocaWebApp.Controllers
 {
     /// <summary>
     /// Controller xử lý các chức năng quản lý tài khoản user
-    /// Bao gồm: cập nhật thông tin cá nhân, đổi mật khẩu
+    /// Bao gồm: cập nhật thông tin cá nhân, đổi mật khẩu, cài đặt UserSettings
     /// </summary>
     [Authorize]
     [Route("[controller]/[action]")]
@@ -17,15 +19,18 @@ namespace VocaWebApp.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<ManageController> _logger;
 
         public ManageController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            ApplicationDbContext context,
             ILogger<ManageController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
             _logger = logger;
         }
 
@@ -41,12 +46,30 @@ namespace VocaWebApp.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            // Lấy UserSettings của user
+            var userSettings = await _context.UserSettings.FirstOrDefaultAsync(s => s.UserId == user.Id);
+
             var model = new ProfileViewModel
             {
                 Email = user.Email,
                 FullName = user.FullName,
-                PhoneNumber = user.PhoneNumber,
-                CurrentProfileImageUrl = user.ProfileImageUrl
+                CurrentProfileImageUrl = user.ProfileImageUrl,
+                IsActive = user.IsActive,
+                CreatedAt = user.CreatedAt,
+                LastLoginAt = user.LastLoginAt,
+
+                // UserSettings properties với default values
+                DailyGoal = userSettings?.DailyGoal ?? 10,
+                EmailNotifications = userSettings?.EmailNotifications ?? true,
+                WebNotifications = userSettings?.WebNotifications ?? true,
+                PreferredLanguage = userSettings?.PreferredLanguage ?? "vi",
+                Theme = userSettings?.Theme ?? "light",
+                AutoPlayAudio = userSettings?.AutoPlayAudio ?? false,
+                DefaultReviewInterval = userSettings?.DefaultReviewInterval ?? 7,
+                FlashcardSessionSize = userSettings?.FlashcardSessionSize ?? 20,
+                ShowPronunciation = userSettings?.ShowPronunciation ?? true,
+                ShowWordType = userSettings?.ShowWordType ?? true,
+                DefaultFlashcardMode = userSettings?.DefaultFlashcardMode ?? "word-to-meaning"
             };
 
             return View(model);
@@ -64,19 +87,37 @@ namespace VocaWebApp.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            // Lấy UserSettings của user
+            var userSettings = await _context.UserSettings.FirstOrDefaultAsync(s => s.UserId == user.Id);
+
             var model = new ProfileViewModel
             {
                 Email = user.Email,
                 FullName = user.FullName,
-                PhoneNumber = user.PhoneNumber,
-                CurrentProfileImageUrl = user.ProfileImageUrl
+                CurrentProfileImageUrl = user.ProfileImageUrl,
+                IsActive = user.IsActive,
+                CreatedAt = user.CreatedAt,
+                LastLoginAt = user.LastLoginAt,
+
+                // UserSettings properties với default values
+                DailyGoal = userSettings?.DailyGoal ?? 10,
+                EmailNotifications = userSettings?.EmailNotifications ?? true,
+                WebNotifications = userSettings?.WebNotifications ?? true,
+                PreferredLanguage = userSettings?.PreferredLanguage ?? "vi",
+                Theme = userSettings?.Theme ?? "light",
+                AutoPlayAudio = userSettings?.AutoPlayAudio ?? false,
+                DefaultReviewInterval = userSettings?.DefaultReviewInterval ?? 7,
+                FlashcardSessionSize = userSettings?.FlashcardSessionSize ?? 20,
+                ShowPronunciation = userSettings?.ShowPronunciation ?? true,
+                ShowWordType = userSettings?.ShowWordType ?? true,
+                DefaultFlashcardMode = userSettings?.DefaultFlashcardMode ?? "word-to-meaning"
             };
 
             return View(model);
         }
 
         /// <summary>
-        /// Xử lý cập nhật thông tin cá nhân
+        /// Xử lý cập nhật thông tin cá nhân và UserSettings
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -84,6 +125,18 @@ namespace VocaWebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var errors = ModelState
+                    .Where(x => x.Value.Errors.Count > 0)
+                    .Select(x => new { Field = x.Key, Errors = x.Value.Errors.Select(e => e.ErrorMessage) });
+
+                foreach (var error in errors)
+                {
+                    _logger.LogWarning("Validation error - Field: {Field}, Errors: {Errors}",
+                        error.Field, string.Join(", ", error.Errors));
+                }
+
+                TempData["ErrorMessage"] = "Lỗi validation: " + string.Join(", ",
+                    errors.SelectMany(e => e.Errors));
                 return View(model);
             }
 
@@ -93,7 +146,7 @@ namespace VocaWebApp.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            // Cập nhật thông tin user
+            // Cập nhật thông tin ApplicationUser
             var email = user.Email;
             if (model.Email != email)
             {
@@ -110,31 +163,69 @@ namespace VocaWebApp.Controllers
                 user.FullName = model.FullName;
             }
 
-            var phoneNumber = user.PhoneNumber;
-            if (model.PhoneNumber != phoneNumber)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
-                }
-            }
-
             // Cập nhật ảnh đại diện nếu có
             if (!string.IsNullOrEmpty(model.NewProfileImageUrl))
             {
                 user.ProfileImageUrl = model.NewProfileImageUrl;
             }
 
-            // Lưu thay đổi
+            // Lưu thay đổi ApplicationUser
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {
                 throw new ApplicationException($"Unexpected error occurred updating user with ID '{user.Id}'.");
             }
 
+            // Xử lý UserSettings
+            var userSettings = await _context.UserSettings.FirstOrDefaultAsync(s => s.UserId == user.Id);
+
+            if (userSettings == null)
+            {
+                // Tạo mới UserSettings nếu chưa có
+                userSettings = new UserSettings
+                {
+                    UserId = user.Id,
+                    DailyGoal = model.DailyGoal,
+                    EmailNotifications = model.EmailNotifications,
+                    WebNotifications = model.WebNotifications,
+                    PreferredLanguage = model.PreferredLanguage,
+                    Theme = model.Theme,
+                    AutoPlayAudio = model.AutoPlayAudio,
+                    DefaultReviewInterval = model.DefaultReviewInterval,
+                    FlashcardSessionSize = model.FlashcardSessionSize,
+                    ShowPronunciation = model.ShowPronunciation,
+                    ShowWordType = model.ShowWordType,
+                    DefaultFlashcardMode = model.DefaultFlashcardMode,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                _context.UserSettings.Add(userSettings);
+            }
+            else
+            {
+                // Cập nhật UserSettings hiện có
+                userSettings.DailyGoal = model.DailyGoal;
+                userSettings.EmailNotifications = model.EmailNotifications;
+                userSettings.WebNotifications = model.WebNotifications;
+                userSettings.PreferredLanguage = model.PreferredLanguage;
+                userSettings.Theme = model.Theme;
+                userSettings.AutoPlayAudio = model.AutoPlayAudio;
+                userSettings.DefaultReviewInterval = model.DefaultReviewInterval;
+                userSettings.FlashcardSessionSize = model.FlashcardSessionSize;
+                userSettings.ShowPronunciation = model.ShowPronunciation;
+                userSettings.ShowWordType = model.ShowWordType;
+                userSettings.DefaultFlashcardMode = model.DefaultFlashcardMode;
+                userSettings.UpdatedAt = DateTime.UtcNow;
+
+                _context.UserSettings.Update(userSettings);
+            }
+
+            // Lưu thay đổi vào database
+            await _context.SaveChangesAsync();
+
             await _signInManager.RefreshSignInAsync(user);
-            TempData["StatusMessage"] = "Thông tin cá nhân đã được cập nhật thành công.";
+            TempData["StatusMessage"] = "Thông tin cá nhân và cài đặt đã được cập nhật thành công.";
 
             return RedirectToAction(nameof(Profile));
         }

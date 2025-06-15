@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-    "scripts": {
-        "css:build": "npx @tailwindcss/cli -i ./wwwroot/css/site.css -o ./wwwroot/css/styles.css --minify",
-        "css:watch": "npx @tailwindcss/cli -i ./wwwroot/css/site.css -o ./wwwroot/css/styles.css --watch",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
+  "scripts": {
+    "css:build": "npx @tailwindcss/cli -i ./wwwroot/css/site.css -o ./wwwroot/css/styles.css --minify",
+    "css:watch": "npx @tailwindcss/cli -i ./wwwroot/css/site.css -o ./wwwroot/css/styles.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -4,7 +4,7 @@ namespace VocaWebApp.Models.ManageViewModels
 {
     /// <summary>
     /// ViewModel cho trang quản lý thông tin cá nhân
-    /// Bao gồm các trường thông tin người dùng có thể cập nhật
+    /// Bao gồm cả thông tin từ ApplicationUser và UserSettings
     /// </summary>
     public class ProfileViewModel
     {
@@ -18,14 +18,28 @@ namespace VocaWebApp.Models.ManageViewModels
         [Display(Name = "Họ và tên")]
         public string FullName { get; set; }
 
-        [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
-        [Display(Name = "Số điện thoại")]
-        public string PhoneNumber { get; set; }
-
         [Display(Name = "Ảnh đại diện hiện tại")]
-        public string CurrentProfileImageUrl { get; set; }
+        public string? CurrentProfileImageUrl { get; set; }
 
         [Display(Name = "Ảnh đại diện mới")]
-        public string NewProfileImageUrl { get; set; }
+        public string? NewProfileImageUrl { get; set; }
+
+        // Thông tin từ ApplicationUser
+        public bool IsActive { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? LastLoginAt { get; set; }
+
+        // Thông tin từ UserSettings
+        public int DailyGoal { get; set; } = 10;
+        public bool EmailNotifications { get; set; } = true;
+        public bool WebNotifications { get; set; } = true;
+        public string PreferredLanguage { get; set; } = "vi";
+        public string Theme { get; set; } = "light";
+        public bool AutoPlayAudio { get; set; } = false;
+        public int DefaultReviewInterval { get; set; } = 7;
+        public int FlashcardSessionSize { get; set; } = 20;
+        public bool ShowPronunciation { get; set; } = true;
+        public bool ShowWordType { get; set; } = true;
+        public string DefaultFlashcardMode { get; set; } = "word-to-meaning";
     }
 }
