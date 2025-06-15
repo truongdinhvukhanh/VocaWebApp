@@ -1,0 +1,181 @@
+﻿@model IEnumerable<VocaWebApp.Models.Folder>
+
+@{
+    ViewData["Title"] = "Bộ từ vựng của tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Header -->
+<div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8">
+    <div class="container mx-auto px-4">
+        <h1 class="text-3xl font-bold mb-2">Bộ từ vựng của tôi</h1>
+        <p class="text-blue-100 text-lg">Quản lý và tổ chức các folder chứa bộ từ vựng của bạn</p>
+
+        <div class="mt-4">
+            <a href="@Url.Action("Create")" class="inline-flex items-center px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-colors font-semibold">
+                <i class="fas fa-folder-plus mr-2"></i>Tạo Folder Mới
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filter Controls -->
+<div class="container mx-auto px-4 py-6">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <!-- Search -->
+            <div class="flex-1 max-w-md">
+                <form method="get" class="relative">
+                    <input type="text"
+                           name="search"
+                           value="@ViewBag.SearchKeyword"
+                           placeholder="Tìm kiếm folder..."
+                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input type="hidden" name="sortBy" value="@ViewBag.SortBy" />
+                    <input type="hidden" name="ascending" value="@ViewBag.Ascending" />
+                </form>
+
+                @if (!string.IsNullOrEmpty(ViewBag.SearchKeyword))
+                {
+                    <div class="mt-2">
+                        <a href="@Url.Action("Index")" class="text-sm text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-times mr-1"></i>Xóa bộ lọc
+                        </a>
+                    </div>
+                }
+            </div>
+
+            <!-- Sort Options (đã loại bỏ UpdatedAt) -->
+            <div class="flex items-center space-x-2">
+                <span class="text-sm text-gray-600">Sắp xếp theo:</span>
+                @{
+                    var sortOptions = new Dictionary<string, string>
+                {
+                {"CreatedAt", "Ngày tạo"},
+                {"Name", "Tên folder"}
+                };
+                }
+
+                @foreach (var option in sortOptions)
+                {
+                    var isActive = ViewBag.SortBy?.ToString() == option.Key;
+                    var ascending = ViewBag.Ascending?.ToString().ToLower() == "true";
+                    <a href="@Url.Action("Index", new { search = ViewBag.SearchKeyword, sortBy = option.Key, ascending = isActive ? !ascending : true })"
+                       class="@(isActive ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700") px-3 py-2 rounded-lg text-sm hover:bg-blue-500 hover:text-white transition-colors">
+                        @option.Value
+                        @if (isActive)
+                        {
+                            <i class="fas fa-sort-@(ascending ? "up" : "down") ml-1"></i>
+                        }
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    @if (Model?.Any() == true)
+    {
+        <!-- Folders Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach (var folder in Model)
+            {
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                    <div class="p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">@folder.Name</h3>
+
+                                @if (!string.IsNullOrEmpty(folder.Description))
+                                {
+                                    <p class="text-gray-600 text-sm mb-3">@folder.Description</p>
+                                }
+                            </div>
+                            <div class="flex-shrink-0 ml-4">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-folder text-blue-600 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                            <span class="flex items-center">
+                                <i class="fas fa-book mr-2"></i>
+                                @(folder.VocaSets?.Count ?? 0) bộ từ
+                            </span>
+                            <span class="flex items-center">
+                                <i class="fas fa-calendar mr-2"></i>
+                                @folder.CreatedAt.ToString("dd/MM/yyyy")
+                            </span>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100">
+                            <a href="@Url.Action("Details", new { id = folder.Id })"
+                               class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-center block">
+                                Xem chi tiết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Pagination -->
+        @if (ViewBag.TotalPages > 1)
+        {
+            <div class="flex justify-center mt-8 space-x-2">
+                @if (ViewBag.HasPreviousPage)
+                {
+                    <a href="@Url.Action("Index", new { search = ViewBag.SearchKeyword, page = ViewBag.CurrentPage - 1, sortBy = ViewBag.SortBy, ascending = ViewBag.Ascending })"
+                       class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Trước</a>
+                }
+
+                @for (int i = Math.Max(1, ViewBag.CurrentPage - 2); i <= Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 2); i++)
+                {
+                    <a href="@Url.Action("Index", new { search = ViewBag.SearchKeyword, page = i, sortBy = ViewBag.SortBy, ascending = ViewBag.Ascending })"
+                       class="@(i == ViewBag.CurrentPage ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700") px-3 py-2 rounded hover:bg-blue-500 hover:text-white">
+                        @i
+                    </a>
+                }
+
+                @if (ViewBag.HasNextPage)
+                {
+                    <a href="@Url.Action("Index", new { search = ViewBag.SearchKeyword, page = ViewBag.CurrentPage + 1, sortBy = ViewBag.SortBy, ascending = ViewBag.Ascending })"
+                       class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Sau</a>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <!-- Empty State -->
+        <div class="text-center py-16">
+            <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-folder-open text-3xl text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-600 mb-2">Chưa có folder nào</h3>
+            <p class="text-gray-500 mb-6">Tạo folder đầu tiên để bắt đầu tổ chức bộ từ vựng của bạn</p>
+            <a href="@Url.Action("Create")"
+               class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="fas fa-folder-plus mr-2"></i>Tạo Folder Mới
+            </a>
+        </div>
+    }
+</div>
+
+<!-- Success/Error Messages -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
+        <i class="fas fa-check-circle mr-2"></i>
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="fixed bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
+        <i class="fas fa-exclamation-circle mr-2"></i>
+        @TempData["ErrorMessage"]
+    </div>
+}
