@@ -80,21 +80,38 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach (var folder in Model)
             {
-                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                <div class="relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                    <!-- Nút ba chấm dọc -->
+                    <button type="button"
+                            class="absolute top-4 right-4 p-1 text-gray-500 hover:text-gray-700"
+                            id="options-menu-@folder.Id"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4z" />
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown menu “Xóa Folder” -->
+                    <div class="origin-top-right absolute right-4 mt-10 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden"
+                         role="menu"
+                         aria-orientation="vertical"
+                         aria-labelledby="options-menu-@folder.Id">
+                        <a asp-action="DeleteConfirm"
+                           asp-route-id="@folder.Id"
+                           class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                           role="menuitem">Xóa Folder</a>
+                    </div>
+
+                    <!-- Nội dung card folder -->
                     <div class="p-6">
                         <div class="flex items-start justify-between mb-4">
                             <div class="flex-1">
                                 <h3 class="text-xl font-bold text-gray-800 mb-2">@folder.Name</h3>
-
                                 @if (!string.IsNullOrEmpty(folder.Description))
                                 {
                                     <p class="text-gray-600 text-sm mb-3">@folder.Description</p>
                                 }
-                            </div>
-                            <div class="flex-shrink-0 ml-4">
-                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-folder text-blue-600 text-xl"></i>
-                                </div>
                             </div>
                         </div>
 
@@ -118,6 +135,7 @@
                     </div>
                 </div>
             }
+
         </div>
 
         <!-- Pagination -->
@@ -178,4 +196,24 @@
         <i class="fas fa-exclamation-circle mr-2"></i>
         @TempData["ErrorMessage"]
     </div>
+}
+
+@section Scripts {
+    <script>
+        // Bật/tắt dropdown khi click nút ba chấm
+        document.querySelectorAll('[id^="options-menu-"]').forEach(btn => {
+          btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const menu = btn.nextElementSibling;
+            menu.classList.toggle('hidden');
+          });
+        });
+
+        // Ẩn dropdown khi click ra ngoài
+        document.addEventListener('click', () => {
+          document.querySelectorAll('[role="menu"]').forEach(menu => {
+            menu.classList.add('hidden');
+          });
+        });
+    </script>
 }
