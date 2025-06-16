@@ -126,7 +126,11 @@ namespace VocaWebApp.Controllers
 
                 if (!ModelState.IsValid)
                 {
-                    return View(model);
+                    var errors = ModelState
+                        .Where(m => m.Value.Errors.Count > 0)
+                        .Select(m => new { m.Key, Errors = m.Value.Errors })
+                        .ToList();
+                    // Xem errors trong cửa sổ Debug
                 }
 
                 // Kiểm tra tên folder đã tồn tại chưa

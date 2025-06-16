@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VocaWebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0a61388f89027a96f5b6282f83e20be522b9442a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+00fe1fe40a646e202fd171f2da1d8c1ce33f1132")]
 [assembly: System.Reflection.AssemblyProductAttribute("VocaWebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VocaWebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
