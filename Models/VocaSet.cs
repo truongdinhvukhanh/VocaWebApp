@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace VocaWebApp.Models
@@ -21,12 +22,14 @@ namespace VocaWebApp.Models
         /// Bắt buộc phải có - mỗi bộ từ phải thuộc về một user
         /// </summary>
         [Required]
+        [ValidateNever]
         public string UserId { get; set; }
 
         /// <summary>
         /// Navigation property tới người dùng sở hữu
         /// Dùng để truy cập thông tin user từ VocaSet
         /// </summary>
+        [ValidateNever]
         public ApplicationUser User { get; set; }
 
         /// <summary>
@@ -118,18 +121,21 @@ namespace VocaWebApp.Models
         /// Danh sách các từ vựng trong bộ từ này
         /// Quan hệ một-nhiều: một VocaSet có nhiều VocaItem
         /// </summary>
+        [ValidateNever]
         public ICollection<VocaItem> VocaItems { get; set; }
 
         /// <summary>
         /// Danh sách lịch nhắc ôn tập cho bộ từ này
         /// User có thể đặt nhiều lịch nhắc khác nhau
         /// </summary>
+        [ValidateNever]
         public ICollection<ReviewReminder> ReviewReminders { get; set; }
 
         /// <summary>
         /// Danh sách các lần copy bộ từ này
         /// Tracking xem ai đã copy bộ từ của mình
         /// </summary>
+        [ValidateNever]
         public ICollection<VocaSetCopy> Copies { get; set; }
     }
 }

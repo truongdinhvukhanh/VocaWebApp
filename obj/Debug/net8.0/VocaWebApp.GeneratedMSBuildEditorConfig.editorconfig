@@ -84,6 +84,30 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/User/OneDrive/Dokumenty/Visual Studio 2022/VocaWebApp/Views/VocaSet/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVm9jYVNldFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/OneDrive/Dokumenty/Visual Studio 2022/VocaWebApp/Views/VocaSet/Display.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVm9jYVNldFxEaXNwbGF5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/OneDrive/Dokumenty/Visual Studio 2022/VocaWebApp/Views/VocaSet/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVm9jYVNldFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/OneDrive/Dokumenty/Visual Studio 2022/VocaWebApp/Views/VocaSet/Flashcard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVm9jYVNldFxGbGFzaGNhcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/OneDrive/Dokumenty/Visual Studio 2022/VocaWebApp/Views/VocaSet/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVm9jYVNldFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/OneDrive/Dokumenty/Visual Studio 2022/VocaWebApp/Views/VocaSet/Reminders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVm9jYVNldFxSZW1pbmRlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/User/OneDrive/Dokumenty/Visual Studio 2022/VocaWebApp/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

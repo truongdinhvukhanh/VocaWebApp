@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace VocaWebApp.Models
 {
@@ -90,6 +91,7 @@ namespace VocaWebApp.Models
         /// Quan hệ một-nhiều: một từ có nhiều lần học
         /// Dùng để tracking performance và spaced repetition
         /// </summary>
+        [ValidateNever]
         public ICollection<VocaItemHistory> Histories { get; set; }
     }
 }

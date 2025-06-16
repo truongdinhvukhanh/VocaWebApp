@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace VocaWebApp.Models
 {
@@ -21,12 +22,14 @@ namespace VocaWebApp.Models
         /// Bắt buộc - mỗi folder phải thuộc về một user
         /// </summary>
         [Required]
+        [ValidateNever]
         public string UserId { get; set; }
 
         /// <summary>
         /// Navigation property tới người dùng sở hữu
         /// Dùng để truy cập thông tin user từ Folder
         /// </summary>
+        [ValidateNever]
         public ApplicationUser User { get; set; }
 
         /// <summary>
@@ -59,6 +62,7 @@ namespace VocaWebApp.Models
         /// Quan hệ một-nhiều: một folder có nhiều VocaSet
         /// Dùng để hiển thị nội dung folder
         /// </summary>
+        [ValidateNever]
         public ICollection<VocaSet> VocaSets { get; set; }
     }
 }

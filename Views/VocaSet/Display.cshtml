@@ -1,0 +1,36 @@
+﻿@model VocaSet
+@{
+    ViewData["Title"] = Model.Name;
+}
+<div class="container mx-auto px-4">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">@Model.Name</h1>
+        <div class="flex gap-3">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-secondary">Chỉnh sửa</a>
+            <form asp-action="Delete" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa?');">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn-accent">Xóa</button>
+            </form>
+        </div>
+    </div>
+    <p class="text-gray-600 mb-4">@Model.Description</p>
+    <div class="mb-6">
+        <span class="text-sm text-gray-500">Từ đã học: @Model.VocaItems?.Count(i => i.Status == "learned")/@Model.VocaItems?.Count()</span>
+        <div class="w-full bg-gray-200 h-2 rounded mt-1">
+            <div class="bg-primary h-2 rounded" style="width:@(Model.VocaItems.Any()? (Model.VocaItems.Count(i=>i.Status=="learned")*100/Model.VocaItems.Count()):0)%"></div>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach (var item in Model.VocaItems)
+        {
+            <div class="card p-4 group hover:shadow-lg transition">
+                <h3 class="font-semibold">@item.Word</h3>
+                <p class="text-sm text-gray-600">@item.Meaning</p>
+            </div>
+        }
+    </div>
+    <div class="mt-8 flex gap-4">
+        <a asp-action="Flashcard" asp-route-id="@Model.Id" class="btn-primary flex-1">Ôn flashcard</a>
+        <a asp-action="Reminders" asp-route-id="@Model.Id" class="btn-secondary flex-1">Nhắc ôn tập</a>
+    </div>
+</div>

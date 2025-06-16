@@ -1,0 +1,68 @@
+﻿@using VocaWebApp.Data.Repositories
+@model PagedResult<VocaSet>
+@{
+    ViewData["Title"] = "Bộ từ của tôi";
+}
+
+<div class="container mx-auto px-4">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Bộ từ của tôi</h1>
+        <a asp-action="Create" class="btn-primary">Tạo mới</a>
+    </div>
+
+    <form asp-action="Index" method="get" class="mb-4">
+        <input type="text" name="keyword" value="@ViewBag.Keyword"
+               placeholder="Tìm kiếm..." class="search-bar w-full" />
+    </form>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach (var set in Model.Items)
+        {
+            <div class="card p-6 group hover:shadow-xl transition">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xl font-semibold">@set.Name</h2>
+                    <span class="px-2 py-1 rounded-full text-xs font-medium
+                     @(set.Status=="public-view"?"bg-success text-white":
+                       set.Status=="public-copy"?"bg-warning text-gray-900":"bg-accent text-white")">
+                        @(set.Status == "public-view" ? "Công khai" :
+                            set.Status == "public-copy" ? "Có thể sao chép" : "Riêng tư")
+                    </span>
+                </div>
+                <p class="text-gray-600 mb-4 line-clamp-2">@set.Description</p>
+                <div class="flex justify-between text-sm text-gray-500 mb-3">
+                    <span><i class="far fa-eye mr-1"></i>@set.ViewCount</span>
+                    <span><i class="far fa-bookmark mr-1"></i>@(set.VocaItems?.Count ?? 0)</span>
+                </div>
+                <div class="flex gap-2">
+                    <a asp-action="Display" asp-route-id="@set.Id"
+                       class="btn-secondary flex-1 text-center">Xem chi tiết</a>
+                    @if (set.Status == "public-copy")
+                    {
+                        <form asp-action="Copy" method="post" class="flex-1">
+                            <input type="hidden" name="id" value="@set.Id" />
+                            <button type="submit" class="btn-accent w-full">Sao chép</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="mt-8 flex justify-center">
+        @if (Model.HasPreviousPage)
+        {
+            <a asp-route-page="@(Model.PageNumber-1)" class="px-3 py-2 bg-gray-200 rounded">‹</a>
+        }
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <a asp-route-page="@i"
+               class="px-3 py-2 @(i==Model.PageNumber?"bg-primary text-white":"bg-gray-100") rounded">
+                @i
+            </a>
+        }
+        @if (Model.HasNextPage)
+        {
+            <a asp-route-page="@(Model.PageNumber+1)" class="px-3 py-2 bg-gray-200 rounded">›</a>
+        }
+    </div>
+</div>

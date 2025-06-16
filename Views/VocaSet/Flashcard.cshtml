@@ -1,0 +1,32 @@
+﻿@model IEnumerable<VocaWebApp.Models.VocaItem>
+@{
+    ViewData["Title"] = "Flashcard";
+}
+<div class="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden w-full max-w-md">
+        @foreach (var card in Model)
+        {
+            <div class="p-6">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">@card.Word</h2>
+                <p class="text-gray-600 italic mb-4">@card.Pronunciation</p>
+                <div class="bg-FFF8E1 p-4 rounded-lg mb-4">
+                    <p class="text-5D4037">@card.Meaning</p>
+                </div>
+                <div class="bg-E8F5E8 p-4 rounded-lg mb-6">
+                    <p class="text-2E7D32">@card.ExampleSentence</p>
+                </div>
+                <div class="flex justify-between">
+                    <button asp-action="Review" asp-route-id="@card.Id" asp-route-known="true"
+                            class="bg-4CAF50 hover:bg-388E3C text-white px-6 py-2 rounded-xl">
+                        Biết
+                    </button>
+                    <button asp-action="Review" asp-route-id="@card.Id" asp-route-known="false"
+                            class="bg-FF6F20 hover:bg-E55A11 text-white px-6 py-2 rounded-xl">
+                        Chưa
+                    </button>
+                </div>
+            </div>
+            break;  @* chỉ hiển thị 1 thẻ ngẫu nhiên *@
+        }
+    </div>
+</div>

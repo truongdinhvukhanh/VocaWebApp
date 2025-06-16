@@ -1,0 +1,43 @@
+﻿@model VocaSet
+@{
+    ViewData["Title"] = "Tạo Bộ từ mới";
+}
+<div class="container mx-auto px-4 max-w-xl">
+    <h1 class="text-3xl font-bold mb-4">Tạo Bộ từ mới</h1>
+    <form asp-action="Create" method="post" class="card p-8 space-y-6">
+        @* Hidden field để tự động gán FolderId *@
+        <input type="hidden" asp-for="FolderId" />
+        <div asp-validation-summary="All" class="text-red-600 mb-4"></div>
+        <div>
+            <label asp-for="Name" class="form-label">
+                Tên bộ từ<span class="text-red-500">*</span>
+            </label>
+            <input asp-for="Name" class="form-input w-full" />
+            <span asp-validation-for="Name" class="text-error text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea asp-for="Description" rows="4" class="form-input w-full"></textarea>
+        </div>
+
+        <div>
+            <label asp-for="Status" class="form-label">Chia sẻ</label>
+            <select asp-for="Status" class="form-input w-full">
+                <option value="private">Riêng tư</option>
+                <option value="public-view">Công khai</option>
+                <option value="public-copy">Công khai & Cho phép sao chép</option>
+            </select>
+        </div>
+
+        <div>
+            <label asp-for="Keywords" class="form-label">Từ khóa</label>
+            <input asp-for="Keywords" class="form-input w-full" placeholder="ngôn ngữ, thời gian..." />
+        </div>
+
+        <div class="flex gap-4">
+            <button type="submit" class="btn-primary flex-1">Tạo</button>
+            <a asp-action="Index" class="btn-secondary flex-1 text-center">Hủy</a>
+        </div>
+    </form>
+</div>

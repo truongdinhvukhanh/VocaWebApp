@@ -126,7 +126,7 @@
                             <span>@(vocaSet.LastAccessed?.ToString("dd/MM/yyyy") ?? vocaSet.CreatedAt.ToString("dd/MM/yyyy"))</span>
                         </div>
 
-                        <a href="@Url.Action("Learn", "VocaSet", new { id = vocaSet.Id })"
+                        <a href="@Url.Action("Display", "VocaSet", new { id = vocaSet.Id })"
                            class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-center block">
                             Học ngay
                         </a>

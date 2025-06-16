@@ -1,7 +1,16 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|c:\\users\\user\\onedrive\\dokumenty\\visual studio 2022\\vocawebapp\\models\\folder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|solutionrelative:models\\folder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|c:\\users\\user\\onedrive\\dokumenty\\visual studio 2022\\vocawebapp\\views\\folder\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|solutionrelative:views\\folder\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,8 +18,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Folder.cs",
+              "DocumentMoniker": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Models\\Folder.cs",
+              "RelativeDocumentMoniker": "Models\\Folder.cs",
+              "ToolTip": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Models\\Folder.cs",
+              "RelativeToolTip": "Models\\Folder.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB8AAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T08:47:23.338Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Views\\Folder\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\Folder\\Create.cshtml",
+              "ToolTip": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Views\\Folder\\Create.cshtml",
+              "RelativeToolTip": "Views\\Folder\\Create.cshtml",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABEAAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-16T08:47:05.138Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
