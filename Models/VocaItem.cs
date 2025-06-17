@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace VocaWebApp.Models
@@ -21,12 +22,15 @@ namespace VocaWebApp.Models
         /// Bắt buộc - mỗi từ phải thuộc về một bộ từ vựng
         /// </summary>
         [Required]
+        [ValidateNever]
         public int VocaSetId { get; set; }
 
         /// <summary>
         /// Navigation property tới bộ từ vựng chứa
         /// Dùng để truy cập thông tin VocaSet từ VocaItem
         /// </summary>
+        [ValidateNever]
+        [JsonIgnore]
         public VocaSet VocaSet { get; set; }
 
         /// <summary>

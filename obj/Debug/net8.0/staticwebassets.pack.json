@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
+      "Id": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\js\\vocaitem-management.js",
+      "PackagePath": "staticwebassets\\js\\vocaitem-management.js"
+    },
+    {
       "Id": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\lib\\bootstrap\\LICENSE",
       "PackagePath": "staticwebassets\\lib\\bootstrap"
     },

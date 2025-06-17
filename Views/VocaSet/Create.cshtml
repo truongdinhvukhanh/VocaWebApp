@@ -2,42 +2,80 @@
 @{
     ViewData["Title"] = "Tạo Bộ từ mới";
 }
-<div class="container mx-auto px-4 max-w-xl">
-    <h1 class="text-3xl font-bold mb-4">Tạo Bộ từ mới</h1>
-    <form asp-action="Create" method="post" class="card p-8 space-y-6">
-        @* Hidden field để tự động gán FolderId *@
-        <input type="hidden" asp-for="FolderId" />
-        <div asp-validation-summary="All" class="text-red-600 mb-4"></div>
-        <div>
-            <label asp-for="Name" class="form-label">
-                Tên bộ từ<span class="text-red-500">*</span>
-            </label>
-            <input asp-for="Name" class="form-input w-full" />
-            <span asp-validation-for="Name" class="text-error text-sm"></span>
+
+<div class="container mx-auto px-4 py-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Tạo Bộ từ mới</h1>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left column - Thông tin bộ từ vựng -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">Thông tin bộ từ vựng</h2>
+
+                <form asp-action="Create" method="post" id="vocaSetForm">
+                    <div asp-validation-summary="All" class="text-red-600 mb-4"></div>
+
+                    <!-- Hidden field tự động gán FolderId -->
+                    <input type="hidden" asp-for="FolderId" />
+
+                    <div class="mb-4">
+                        <label asp-for="Name" class="form-label block text-gray-700 font-medium mb-2">Tên bộ từ <span class="text-red-500">*</span></label>
+                        <input asp-for="Name" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" />
+                        <span asp-validation-for="Name" class="text-red-500 text-sm"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label block text-gray-700 font-medium mb-2">Mô tả</label>
+                        <textarea asp-for="Description" rows="4" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Status" class="form-label block text-gray-700 font-medium mb-2">Chia sẻ</label>
+                        <select asp-for="Status" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200">
+                            <option value="private">Riêng tư</option>
+                            <option value="public-view">Công khai</option>
+                            <option value="public-copy">Công khai & Cho phép sao chép</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-6">
+                        <label asp-for="Keywords" class="form-label block text-gray-700 font-medium mb-2">Từ khóa</label>
+                        <input asp-for="Keywords" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" placeholder="ngôn ngữ, thời gian..." />
+                        <small class="text-gray-500">Nhập các từ khóa cách nhau bằng dấu phẩy</small>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button type="submit" class="btn-primary flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition">
+                            <i class="fas fa-save mr-2"></i> Lưu bộ từ
+                        </button>
+                        <a asp-action="Index" class="btn-secondary flex-1 text-center bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg transition">
+                            <i class="fas fa-times mr-2"></i> Hủy
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
 
-        <div>
-            <label asp-for="Description" class="form-label">Mô tả</label>
-            <textarea asp-for="Description" rows="4" class="form-input w-full"></textarea>
+        <!-- Right column - Danh sách từ vựng -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">Danh sách từ vựng</h2>
+                <p class="text-gray-600 mb-4">Vui lòng lưu thông tin bộ từ vựng trước, sau đó bạn có thể thêm từ vựng</p>
+            </div>
         </div>
-
-        <div>
-            <label asp-for="Status" class="form-label">Chia sẻ</label>
-            <select asp-for="Status" class="form-input w-full">
-                <option value="private">Riêng tư</option>
-                <option value="public-view">Công khai</option>
-                <option value="public-copy">Công khai & Cho phép sao chép</option>
-            </select>
-        </div>
-
-        <div>
-            <label asp-for="Keywords" class="form-label">Từ khóa</label>
-            <input asp-for="Keywords" class="form-input w-full" placeholder="ngôn ngữ, thời gian..." />
-        </div>
-
-        <div class="flex gap-4">
-            <button type="submit" class="btn-primary flex-1">Tạo</button>
-            <a asp-action="Index" class="btn-secondary flex-1 text-center">Hủy</a>
-        </div>
-    </form>
+    </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function() {
+            // Sẽ triển khai các tính năng Javascript sau khi lưu bộ từ
+        });
+    </script>
+}
