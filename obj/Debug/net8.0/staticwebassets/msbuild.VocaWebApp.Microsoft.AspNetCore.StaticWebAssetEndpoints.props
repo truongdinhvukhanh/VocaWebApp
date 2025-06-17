@@ -48,17 +48,17 @@
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-8ZRc1sGeVrPBx4lD717BgRaQekyh78QKV9SKsdt638U="}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"3"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u00228ZRc1sGeVrPBx4lD717BgRaQekyh78QKV9SKsdt638U=\u0022"},{"Name":"Last-Modified","Value":"Mon, 16 Jun 2025 05:30:40 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/VocaWebApp/js/vocaitem-management.6zurkxswu9.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\vocaitem-management.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"6zurkxswu9"},{"Name":"integrity","Value":"sha256-brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY="},{"Name":"label","Value":"_content/VocaWebApp/js/vocaitem-management.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"17219"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY=\u0022"},{"Name":"Last-Modified","Value":"Tue, 17 Jun 2025 11:35:28 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/VocaWebApp/js/vocaitem-management.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\vocaitem-management.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-h1swzJgkvpT8uYBgOHjavEFcVQ7TS81OTzVFo599HUc="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"15792"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022h1swzJgkvpT8uYBgOHjavEFcVQ7TS81OTzVFo599HUc=\u0022"},{"Name":"Last-Modified","Value":"Tue, 17 Jun 2025 09:37:29 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/VocaWebApp/js/vocaitem-management.tf0xobwgy1.js">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\vocaitem-management.js'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"tf0xobwgy1"},{"Name":"integrity","Value":"sha256-h1swzJgkvpT8uYBgOHjavEFcVQ7TS81OTzVFo599HUc="},{"Name":"label","Value":"_content/VocaWebApp/js/vocaitem-management.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"15792"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022h1swzJgkvpT8uYBgOHjavEFcVQ7TS81OTzVFo599HUc=\u0022"},{"Name":"Last-Modified","Value":"Tue, 17 Jun 2025 09:37:29 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"17219"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY=\u0022"},{"Name":"Last-Modified","Value":"Tue, 17 Jun 2025 11:35:28 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/VocaWebApp/lib/bootstrap/dist/css/bootstrap-grid.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lib\bootstrap\dist\css\bootstrap-grid.css'))</AssetFile>

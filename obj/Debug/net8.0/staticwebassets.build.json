@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "RjuoGMejyYjSmayJTs3+y3kRPbTOoztfWBzW8AzwrgQ=",
+  "Hash": "v8yi5mbAH3whCbm9MTAfitwhAm4hs9ewxACuPOiYgZA=",
   "Source": "VocaWebApp",
   "BasePath": "_content/VocaWebApp",
   "Mode": "Default",
@@ -1417,8 +1417,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "tf0xobwgy1",
-      "Integrity": "h1swzJgkvpT8uYBgOHjavEFcVQ7TS81OTzVFo599HUc=",
+      "Fingerprint": "6zurkxswu9",
+      "Integrity": "brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\vocaitem-management.js"
@@ -5171,6 +5171,51 @@
       ]
     },
     {
+      "Route": "js/vocaitem-management.6zurkxswu9.js",
+      "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\js\\vocaitem-management.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "17219"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 17 Jun 2025 11:35:28 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "6zurkxswu9"
+        },
+        {
+          "Name": "label",
+          "Value": "js/vocaitem-management.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY="
+        }
+      ]
+    },
+    {
       "Route": "js/vocaitem-management.js",
       "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\js\\vocaitem-management.js",
       "Selectors": [],
@@ -5181,7 +5226,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "15792"
+          "Value": "17219"
         },
         {
           "Name": "Content-Type",
@@ -5189,11 +5234,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"h1swzJgkvpT8uYBgOHjavEFcVQ7TS81OTzVFo599HUc=\""
+          "Value": "\"brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 17 Jun 2025 09:37:29 GMT"
+          "Value": "Tue, 17 Jun 2025 11:35:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5203,52 +5248,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-h1swzJgkvpT8uYBgOHjavEFcVQ7TS81OTzVFo599HUc="
-        }
-      ]
-    },
-    {
-      "Route": "js/vocaitem-management.tf0xobwgy1.js",
-      "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\js\\vocaitem-management.js",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "15792"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"h1swzJgkvpT8uYBgOHjavEFcVQ7TS81OTzVFo599HUc=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 17 Jun 2025 09:37:29 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "tf0xobwgy1"
-        },
-        {
-          "Name": "label",
-          "Value": "js/vocaitem-management.js"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-h1swzJgkvpT8uYBgOHjavEFcVQ7TS81OTzVFo599HUc="
+          "Value": "sha256-brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY="
         }
       ]
     },

@@ -84,8 +84,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>tf0xobwgy1</Fingerprint>
-      <Integrity>h1swzJgkvpT8uYBgOHjavEFcVQ7TS81OTzVFo599HUc=</Integrity>
+      <Fingerprint>6zurkxswu9</Fingerprint>
+      <Integrity>brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\vocaitem-management.js'))</OriginalItemSpec>

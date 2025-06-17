@@ -3,6 +3,9 @@
     ViewData["Title"] = "Chỉnh sửa Bộ từ vựng";
 }
 
+<!-- Thêm FontAwesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <div class="container mx-auto px-4 py-6">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Chỉnh sửa Bộ từ vựng</h1>
@@ -35,45 +38,31 @@
                         <label asp-for="Name" class="form-label block text-gray-700 font-medium mb-2">
                             Tên bộ từ <span class="text-red-500">*</span>
                         </label>
-                        <input asp-for="Name" class="form-input w-full rounded-lg border-gray-300
-                               focus:border-blue-500 focus:ring focus:ring-blue-200" />
+                        <input asp-for="Name" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" />
                         <span asp-validation-for="Name" class="text-red-500 text-sm"></span>
                     </div>
                     <div class="mb-4">
-                        <label asp-for="Description" class="form-label block text-gray-700 font-medium mb-2">
-                            Mô tả
-                        </label>
-                        <textarea asp-for="Description" rows="4" class="form-input w-full rounded-lg
-                                  border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"></textarea>
+                        <label asp-for="Description" class="form-label block text-gray-700 font-medium mb-2">Mô tả</label>
+                        <textarea asp-for="Description" rows="4" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"></textarea>
                     </div>
                     <div class="mb-4">
-                        <label asp-for="Status" class="form-label block text-gray-700 font-medium mb-2">
-                            Chia sẻ
-                        </label>
-                        <select asp-for="Status" class="form-input w-full rounded-lg border-gray-300
-                                focus:border-blue-500 focus:ring focus:ring-blue-200">
+                        <label asp-for="Status" class="form-label block text-gray-700 font-medium mb-2">Chia sẻ</label>
+                        <select asp-for="Status" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200">
                             <option value="private">Riêng tư</option>
                             <option value="public-view">Công khai</option>
                             <option value="public-copy">Công khai & Cho phép sao chép</option>
                         </select>
                     </div>
                     <div class="mb-6">
-                        <label asp-for="Keywords" class="form-label block text-gray-700 font-medium mb-2">
-                            Từ khóa
-                        </label>
-                        <input asp-for="Keywords" class="form-input w-full rounded-lg border-gray-300
-                               focus:border-blue-500 focus:ring focus:ring-blue-200"
-                               placeholder="ngôn ngữ, thời gian..." />
+                        <label asp-for="Keywords" class="form-label block text-gray-700 font-medium mb-2">Từ khóa</label>
+                        <input asp-for="Keywords" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" placeholder="ngôn ngữ, thời gian..." />
                         <small class="text-gray-500">Nhập các từ khóa cách nhau bằng dấu phẩy</small>
                     </div>
                     <div class="flex gap-4">
-                        <button type="submit" class="btn-primary flex-1 bg-blue-600
-                                hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition">
+                        <button type="submit" class="btn-primary flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition">
                             <i class="fas fa-save mr-2"></i> Cập nhật
                         </button>
-                        <a asp-action="Display" asp-route-id="@Model.Id"
-                           class="btn-secondary flex-1 text-center bg-gray-200 hover:bg-gray-300
-                                  text-gray-700 py-2 px-4 rounded-lg transition">
+                        <a asp-action="Display" asp-route-id="@Model.Id" class="btn-secondary flex-1 text-center bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg transition">
                             <i class="fas fa-times mr-2"></i> Hủy
                         </a>
                     </div>
@@ -86,21 +75,15 @@
                 <div class="space-y-3">
                     <div class="flex justify-between">
                         <span class="text-gray-600">Tổng số từ:</span>
-                        <span class="font-semibold text-blue-600" id="totalWordsCount">
-                            @(Model.VocaItems?.Count ?? 0)
-                        </span>
+                        <span class="font-semibold text-blue-600" id="totalWordsCount">@(Model.VocaItems?.Count ?? 0)</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Đã học:</span>
-                        <span class="font-semibold text-green-600" id="learnedWordsCount">
-                            @(Model.VocaItems?.Count(i => i.Status == "learned") ?? 0)
-                        </span>
+                        <span class="font-semibold text-green-600" id="learnedWordsCount">@(Model.VocaItems?.Count(i => i.Status == "learned") ?? 0)</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Chưa học:</span>
-                        <span class="font-semibold text-red-600" id="unlearnedWordsCount">
-                            @(Model.VocaItems?.Count(i => i.Status == "notlearned") ?? 0)
-                        </span>
+                        <span class="font-semibold text-red-600" id="unlearnedWordsCount">@(Model.VocaItems?.Count(i => i.Status == "notlearned") ?? 0)</span>
                     </div>
                 </div>
             </div>
@@ -112,23 +95,17 @@
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-semibold text-gray-800">Danh sách từ vựng</h2>
                     <div class="flex gap-2">
-                        <button type="button" class="bg-green-600 hover:bg-green-700
-                                text-white px-4 py-2 rounded-lg transition" id="addVocaItemBtn">
+                        <button type="button" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition" id="addVocaItemBtn">
                             <i class="fas fa-plus mr-2"></i> Thêm từ
                         </button>
-                        <button type="button" class="bg-purple-600 hover:bg-purple-700
-                                text-white px-4 py-2 rounded-lg transition" id="importVocaItemBtn">
+                        <button type="button" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition" id="importVocaItemBtn">
                             <i class="fas fa-file-import mr-2"></i> Import
                         </button>
                     </div>
                 </div>
                 <div class="mb-4 flex gap-4">
-                    <input type="text" id="searchVocaItem"
-                           class="form-input flex-1 rounded-lg border-gray-300 focus:border-blue-500
-                                  focus:ring focus:ring-blue-200"
-                           placeholder="Tìm kiếm từ vựng..." />
-                    <select id="filterStatus" class="form-input rounded-lg border-gray-300
-                                                   focus:border-blue-500 focus:ring focus:ring-blue-200">
+                    <input type="text" id="searchVocaItem" class="form-input flex-1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" placeholder="Tìm kiếm từ vựng..." />
+                    <select id="filterStatus" class="form-input rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200">
                         <option value="">Tất cả trạng thái</option>
                         <option value="learned">Đã học</option>
                         <option value="notlearned">Chưa học</option>
@@ -137,6 +114,7 @@
                 </div>
                 <div id="vocaItemsList" class="space-y-3 max-h-96 overflow-y-auto">
                     <!-- Danh sách từ vựng sẽ được load bằng AJAX -->
+                    <div class="text-center py-4 text-gray-500">Đang tải danh sách từ vựng...</div>
                 </div>
                 <div id="vocaItemsPagination" class="mt-4 flex justify-center">
                     <!-- Pagination sẽ được tạo bằng JavaScript -->
@@ -147,33 +125,22 @@
 </div>
 
 <!-- Modal thêm/sửa từ vựng -->
-<div id="vocaItemModal"
-     class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden overflow-y-auto">
+<div id="vocaItemModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden overflow-y-auto">
     <div class="flex items-center justify-center min-h-screen p-4">
-        <div class="bg-white rounded-xl shadow-lg w-full max-w-lg
-                    max-h-[90vh] overflow-y-auto">
-            <!-- Header -->
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center p-4 border-b">
-                <h3 id="modalTitle" class="text-lg font-semibold text-gray-800">
-                    Thêm từ vựng mới
-                </h3>
-                <button type="button" id="closeModalBtn"
-                        class="text-gray-400 hover:text-gray-600">
+                <h3 id="modalTitle" class="text-lg font-semibold text-gray-800">Thêm từ vựng mới</h3>
+                <button type="button" id="closeModalBtn" class="text-gray-400 hover:text-gray-600">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <!-- Body -->
             <form id="vocaItemForm" class="p-4 space-y-4">
                 @Html.AntiForgeryToken()
                 <input type="hidden" id="vocaItemId" />
                 <input type="hidden" id="vocaSetId" value="@Model.Id" />
                 <div class="mb-4">
-                    <label for="word" class="block text-gray-700 font-medium mb-2">
-                        Từ vựng <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="word" name="Word" required
-                           class="form-input w-full rounded-lg border-gray-300
-                                  focus:border-blue-500 focus:ring focus:ring-blue-200" />
+                    <label for="word" class="block text-gray-700 font-medium mb-2">Từ vựng <span class="text-red-500">*</span></label>
+                    <input type="text" id="word" name="Word" required class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" />
                 </div>
                 <div class="mb-4">
                     <label for="wordType" class="block text-gray-700 font-medium mb-2">Từ loại</label>
@@ -189,37 +156,26 @@
                         <option value="interjection">Thán từ (Interjection)</option>
                     </select>
                 </div>
-
                 <div class="mb-4">
                     <label for="pronunciation" class="block text-gray-700 font-medium mb-2">Phiên âm</label>
                     <input type="text" id="pronunciation" name="Pronunciation" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" placeholder="/həˈloʊ/" />
                 </div>
-
                 <div class="mb-4">
                     <label for="audioUrl" class="block text-gray-700 font-medium mb-2">URL âm thanh</label>
                     <input type="url" id="audioUrl" name="AudioUrl" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" placeholder="https://..." />
                 </div>
-
                 <div class="mb-4">
                     <label for="meaning" class="block text-gray-700 font-medium mb-2">Nghĩa</label>
                     <textarea id="meaning" name="Meaning" rows="3" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"></textarea>
                 </div>
-
                 <div class="mb-6">
                     <label for="exampleSentence" class="block text-gray-700 font-medium mb-2">Câu ví dụ</label>
                     <textarea id="exampleSentence" name="ExampleSentence" rows="3" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"></textarea>
                 </div>
             </form>
-            <!-- Footer -->
             <div class="flex justify-end items-center p-4 border-t space-x-2">
-                <button id="cancelModalBtn" type="button"
-                        class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
-                    Hủy
-                </button>
-                <button type="submit" form="vocaItemForm"
-                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    Lưu
-                </button>
+                <button id="cancelModalBtn" type="button" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Hủy</button>
+                <button type="submit" form="vocaItemForm" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Lưu</button>
             </div>
         </div>
     </div>
@@ -231,34 +187,21 @@
         <div class="bg-white rounded-xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-800">
-                        Import từ vựng
-                    </h3>
-                    <button type="button" id="closeImportModalBtn"
-                            class="text-gray-400 hover:text-gray-600">
+                    <h3 class="text-lg font-semibold text-gray-800">Import từ vựng</h3>
+                    <button type="button" id="closeImportModalBtn" class="text-gray-400 hover:text-gray-600">
                         <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
                 <div class="mb-4">
                     <p class="text-gray-600 mb-2">Nhập danh sách từ vựng theo định dạng CSV:</p>
-                    <p class="text-sm text-gray-500 mb-4">
-                        Định dạng: Từ vựng, Từ loại, Phiên âm, Nghĩa, Câu ví dụ
-                    </p>
-                    <textarea id="importData" rows="10"
-                              class="form-input w-full rounded-lg border-gray-300
-                                     focus:border-blue-500 focus:ring focus:ring-blue-200"
-                              placeholder="hello,noun,/həˈloʊ/,xin chào,Hello everyone!&#10;world,noun,/wɜːrld/,thế giới,Welcome to the world!">
-                    </textarea>
+                    <p class="text-sm text-gray-500 mb-4">Định dạng: Từ vựng, Từ loại, Phiên âm, Nghĩa, Câu ví dụ</p>
+                    <textarea id="importData" rows="10" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" placeholder="hello,noun,/həˈloʊ/,xin chào,Hello everyone!&#10;world,noun,/wɜːrld/,thế giới,Welcome to the world!"></textarea>
                 </div>
                 <div class="flex gap-4">
-                    <button id="processImportBtn" type="button"
-                            class="btn-primary flex-1 bg-green-600 hover:bg-green-700
-                                   text-white py-2 px-4 rounded-lg transition">
+                    <button id="processImportBtn" type="button" class="btn-primary flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition">
                         <i class="fas fa-file-import mr-2"></i> Import
                     </button>
-                    <button id="cancelImportBtn" type="button"
-                            class="btn-secondary flex-1 bg-gray-200 hover:bg-gray-300
-                                   text-gray-700 py-2 px-4 rounded-lg transition">
+                    <button id="cancelImportBtn" type="button" class="btn-secondary flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg transition">
                         <i class="fas fa-times mr-2"></i> Hủy
                     </button>
                 </div>
@@ -275,8 +218,12 @@
     <script src="~/js/vocaitem-management.js"></script>
     <script>
         $(document).ready(function() {
+            console.log('Initializing VocaItemManager with VocaSetId:', @Model.Id);
             VocaItemManager.init(@Model.Id);
-            VocaItemManager.loadVocaItems();
+            // Delay loading để đảm bảo DOM đã ready
+            setTimeout(function() {
+                VocaItemManager.loadVocaItems();
+            }, 100);
         });
     </script>
 }

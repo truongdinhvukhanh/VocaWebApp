@@ -54,19 +54,23 @@ const VocaItemManager = {
 
     // Tải danh sách từ vựng
     loadVocaItems: function () {
+        console.log('Loading VocaItems for VocaSetId:', this.vocaSetId);
+
         $.ajax({
             url: $('#loadItemsUrl').val() || '/VocaItem/GetItemsByVocaSetId',
             type: 'GET',
             dataType: 'json',
             data: { vocaSetId: this.vocaSetId },
             success: function (response) {
+                console.log('Load VocaItems response:', response);
+
                 if (response && response.success) {
                     VocaItemManager.renderVocaItems(response.data);
                     VocaItemManager.updateStatistics(response.data);
                 } else {
                     const errorMsg = response && response.message ? response.message : 'Không thể tải danh sách từ vựng';
-                    alert('Lỗi: ' + errorMsg);
                     console.error('Load items failed:', response);
+                    alert('Lỗi: ' + errorMsg);
                 }
             },
             error: function (xhr, status, error) {
@@ -90,7 +94,7 @@ const VocaItemManager = {
         });
     },
 
-    // Hiển thị danh sách từ vựng
+    // Hiển thị danh sách từ vựng - FIXED với buttons rõ ràng
     renderVocaItems: function (items) {
         const container = $('#vocaItemsList');
         container.empty();
@@ -100,35 +104,56 @@ const VocaItemManager = {
             return;
         }
 
-        items.forEach(function (item) {
+        console.log('Rendering', items.length, 'items'); // Debug log
+
+        items.forEach(function (item, index) {
+            console.log('Rendering item', index, ':', item); // Debug log
+
+            // Tạo HTML với buttons rõ ràng và có text backup
             const itemHtml = `
-                <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
-                    <div class="flex justify-between">
-                        <div>
-                            <h4 class="font-semibold">${item.word || ''}</h4>
-                            <p class="text-sm text-gray-600">${item.meaning || ''}</p>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition vocabulary-item" data-id="${item.id}">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-lg text-gray-800">${item.word || 'N/A'}</h4>
+                            <p class="text-sm text-gray-600 mt-1">${item.meaning || 'Chưa có nghĩa'}</p>
+                            ${item.wordType ? `<span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mt-2">${item.wordType}</span>` : ''}
+                            ${item.pronunciation ? `<p class="text-sm text-gray-500 mt-1 italic">${item.pronunciation}</p>` : ''}
                         </div>
-                        <div class="flex space-x-2">
-                            <button type="button" class="edit-item text-blue-600 hover:text-blue-800" data-id="${item.id}">
+                        <div class="flex space-x-3 ml-4">
+                            <button type="button" class="edit-item-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md transition-colors duration-200 flex items-center space-x-1" data-id="${item.id}" title="Chỉnh sửa từ vựng">
                                 <i class="fas fa-edit"></i>
+                                <span class="hidden sm:inline text-xs">Sửa</span>
                             </button>
-                            <button type="button" class="delete-item text-red-600 hover:text-red-800" data-id="${item.id}">
+                            <button type="button" class="delete-item-btn bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md transition-colors duration-200 flex items-center space-x-1" data-id="${item.id}" title="Xóa từ vựng">
                                 <i class="fas fa-trash"></i>
+                                <span class="hidden sm:inline text-xs">Xóa</span>
                             </button>
                         </div>
                     </div>
+                    ${item.exampleSentence ? `<div class="mt-3 p-2 bg-gray-50 rounded text-sm text-gray-700"><strong>Ví dụ:</strong> ${item.exampleSentence}</div>` : ''}
                 </div>
             `;
             container.append(itemHtml);
         });
 
-        $('.edit-item').on('click', function () {
-            VocaItemManager.editItem($(this).data('id'));
+        // Gắn sự kiện cho các nút edit và delete - Sử dụng event delegation
+        container.off('click', '.edit-item-btn').on('click', '.edit-item-btn', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const itemId = $(this).data('id');
+            console.log('Edit button clicked for item:', itemId);
+            VocaItemManager.editItem(itemId);
         });
 
-        $('.delete-item').on('click', function () {
-            VocaItemManager.deleteItem($(this).data('id'));
+        container.off('click', '.delete-item-btn').on('click', '.delete-item-btn', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const itemId = $(this).data('id');
+            console.log('Delete button clicked for item:', itemId);
+            VocaItemManager.deleteItem(itemId);
         });
+
+        console.log('Rendered items successfully. Buttons attached.');
     },
 
     // Cập nhật thống kê
@@ -156,9 +181,7 @@ const VocaItemManager = {
             ExampleSentence: $('#exampleSentence').val()
         };
 
-        // Lấy token từ chính form Thêm/Sửa
         const token = $('#vocaItemForm').find('input[name="__RequestVerificationToken"]').val();
-
         const url = isNew ?
             ($('#addItemUrl').val() || '/VocaItem/AddItem') :
             ($('#updateItemUrl').val() || '/VocaItem/UpdateItem');
@@ -175,7 +198,6 @@ const VocaItemManager = {
                 if (response && response.success) {
                     $('#vocaItemModal').addClass('hidden');
                     VocaItemManager.loadVocaItems();
-                    // Hiển thị thông báo thành công nếu có
                     if (response.message) {
                         console.log('Success:', response.message);
                     }
@@ -192,22 +214,15 @@ const VocaItemManager = {
                     responseText: xhr.responseText,
                     error: error
                 });
-
-                let errorMessage = 'Đã xảy ra lỗi khi lưu từ vựng.';
-                if (xhr.status === 404) {
-                    errorMessage = 'Không tìm thấy trang lưu từ vựng. Vui lòng kiểm tra đường dẫn.';
-                } else if (xhr.status === 401 || xhr.status === 403) {
-                    errorMessage = 'Bạn không có quyền thực hiện thao tác này. Vui lòng đăng nhập lại.';
-                } else if (xhr.status === 500) {
-                    errorMessage = 'Lỗi máy chủ. Vui lòng thử lại sau.';
-                }
-                alert(errorMessage);
+                alert('Đã xảy ra lỗi khi lưu từ vựng.');
             }
         });
     },
 
     // Sửa từ vựng
     editItem: function (itemId) {
+        console.log('Editing item with ID:', itemId);
+
         $.ajax({
             url: $('#getItemUrl').val() || '/VocaItem/GetItemById',
             type: 'GET',
@@ -245,7 +260,11 @@ const VocaItemManager = {
 
     // Xóa từ vựng
     deleteItem: function (itemId) {
-        if (!confirm('Bạn có chắc chắn muốn xóa từ vựng này?')) return;
+        console.log('Deleting item with ID:', itemId);
+
+        if (!confirm('Bạn có chắc chắn muốn xóa từ vựng này không?')) {
+            return;
+        }
 
         const token = $('#vocaItemForm').find('input[name="__RequestVerificationToken"]').val();
 
@@ -262,6 +281,7 @@ const VocaItemManager = {
                     VocaItemManager.loadVocaItems();
                     if (response.message) {
                         console.log('Delete success:', response.message);
+                        alert('Thành công: Đã xóa từ vựng!');
                     }
                 } else {
                     const errorMsg = response && response.message ? response.message : 'Không thể xóa từ vựng';
@@ -342,8 +362,7 @@ const VocaItemManager = {
             error: function (xhr, status, error) {
                 console.error('AJAX Error importing items:', {
                     status: xhr.status,
-                    statusText: xhr.statusText,
-                    responseText: xhr.responseText,
+                    statusText: xhr.responseText,
                     error: error
                 });
                 alert('Đã xảy ra lỗi khi import từ vựng.');
@@ -377,8 +396,7 @@ const VocaItemManager = {
             error: function (xhr, status, error) {
                 console.error('AJAX Error filtering items:', {
                     status: xhr.status,
-                    statusText: xhr.statusText,
-                    responseText: xhr.responseText,
+                    statusText: xhr.responseText,
                     error: error
                 });
                 alert('Đã xảy ra lỗi khi lọc danh sách từ vựng.');
