@@ -57,7 +57,7 @@ namespace VocaWebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // 2. List & search user’s VocaSets (Dashboard)
+        // 2. List & search user's VocaSets (Dashboard)
         [HttpGet]
         public async Task<IActionResult> Index(string sortBy = "CreatedAt", bool ascending = false, int page = 1, int pageSize = 20)
         {
@@ -118,18 +118,70 @@ namespace VocaWebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // 6. Flashcard study
+        // 6. Flashcard study - FIXED VERSION
         [HttpGet]
-        public async Task<IActionResult> Flashcard(int id, bool random = true, int count = 20)
+        public async Task<IActionResult> Flashcard(int id, string status = "not_learned", int count = 20)
         {
-            var items = random
-                ? await _itemRepo.GetRandomForFlashcardAsync(id, count, includeOnlyUnlearned: true)
-                : await _itemRepo.GetByStatusAsync(id, "notlearned");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var vocaSet = await _setRepo.GetByIdAsync(id);
+
+            if (vocaSet == null || vocaSet.UserId != userId)
+            {
+                return Forbid(); // Hoặc NotFound()
+            }
+
+            IEnumerable<VocaItem> items;
+
+            // Lấy từ vựng dựa trên trạng thái người dùng chọn
+            if (status == "all")
+            {
+                // Lấy ngẫu nhiên từ tất cả các từ trong bộ
+                var allItems = await _itemRepo.GetByVocaSetIdAsync(id);
+                items = allItems.OrderBy(x => Guid.NewGuid()).Take(count);
+            }
+            else
+            {
+                // Lấy từ theo trạng thái cụ thể
+                items = await _itemRepo.GetByStatusAsync(id, status, count);
+            }
+
+            // Luôn trả về view, kể cả khi `items` rỗng
+            // View sẽ tự xử lý việc hiển thị thông báo
+            ViewBag.VocaSet = vocaSet;
+            ViewBag.CurrentStatus = status; // Truyền trạng thái hiện tại sang view để active filter
+            ViewBag.CurrentCount = count;   // Truyền số lượng hiện tại sang view
+
             return View(items);
         }
 
-        // 7. Review reminders
-        [HttpGet]
+        // 7. UpdateFlashcardStatus - FIXED VERSION
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateFlashcardStatus([FromBody] FlashcardStatusRequest request)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var item = await _itemRepo.GetWithVocaSetAsync(request.VocaItemId);
+
+            // Kiểm tra quyền sở hữu
+            if (item == null || item.VocaSet.UserId != userId)
+            {
+                return Json(new { success = false, message = "Không tìm thấy từ vựng hoặc bạn không có quyền truy cập." });
+            }
+
+            // Cập nhật trạng thái dựa vào việc người dùng có biết từ không
+            var newStatus = request.Known ? "learned" : "reviewing"; // Nếu biết -> đã học, không biết -> cần ôn tập
+            var success = await _itemRepo.UpdateLearningStatusAsync(request.VocaItemId, newStatus);
+
+            if (success)
+            {
+                // Có thể ghi lại lịch sử học tập ở đây nếu cần
+                return Json(new { success = true, message = "Cập nhật trạng thái thành công." });
+            }
+
+            return Json(new { success = false, message = "Lỗi khi cập nhật trạng thái." });
+        }
+
+        // 8. Review reminders
         [HttpGet]
         public async Task<IActionResult> Reminders(int id)
         {
@@ -161,7 +213,7 @@ namespace VocaWebApp.Controllers
             return RedirectToAction(nameof(Reminders), new { id = vm.VocaSetId });
         }
 
-        // 8. Copy public VocaSet
+        // 9. Copy public VocaSet
         [HttpPost]
         public async Task<IActionResult> Copy(int id, int? folderId)
         {
@@ -170,7 +222,7 @@ namespace VocaWebApp.Controllers
             return RedirectToAction(nameof(Display), new { id = copy.Id });
         }
 
-        // 9. Admin: list all sets & manage visibility/status
+        // 10. Admin: list all sets & manage visibility/status
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminIndex()
         {
@@ -187,10 +239,18 @@ namespace VocaWebApp.Controllers
         }
     }
 
+    // ViewModel cho Reminders
     public class RemindersViewModel
     {
         public int VocaSetId { get; set; }              // ID của bộ từ
         public DateTime ReviewDate { get; set; }       // Ngày ôn tập mới
         public IEnumerable<ReviewReminder> Items { get; set; }  // Danh sách reminders cũ
+    }
+
+    // Request model cho UpdateFlashcardStatus
+    public class FlashcardStatusRequest
+    {
+        public int VocaItemId { get; set; }
+        public bool Known { get; set; }
     }
 }

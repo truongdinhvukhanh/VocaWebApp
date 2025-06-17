@@ -131,8 +131,23 @@ namespace VocaWebApp.Data.Repositories
         #region Các phương thức cho tính năng học tập và flashcard
 
         /// <summary>
-        /// Lấy VocaItem theo trạng thái học tập
+        /// Lấy VocaItem theo trạng thái học tập - FIXED VERSION
         /// Sử dụng để lọc từ vựng theo tiến độ học: đã học, chưa học, đang ôn tập
+        /// </summary>
+        public async Task<IEnumerable<VocaItem>> GetByStatusAsync(int vocaSetId, string status, int count = 20)
+        {
+            var query = _context.VocaItems
+                .Where(v => v.VocaSetId == vocaSetId && v.Status == status);
+
+            // Lấy ngẫu nhiên 'count' từ bằng cách sắp xếp theo một Guid mới
+            // Đây là một kỹ thuật phổ biến và hiệu quả để lấy dòng ngẫu nhiên trong EF Core
+            return await query.OrderBy(r => Guid.NewGuid())
+                              .Take(count)
+                              .ToListAsync();
+        }
+
+        /// <summary>
+        /// Overload method để tương thích với code cũ - CHỈ 2 THAM SỐ
         /// </summary>
         public async Task<IEnumerable<VocaItem>> GetByStatusAsync(int vocaSetId, string status)
         {
@@ -149,7 +164,7 @@ namespace VocaWebApp.Data.Repositories
         public async Task<IEnumerable<VocaItem>> GetUnlearnedForFlashcardAsync(int vocaSetId, int limit)
         {
             return await _context.VocaItems
-                .Where(v => v.VocaSetId == vocaSetId && v.Status == "notlearned")
+                .Where(v => v.VocaSetId == vocaSetId && v.Status == "not_learned")
                 .Take(limit)
                 .ToListAsync();
         }
@@ -164,7 +179,7 @@ namespace VocaWebApp.Data.Repositories
 
             if (includeOnlyUnlearned)
             {
-                query = query.Where(v => v.Status == "notlearned");
+                query = query.Where(v => v.Status == "not_learned");
             }
 
             // Sử dụng NEWID() cho SQL Server hoặc RANDOM() cho SQLite để random
@@ -243,7 +258,7 @@ namespace VocaWebApp.Data.Repositories
             var result = new Dictionary<string, int>
             {
                 ["learned"] = 0,
-                ["notlearned"] = 0,
+                ["not_learned"] = 0,
                 ["reviewing"] = 0,
                 ["total"] = 0
             };

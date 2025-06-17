@@ -1,32 +1,326 @@
 ﻿@model IEnumerable<VocaWebApp.Models.VocaItem>
 @{
-    ViewData["Title"] = "Flashcard";
+    var vocaSet = ViewBag.VocaSet as VocaSet;
+    ViewData["Title"] = $"Luyện tập Flashcard: {vocaSet?.Name}";
+    var itemsJson = System.Text.Json.JsonSerializer.Serialize(Model.Select(i => new { i.Id, i.Word, i.WordType, i.Pronunciation, i.Meaning, i.ExampleSentence, i.AudioUrl }));
+    var currentStatus = ViewBag.CurrentStatus as string ?? "not_learned";
+    var currentCount = (int)(ViewBag.CurrentCount ?? 20);
 }
-<div class="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden w-full max-w-md">
-        @foreach (var card in Model)
-        {
-            <div class="p-6">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">@card.Word</h2>
-                <p class="text-gray-600 italic mb-4">@card.Pronunciation</p>
-                <div class="bg-FFF8E1 p-4 rounded-lg mb-4">
-                    <p class="text-5D4037">@card.Meaning</p>
-                </div>
-                <div class="bg-E8F5E8 p-4 rounded-lg mb-6">
-                    <p class="text-2E7D32">@card.ExampleSentence</p>
-                </div>
-                <div class="flex justify-between">
-                    <button asp-action="Review" asp-route-id="@card.Id" asp-route-known="true"
-                            class="bg-4CAF50 hover:bg-388E3C text-white px-6 py-2 rounded-xl">
-                        Biết
-                    </button>
-                    <button asp-action="Review" asp-route-id="@card.Id" asp-route-known="false"
-                            class="bg-FF6F20 hover:bg-E55A11 text-white px-6 py-2 rounded-xl">
-                        Chưa
+
+<!-- Thêm FontAwesome để hiển thị icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+<div id="flashcard-container" class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 transition-all duration-500">
+    <!-- Header và Filter -->
+    <div class="w-full max-w-2xl mb-4">
+        <div class="flex justify-between items-center bg-white p-3 rounded-lg shadow">
+            <h1 class="text-xl font-bold text-gray-800 truncate">@vocaSet.Name</h1>
+            <a asp-action="Display" asp-route-id="@vocaSet.Id" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-times"></i> Thoát</a>
+        </div>
+
+        <!-- Form Filters -->
+        <form method="get" class="flashcard-filters bg-white p-3 rounded-lg shadow mt-2 flex items-center gap-4">
+            <input type="hidden" name="id" value="@vocaSet.Id" />
+            <div class="filter-group">
+                <label for="status-filter" class="text-sm font-medium text-gray-700">Trạng thái:</label>
+                <select name="status" id="status-filter" onchange="this.form.submit()" class="rounded-md border-gray-300">
+                    <option value="not_learned" selected="@(currentStatus == "not_learned")">Chưa học</option>
+                    <option value="reviewing" selected="@(currentStatus == "reviewing")">Đang ôn tập</option>
+                    <option value="learned" selected="@(currentStatus == "learned")">Đã thuộc</option>
+                    <option value="all" selected="@(currentStatus == "all")">Tất cả</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="count-filter" class="text-sm font-medium text-gray-700">Số lượng:</label>
+                <select name="count" id="count-filter" onchange="this.form.submit()" class="rounded-md border-gray-300">
+                    <option value="10" selected="@(currentCount == 10)">10 từ</option>
+                    <option value="20" selected="@(currentCount == 20)">20 từ</option>
+                    <option value="50" selected="@(currentCount == 50)">50 từ</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="w-full max-w-2xl">
+        <div class="mt-2 w-full bg-gray-200 h-2 rounded-full">
+            <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <div id="progress-text" class="text-sm text-gray-600 text-right mt-1">0 / @Model.Count()</div>
+    </div>
+
+    <!-- Flashcard -->
+    <div id="card" class="relative w-full max-w-2xl h-80 perspective-1000 cursor-pointer">
+        <div id="card-inner" class="relative w-full h-full text-center transform-style-3d transition-transform duration-700">
+            <!-- Card Front -->
+            <div id="card-front" class="absolute w-full h-full backface-hidden bg-white rounded-xl shadow-lg flex items-center justify-center p-6">
+                <div class="flex flex-col items-center">
+                    <h2 class="text-5xl font-bold text-gray-900"></h2>
+                    <button id="play-audio-front" class="mt-4 text-blue-500 hover:text-blue-700 transition">
+                        <i class="fas fa-volume-up text-2xl"></i>
                     </button>
                 </div>
             </div>
-            break;  @* chỉ hiển thị 1 thẻ ngẫu nhiên *@
-        }
+            <!-- Card Back -->
+            <div id="card-back" class="absolute w-full h-full backface-hidden bg-blue-600 text-white rounded-xl shadow-lg flex flex-col justify-center p-6 transform rotate-y-180">
+                <div class="flex items-center justify-between mb-3">
+                    <p class="text-2xl font-semibold" id="back-word"></p>
+                    <button id="play-audio-back" class="text-white hover:text-blue-200 transition">
+                        <i class="fas fa-volume-up text-xl"></i>
+                    </button>
+                </div>
+                <p class="text-lg italic text-blue-200" id="pronunciation"></p>
+                <span class="inline-block px-2 py-1 bg-white text-blue-800 text-sm rounded-full my-3" id="word-type"></span>
+                <p class="text-xl font-medium" id="meaning"></p>
+                <div class="mt-4 text-left text-blue-100 italic">
+                    <i class="fas fa-quote-left text-xs mr-1"></i>
+                    <span id="example-sentence"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls (V/X buttons) -->
+    <div id="controls" class="w-full max-w-2xl mt-6 flex justify-around items-center h-16">
+        <div id="instruction-text" class="text-gray-500">Click vào thẻ để xem nghĩa</div>
+        <div id="feedback-btns" class="hidden w-full flex justify-around items-center">
+            <button id="not-known-btn" class="flex items-center justify-center w-28 h-14 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition">
+                <i class="fas fa-times text-3xl"></i>
+            </button>
+            <button id="known-btn" class="flex items-center justify-center w-28 h-14 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition">
+                <i class="fas fa-check text-3xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Completion Screen -->
+    <div id="completion-screen" class="hidden w-full max-w-2xl text-center bg-white p-10 rounded-xl shadow-lg">
+        <i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i>
+        <h2 class="text-3xl font-bold text-gray-800">Hoàn thành!</h2>
+        <p class="text-gray-600 mt-2">Bạn đã luyện tập xong tất cả các từ trong phiên này.</p>
+        <div class="mt-6 flex justify-center gap-4">
+            <a href="@Url.Action("Flashcard", new { id = vocaSet.Id, status = currentStatus })" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                <i class="fas fa-redo mr-2"></i>Luyện tập lại
+            </a>
+            <a href="@Url.Action("Display", new { id = vocaSet.Id })" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                <i class="fas fa-list-ul mr-2"></i>Về bộ từ vựng
+            </a>
+        </div>
     </div>
 </div>
+
+<audio id="audio-player" preload="none"></audio>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const card = document.getElementById('card');
+            const cardInner = document.getElementById('card-inner');
+            const cardFrontH2 = document.getElementById('card-front').querySelector('h2');
+
+            // Back elements
+            const backWord = document.getElementById('back-word');
+            const pronunciation = document.getElementById('pronunciation');
+            const wordType = document.getElementById('word-type');
+            const meaning = document.getElementById('meaning');
+            const exampleSentence = document.getElementById('example-sentence');
+
+            // Audio
+            const audioPlayer = document.getElementById('audio-player');
+            const playAudioFrontBtn = document.getElementById('play-audio-front');
+            const playAudioBackBtn = document.getElementById('play-audio-back');
+
+            // Controls
+            const instructionText = document.getElementById('instruction-text');
+            const feedbackBtns = document.getElementById('feedback-btns');
+            const notKnownBtn = document.getElementById('not-known-btn');
+            const knownBtn = document.getElementById('known-btn');
+
+            // Progress
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+
+            // Completion Screen
+            const completionScreen = document.getElementById('completion-screen');
+
+            const items = JSON.parse('@Html.Raw(itemsJson)');
+            let currentIndex = 0;
+            let isFlipped = false;
+            let isProcessing = false; // Ngăn chặn click nhiều lần
+
+            function loadCard(index) {
+                if (index >= items.length) {
+                    showCompletionScreen();
+                    return;
+                }
+
+                isProcessing = false;
+                const item = items[index];
+
+                // Reset card flip state
+                isFlipped = false;
+                cardInner.classList.remove('is-flipped');
+                card.style.pointerEvents = 'auto';
+
+                // Update front
+                cardFrontH2.textContent = item.Word;
+
+                // Update back
+                backWord.textContent = item.Word;
+                pronunciation.textContent = item.Pronunciation ? `/${item.Pronunciation}/` : '';
+                wordType.textContent = item.WordType || 'N/A';
+                meaning.textContent = item.Meaning || 'Chưa có nghĩa';
+                exampleSentence.textContent = item.ExampleSentence || 'Chưa có ví dụ';
+                wordType.style.display = item.WordType ? 'inline-block' : 'none';
+
+                // Audio setup
+                const hasAudio = !!item.AudioUrl;
+                playAudioFrontBtn.dataset.audioUrl = item.AudioUrl;
+                playAudioBackBtn.dataset.audioUrl = item.AudioUrl;
+                playAudioFrontBtn.style.display = hasAudio ? 'block' : 'none';
+                playAudioBackBtn.style.display = hasAudio ? 'block' : 'none';
+
+                updateProgress();
+
+                // Reset controls visibility
+                instructionText.style.display = 'block';
+                feedbackBtns.style.display = 'none';
+            }
+
+            function playAudio(e) {
+                e.stopPropagation(); // Ngăn việc lật thẻ khi bấm nút audio
+                const audioUrl = this.dataset.audioUrl;
+                if (audioUrl) {
+                    audioPlayer.src = audioUrl;
+                    audioPlayer.play().catch(err => console.error("Audio play failed:", err));
+                }
+            }
+
+            function flipCard() {
+                if (isFlipped) return; // Không lật lại nếu đã lật rồi
+                isFlipped = true;
+                cardInner.classList.add('is-flipped');
+
+                // Hiển thị các nút V/X
+                instructionText.style.display = 'none';
+                feedbackBtns.style.display = 'flex';
+            }
+
+            async function handleFeedback(known) {
+                if(isProcessing) return;
+                isProcessing = true;
+
+                const item = items[currentIndex];
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+                try {
+                    // FIXED: Gửi đúng format JSON và đảm bảo header đúng
+                    const response = await fetch('@Url.Action("UpdateFlashcardStatus")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': token
+                        },
+                        body: JSON.stringify({ vocaItemId: item.Id, known: known })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const result = await response.json();
+                    if (!result.success) {
+                        console.error("Failed to update status:", result.message);
+                    }
+                } catch (error) {
+                    console.error("Error updating status:", error);
+                } finally {
+                    currentIndex++;
+                    // Thêm hiệu ứng chuyển thẻ
+                    card.style.transition = 'opacity 0.3s ease-out';
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        loadCard(currentIndex);
+                        card.style.opacity = '1';
+                    }, 300);
+                }
+            }
+
+            function updateProgress() {
+                const total = items.length;
+                const current = currentIndex;
+                const progress = total > 0 ? (current / total) * 100 : 0;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${current} / ${total}`;
+            }
+
+            function showCompletionScreen() {
+                card.style.display = 'none';
+                document.getElementById('controls').style.display = 'none';
+                progressText.textContent = `${items.length} / ${items.length}`;
+                progressBar.style.width = '100%';
+                completionScreen.style.display = 'block';
+            }
+
+            // --- Event Listeners ---
+            card.addEventListener('click', flipCard);
+
+            notKnownBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleFeedback(false);
+            });
+
+            knownBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleFeedback(true);
+            });
+
+            playAudioFrontBtn.addEventListener('click', playAudio);
+            playAudioBackBtn.addEventListener('click', playAudio);
+
+            // --- Initial Load ---
+            if (items.length > 0) {
+                loadCard(0);
+            } else {
+                document.querySelector('.w-full.max-w-2xl.mb-4').style.display = 'none'; // Ẩn header và progress
+                card.style.display = 'none';
+                document.getElementById('controls').style.display = 'none';
+                completionScreen.style.display = 'block';
+                completionScreen.querySelector('h2').textContent = "Không có từ nào!";
+                completionScreen.querySelector('p').textContent = "Bộ từ này hiện không có từ nào phù hợp với bộ lọc đã chọn.";
+            }
+
+            // Set selected option for status filter - FIXED VERSION
+            const filterDropdown = document.getElementById('status-filter');
+            if (filterDropdown) {
+                filterDropdown.value = '@currentStatus';
+            }
+        });
+    </script>
+}
+
+<!-- CSS cho hiệu ứng lật thẻ -->
+<style>
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+
+    .transform-style-3d {
+        transform-style: preserve-3d;
+    }
+
+    .backface-hidden {
+        backface-visibility: hidden;
+    }
+
+    .rotate-y-180 {
+        transform: rotateY(180deg);
+    }
+
+    #card-inner.is-flipped {
+        transform: rotateY(180deg);
+    }
+</style>
+
+<!-- Token chống giả mạo request -->
+@Html.AntiForgeryToken()

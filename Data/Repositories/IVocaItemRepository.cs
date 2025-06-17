@@ -61,7 +61,7 @@ namespace VocaWebApp.Data.Repositories
         /// <summary>
         /// Lấy VocaItem theo trạng thái học tập
         /// </summary>
-        Task<IEnumerable<VocaItem>> GetByStatusAsync(int vocaSetId, string status);
+        Task<IEnumerable<VocaItem>> GetByStatusAsync(int vocaSetId, string status, int count);
 
         /// <summary>
         /// Lấy VocaItem chưa học để luyện tập flashcard
