@@ -12,24 +12,77 @@ namespace VocaWebApp.Controllers
     {
         private readonly IVocaSetRepository _setRepo;
         private readonly IVocaItemRepository _itemRepo;
+        private readonly IVocaItemHistoryRepository _historyRepo;
         private readonly IReviewReminderRepository _reminderRepo;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public VocaSetController(
             IVocaSetRepository setRepo,
             IVocaItemRepository itemRepo,
+            IVocaItemHistoryRepository historyRepo,
             IReviewReminderRepository reminderRepo,
             UserManager<ApplicationUser> userManager)
         {
             _setRepo = setRepo;
             _itemRepo = itemRepo;
+            _historyRepo = historyRepo;
             _reminderRepo = reminderRepo;
             _userManager = userManager;
         }
 
-        // 1. Create new VocaSet
-        // GET: Hiển thị form tạo mới với folderId tùy chọn
+        // [GET] /VocaSet/Index
+        public async Task<IActionResult> Index(string sortBy = "accessed", bool ascending = false, int page = 1, int pageSize = 20)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var pagedResult = await _setRepo.GetPagedAsync(page, pageSize, userId, sortBy, !ascending);
+            return View(pagedResult);
+        }
+
+        // [GET] /VocaSet/Search
         [HttpGet]
+        public async Task<IActionResult> Search(string keyword)
+        {
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var vocaSets = await _setRepo.SearchAsync(keyword, userId, false);
+
+            var pagedResult = new PagedResult<VocaSet>
+            {
+                Items = vocaSets.ToList(),
+                PageNumber = 1,
+                PageSize = vocaSets.Count(),
+                TotalCount = vocaSets.Count()
+            };
+
+            ViewBag.Keyword = keyword;
+            return View("Index", pagedResult);
+        }
+
+        // [GET] /VocaSet/Display/{id}
+        [HttpGet]
+        public async Task<IActionResult> Display(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var hasAccess = await _setRepo.HasAccessAsync(id, userId);
+            if (!hasAccess) return Forbid();
+
+            var vocaSet = await _setRepo.GetByIdWithIncludesAsync(id, "VocaItems", "ReviewReminders");
+            if (vocaSet == null) return NotFound();
+
+            if (vocaSet.UserId != userId)
+            {
+                await _setRepo.IncrementViewCountAsync(id);
+            }
+
+            await _setRepo.UpdateLastAccessedAsync(id);
+
+            return View(vocaSet);
+        }
+
+        // [GET] /VocaSet/Create
         public IActionResult Create(int? folderId)
         {
             var model = new VocaSet();
@@ -40,67 +93,45 @@ namespace VocaWebApp.Controllers
             return View(model);
         }
 
-        // POST: Tạo mới VocaSet
+        // [POST] /VocaSet/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VocaSet model)
         {
             if (!ModelState.IsValid)
+            {
                 return View(model);
-
+            }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             model.UserId = userId;
-            model.CreatedAt = DateTime.UtcNow;
-
             await _setRepo.AddAsync(model);
             TempData["Success"] = "Tạo bộ từ vựng thành công!";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Edit), new { id = model.Id });
         }
 
-        // 2. List & search user's VocaSets (Dashboard)
-        [HttpGet]
-        public async Task<IActionResult> Index(string sortBy = "CreatedAt", bool ascending = false, int page = 1, int pageSize = 20)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var paged = await _setRepo.GetPagedAsync(page, pageSize, userId, sortBy, !ascending);
-            return View(paged);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Search(string keyword)
-        {
-            if (string.IsNullOrWhiteSpace(keyword))
-                return RedirectToAction(nameof(Index));
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var results = await _setRepo.SearchAsync(keyword, userId, false);
-            ViewBag.Keyword = keyword;
-            return View("Index", results);
-        }
-
-        // 3. Display VocaSet details
-        [HttpGet]
-        public async Task<IActionResult> Display(int id)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var set = await _setRepo.GetByIdWithIncludesAsync(id, "VocaItems", "ReviewReminders");
-            if (set == null || set.UserId != userId) return Forbid();
-
-            return View(set);
-        }
-
-        // 4. Edit VocaSet metadata
+        // [GET] /VocaSet/Edit/{id}
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var set = await _setRepo.GetByIdAsync(id);
-            return View(set);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var hasPermission = await _setRepo.HasEditPermissionAsync(id, userId);
+            if (!hasPermission) return Forbid();
+
+            var vocaSet = await _setRepo.GetByIdAsync(id);
+            if (vocaSet == null) return NotFound();
+
+            return View(vocaSet);
         }
 
+        // [POST] /VocaSet/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(VocaSet model)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var hasPermission = await _setRepo.HasEditPermissionAsync(model.Id, userId);
+            if (!hasPermission) return Forbid();
+
             if (!ModelState.IsValid) return View(model);
 
             await _setRepo.UpdateAsync(model);
@@ -108,53 +139,49 @@ namespace VocaWebApp.Controllers
             return RedirectToAction(nameof(Display), new { id = model.Id });
         }
 
-        // 5. Delete (soft) VocaSet
+        // [POST] /VocaSet/Delete/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var hasPermission = await _setRepo.HasEditPermissionAsync(id, userId);
+            if (!hasPermission) return Forbid();
+
             await _setRepo.SoftDeleteAsync(id);
             TempData["Success"] = "Xóa bộ từ vựng thành công!";
             return RedirectToAction(nameof(Index));
         }
 
-        // 6. Flashcard study - FIXED VERSION
+        // [GET] /VocaSet/Flashcard/{id}
         [HttpGet]
-        public async Task<IActionResult> Flashcard(int id, string status = "not_learned", int count = 20)
+        public async Task<IActionResult> Flashcard(int id, string status = "notlearned", int count = 20)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var vocaSet = await _setRepo.GetByIdAsync(id);
+            var hasAccess = await _setRepo.HasAccessAsync(id, userId);
+            if (!hasAccess) return Forbid();
 
-            if (vocaSet == null || vocaSet.UserId != userId)
-            {
-                return Forbid(); // Hoặc NotFound()
-            }
+            var vocaSet = await _setRepo.GetByIdAsync(id);
+            if (vocaSet == null) return NotFound();
 
             IEnumerable<VocaItem> items;
-
-            // Lấy từ vựng dựa trên trạng thái người dùng chọn
             if (status == "all")
             {
-                // Lấy ngẫu nhiên từ tất cả các từ trong bộ
                 var allItems = await _itemRepo.GetByVocaSetIdAsync(id);
                 items = allItems.OrderBy(x => Guid.NewGuid()).Take(count);
             }
             else
             {
-                // Lấy từ theo trạng thái cụ thể
                 items = await _itemRepo.GetByStatusAsync(id, status, count);
             }
 
-            // Luôn trả về view, kể cả khi `items` rỗng
-            // View sẽ tự xử lý việc hiển thị thông báo
             ViewBag.VocaSet = vocaSet;
-            ViewBag.CurrentStatus = status; // Truyền trạng thái hiện tại sang view để active filter
-            ViewBag.CurrentCount = count;   // Truyền số lượng hiện tại sang view
-
+            ViewBag.CurrentStatus = status;
+            ViewBag.CurrentCount = count;
             return View(items);
         }
 
-        // 7. UpdateFlashcardStatus - FIXED VERSION
+        // [POST] /VocaSet/UpdateFlashcardStatus
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateFlashcardStatus([FromBody] FlashcardStatusRequest request)
@@ -162,45 +189,62 @@ namespace VocaWebApp.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var item = await _itemRepo.GetWithVocaSetAsync(request.VocaItemId);
 
-            // Kiểm tra quyền sở hữu
             if (item == null || item.VocaSet.UserId != userId)
             {
                 return Json(new { success = false, message = "Không tìm thấy từ vựng hoặc bạn không có quyền truy cập." });
             }
 
-            // Cập nhật trạng thái dựa vào việc người dùng có biết từ không
-            var newStatus = request.Known ? "learned" : "reviewing"; // Nếu biết -> đã học, không biết -> cần ôn tập
-            var success = await _itemRepo.UpdateLearningStatusAsync(request.VocaItemId, newStatus);
+            var newStatus = request.Known ? "learned" : "reviewing";
 
-            if (success)
+            var statusUpdateSuccess = await _itemRepo.UpdateLearningStatusAsync(request.VocaItemId, newStatus);
+
+            if (statusUpdateSuccess)
             {
-                // Có thể ghi lại lịch sử học tập ở đây nếu cần
+                await _historyRepo.UpdateLearningStatusAsync(userId, request.VocaItemId, newStatus);
                 return Json(new { success = true, message = "Cập nhật trạng thái thành công." });
             }
 
             return Json(new { success = false, message = "Lỗi khi cập nhật trạng thái." });
         }
 
-        // 8. Review reminders
+        // [GET] /VocaSet/Reminders/{id}
         [HttpGet]
         public async Task<IActionResult> Reminders(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var hasPermission = await _setRepo.HasEditPermissionAsync(id, userId);
+            if (!hasPermission) return Forbid();
+
+            var vocaSet = await _setRepo.GetByIdAsync(id);
+            if (vocaSet == null) return NotFound();
+
             var reminders = await _reminderRepo.GetByVocaSetIdAsync(id);
             var vm = new RemindersViewModel
             {
                 VocaSetId = id,
+                VocaSetName = vocaSet.Name,
                 Items = reminders
             };
             return View(vm);
         }
 
+        // [POST] /VocaSet/AddReminder
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReminder(RemindersViewModel vm)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var hasPermission = await _setRepo.HasEditPermissionAsync(vm.VocaSetId, userId);
+            if (!hasPermission) return Forbid();
+
             if (!ModelState.IsValid)
-                return View(vm);
+            {
+                // Cần tải lại dữ liệu cho View nếu có lỗi
+                var vocaSet = await _setRepo.GetByIdAsync(vm.VocaSetId);
+                vm.Items = await _reminderRepo.GetByVocaSetIdAsync(vm.VocaSetId);
+                vm.VocaSetName = vocaSet?.Name ?? "";
+                return View("Reminders", vm);
+            }
 
             var model = new ReviewReminder
             {
@@ -213,44 +257,36 @@ namespace VocaWebApp.Controllers
             return RedirectToAction(nameof(Reminders), new { id = vm.VocaSetId });
         }
 
-        // 9. Copy public VocaSet
+        // [POST] /VocaSet/Copy
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Copy(int id, int? folderId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var copy = await _setRepo.CopyVocaSetAsync(id, userId, null, folderId);
-            return RedirectToAction(nameof(Display), new { id = copy.Id });
-        }
+            var copiedSet = await _setRepo.CopyVocaSetAsync(id, userId, null, folderId);
 
-        // 10. Admin: list all sets & manage visibility/status
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AdminIndex()
-        {
-            var all = await _setRepo.GetAllAsync();
-            return View(all);
-        }
+            if (copiedSet == null)
+            {
+                TempData["Error"] = "Không thể sao chép bộ từ này.";
+                return RedirectToAction(nameof(Display), new { id });
+            }
 
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateStatus(int id, string status, bool isHidden)
-        {
-            await _setRepo.UpdateStatusAsync(id, status);
-            await _setRepo.UpdateVisibilityAsync(id, isHidden);
-            return RedirectToAction(nameof(AdminIndex));
+            TempData["Success"] = "Sao chép bộ từ thành công!";
+            return RedirectToAction(nameof(Display), new { id = copiedSet.Id });
         }
     }
 
-    // ViewModel cho Reminders
-    public class RemindersViewModel
-    {
-        public int VocaSetId { get; set; }              // ID của bộ từ
-        public DateTime ReviewDate { get; set; }       // Ngày ôn tập mới
-        public IEnumerable<ReviewReminder> Items { get; set; }  // Danh sách reminders cũ
-    }
-
-    // Request model cho UpdateFlashcardStatus
     public class FlashcardStatusRequest
     {
         public int VocaItemId { get; set; }
         public bool Known { get; set; }
+    }
+
+    public class RemindersViewModel
+    {
+        public int VocaSetId { get; set; }
+        public string VocaSetName { get; set; }
+        public DateTime ReviewDate { get; set; } = DateTime.UtcNow.Date;
+        public IEnumerable<ReviewReminder> Items { get; set; } = new List<ReviewReminder>();
     }
 }

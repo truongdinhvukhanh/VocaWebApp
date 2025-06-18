@@ -46,7 +46,7 @@ namespace VocaWebApp.Models
         /// <summary>
         /// Trạng thái học tập trong lần ôn này
         /// Bắt buộc nhập, tối đa 20 ký tự
-        /// "learned" = đã thuộc, "not_learned" = chưa thuộc
+        /// "learned" = đã thuộc, "notlearned" = chưa thuộc
         /// Dùng để đánh giá hiệu quả học tập
         /// </summary>
         [Required]

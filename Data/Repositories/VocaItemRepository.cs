@@ -164,7 +164,7 @@ namespace VocaWebApp.Data.Repositories
         public async Task<IEnumerable<VocaItem>> GetUnlearnedForFlashcardAsync(int vocaSetId, int limit)
         {
             return await _context.VocaItems
-                .Where(v => v.VocaSetId == vocaSetId && v.Status == "not_learned")
+                .Where(v => v.VocaSetId == vocaSetId && v.Status == "notlearned")
                 .Take(limit)
                 .ToListAsync();
         }
@@ -179,7 +179,7 @@ namespace VocaWebApp.Data.Repositories
 
             if (includeOnlyUnlearned)
             {
-                query = query.Where(v => v.Status == "not_learned");
+                query = query.Where(v => v.Status == "notlearned");
             }
 
             // Sử dụng NEWID() cho SQL Server hoặc RANDOM() cho SQLite để random
@@ -258,7 +258,7 @@ namespace VocaWebApp.Data.Repositories
             var result = new Dictionary<string, int>
             {
                 ["learned"] = 0,
-                ["not_learned"] = 0,
+                ["notlearned"] = 0,
                 ["reviewing"] = 0,
                 ["total"] = 0
             };

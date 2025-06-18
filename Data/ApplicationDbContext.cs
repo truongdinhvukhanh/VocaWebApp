@@ -320,7 +320,7 @@ namespace VocaWebApp.Data
             // Cấu hình default values cho VocaItem
             builder.Entity<VocaItem>()
                 .Property(v => v.Status)
-                .HasDefaultValue("not_learned");
+                .HasDefaultValue("notlearned");
 
             // Cấu hình default values cho ReviewReminder
             builder.Entity<ReviewReminder>()

@@ -502,7 +502,7 @@ namespace VocaWebApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("not_learned");
+                        .HasDefaultValue("notlearned");
 
                     b.Property<int>("VocaSetId")
                         .HasColumnType("int");

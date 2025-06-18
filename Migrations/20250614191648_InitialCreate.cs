@@ -314,7 +314,7 @@ namespace VocaWebApp.Migrations
                     AudioUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Meaning = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     ExampleSentence = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "not_learned")
+                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "notlearned")
                 },
                 constraints: table =>
                 {

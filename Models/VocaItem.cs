@@ -84,11 +84,11 @@ namespace VocaWebApp.Models
         /// <summary>
         /// Trạng thái học tập của từ vựng
         /// Tối đa 20 ký tự
-        /// Mặc định "not_learned", có thể là "learned", "reviewing"
+        /// Mặc định "notlearned", có thể là "learned", "reviewing"
         /// Dùng để tracking progress của user
         /// </summary>
         [MaxLength(20)]
-        public string Status { get; set; } = "not_learned";
+        public string Status { get; set; } = "notlearned";
 
         /// <summary>
         /// Lịch sử học tập của từ vựng này
