@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3A/LFTo2ayEbnOVHW7Ff3g5BwzAl8WzHiSxUYt6/3t0=",
+  "Hash": "A277HmFpgJ3nU8vs+/P6ouuxRKo1bQZBFiCng124ElY=",
   "Source": "VocaWebApp",
   "BasePath": "_content/VocaWebApp",
   "Mode": "Default",
@@ -1417,8 +1417,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "6zurkxswu9",
-      "Integrity": "brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY=",
+      "Fingerprint": "95jk8aeoi7",
+      "Integrity": "7e188W8G0q82KLFCkvts+w+AP2h/j7hswYFcmmEmZnQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\vocaitem-management.js"
@@ -2727,7 +2727,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 17 Jun 2025 15:42:59 GMT"
+          "Value": "Thu, 19 Jun 2025 03:48:57 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2764,7 +2764,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 17 Jun 2025 15:42:59 GMT"
+          "Value": "Thu, 19 Jun 2025 03:48:57 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5171,7 +5171,7 @@
       ]
     },
     {
-      "Route": "js/vocaitem-management.6zurkxswu9.js",
+      "Route": "js/vocaitem-management.95jk8aeoi7.js",
       "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\js\\vocaitem-management.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -5181,7 +5181,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "17219"
+          "Value": "21836"
         },
         {
           "Name": "Content-Type",
@@ -5189,11 +5189,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY=\""
+          "Value": "\"7e188W8G0q82KLFCkvts+w+AP2h/j7hswYFcmmEmZnQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 17 Jun 2025 11:35:28 GMT"
+          "Value": "Thu, 19 Jun 2025 04:05:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5203,7 +5203,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "6zurkxswu9"
+          "Value": "95jk8aeoi7"
         },
         {
           "Name": "label",
@@ -5211,7 +5211,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY="
+          "Value": "sha256-7e188W8G0q82KLFCkvts+w+AP2h/j7hswYFcmmEmZnQ="
         }
       ]
     },
@@ -5226,7 +5226,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "17219"
+          "Value": "21836"
         },
         {
           "Name": "Content-Type",
@@ -5234,11 +5234,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY=\""
+          "Value": "\"7e188W8G0q82KLFCkvts+w+AP2h/j7hswYFcmmEmZnQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 17 Jun 2025 11:35:28 GMT"
+          "Value": "Thu, 19 Jun 2025 04:05:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5248,7 +5248,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-brJsUw6GssehQjHXNhtugCReelHO7raVKS4V7JD2LlY="
+          "Value": "sha256-7e188W8G0q82KLFCkvts+w+AP2h/j7hswYFcmmEmZnQ="
         }
       ]
     },
@@ -9949,7 +9949,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 18 Jun 2025 05:32:49 GMT"
+          "Value": "Thu, 19 Jun 2025 03:28:14 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -9986,7 +9986,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 18 Jun 2025 05:32:49 GMT"
+          "Value": "Thu, 19 Jun 2025 03:28:14 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -10023,7 +10023,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 18 Jun 2025 05:32:49 GMT"
+          "Value": "Thu, 19 Jun 2025 03:28:14 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -10068,7 +10068,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 18 Jun 2025 05:32:49 GMT"
+          "Value": "Thu, 19 Jun 2025 03:28:14 GMT"
         },
         {
           "Name": "Cache-Control",

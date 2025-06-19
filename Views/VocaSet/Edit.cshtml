@@ -136,12 +136,14 @@
             </div>
             <form id="vocaItemForm" class="p-4 space-y-4">
                 @Html.AntiForgeryToken()
-                <input type="hidden" id="vocaItemId" />
-                <input type="hidden" id="vocaSetId" value="@Model.Id" />
+                <input type="hidden" id="vocaItemId" name="Id" />
+                <input type="hidden" id="vocaSetId" name="VocaSetId" value="@Model.Id" />
+
                 <div class="mb-4">
                     <label for="word" class="block text-gray-700 font-medium mb-2">Từ vựng <span class="text-red-500">*</span></label>
                     <input type="text" id="word" name="Word" required class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" />
                 </div>
+
                 <div class="mb-4">
                     <label for="wordType" class="block text-gray-700 font-medium mb-2">Từ loại</label>
                     <select id="wordType" name="WordType" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200">
@@ -156,23 +158,28 @@
                         <option value="interjection">Thán từ (Interjection)</option>
                     </select>
                 </div>
+
                 <div class="mb-4">
                     <label for="pronunciation" class="block text-gray-700 font-medium mb-2">Phiên âm</label>
                     <input type="text" id="pronunciation" name="Pronunciation" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" placeholder="/həˈloʊ/" />
                 </div>
+
                 <div class="mb-4">
                     <label for="audioUrl" class="block text-gray-700 font-medium mb-2">URL âm thanh</label>
                     <input type="url" id="audioUrl" name="AudioUrl" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" placeholder="https://..." />
                 </div>
+
                 <div class="mb-4">
                     <label for="meaning" class="block text-gray-700 font-medium mb-2">Nghĩa</label>
                     <textarea id="meaning" name="Meaning" rows="3" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"></textarea>
                 </div>
+
                 <div class="mb-6">
                     <label for="exampleSentence" class="block text-gray-700 font-medium mb-2">Câu ví dụ</label>
                     <textarea id="exampleSentence" name="ExampleSentence" rows="3" class="form-input w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"></textarea>
                 </div>
             </form>
+
             <div class="flex justify-end items-center p-4 border-t space-x-2">
                 <button id="cancelModalBtn" type="button" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Hủy</button>
                 <button type="submit" form="vocaItemForm" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Lưu</button>

@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using VocaWebApp.Data.Repositories;
 using VocaWebApp.Models;
 
@@ -163,19 +164,21 @@ namespace VocaWebApp.Controllers
         {
             try
             {
+                _logger.LogInformation("UpdateItem called with data: {@VocaItem}", vocaItem);
+
                 if (!ModelState.IsValid)
                 {
                     var errors = ModelState
                         .Where(x => x.Value.Errors.Count > 0)
-                        .Select(x => new { Field = x.Key, Errors = x.Value.Errors.Select(e => e.ErrorMessage) })
-                        .ToList();
+                        .ToDictionary(x => x.Key, x => x.Value.Errors.Select(e => e.ErrorMessage).ToArray());
 
-                    _logger.LogWarning("Invalid model state for UpdateItem: {Errors}", string.Join(", ", errors.SelectMany(e => e.Errors)));
-                    return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
+                    _logger.LogWarning("ModelState invalid: {@Errors}", errors);
+                    return Json(new { success = false, message = "Dữ liệu không hợp lệ.", errors = errors });
                 }
 
-                // Kiểm tra quyền sở hữu và tồn tại
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                // Lấy item hiện tại từ database
                 var existingItem = await _itemRepo.GetWithVocaSetAsync(vocaItem.Id);
 
                 if (existingItem == null || existingItem.VocaSet.UserId != userId)
@@ -184,7 +187,7 @@ namespace VocaWebApp.Controllers
                     return Json(new { success = false, message = "Không tìm thấy từ vựng hoặc bạn không có quyền truy cập." });
                 }
 
-                // Kiểm tra nếu đổi tên từ có trùng với từ khác không
+                // Kiểm tra trùng lặp từ vựng
                 if (existingItem.Word != vocaItem.Word)
                 {
                     var duplicateItem = await _itemRepo.FindByWordAsync(existingItem.VocaSetId, vocaItem.Word);
@@ -194,21 +197,27 @@ namespace VocaWebApp.Controllers
                     }
                 }
 
+                // Cập nhật từng property một cách an toàn
+                existingItem.Word = vocaItem.Word?.Trim() ?? "";
+                existingItem.WordType = vocaItem.WordType?.Trim();
+                existingItem.Pronunciation = vocaItem.Pronunciation?.Trim();
+                existingItem.AudioUrl = vocaItem.AudioUrl?.Trim();
+                existingItem.Meaning = vocaItem.Meaning?.Trim();
+                existingItem.ExampleSentence = vocaItem.ExampleSentence?.Trim();
                 // Giữ nguyên VocaSetId và Status
-                vocaItem.VocaSetId = existingItem.VocaSetId;
-                vocaItem.Status = existingItem.Status;
 
-                var updatedItem = await _itemRepo.UpdateAsync(vocaItem);
-                _logger.LogInformation("User {UserId} updated VocaItem {ItemId}", userId, vocaItem.Id);
+                var updatedItem = await _itemRepo.UpdateAsync(existingItem);
 
+                _logger.LogInformation("User {UserId} successfully updated VocaItem {ItemId}", userId, vocaItem.Id);
                 return Json(new { success = true, data = updatedItem, message = "Cập nhật từ vựng thành công!" });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating VocaItem {ItemId}", vocaItem.Id);
-                return Json(new { success = false, message = "Có lỗi xảy ra khi cập nhật từ vựng." });
+                _logger.LogError(ex, "Error updating VocaItem {ItemId}: {Message}", vocaItem?.Id, ex.Message);
+                return Json(new { success = false, message = $"Có lỗi xảy ra khi cập nhật từ vựng: {ex.Message}" });
             }
         }
+
 
         /// <summary>
         /// Xóa từ vựng

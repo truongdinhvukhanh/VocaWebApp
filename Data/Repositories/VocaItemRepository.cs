@@ -65,10 +65,29 @@ namespace VocaWebApp.Data.Repositories
             if (vocaItem == null)
                 throw new ArgumentNullException(nameof(vocaItem));
 
-            _context.VocaItems.Update(vocaItem);
-            await _context.SaveChangesAsync();
-            return vocaItem;
+            try
+            {
+                // Detach any existing tracked entity with the same ID
+                var trackedEntity = _context.Entry(vocaItem);
+                if (trackedEntity.State == EntityState.Detached)
+                {
+                    _context.VocaItems.Update(vocaItem);
+                }
+                else
+                {
+                    // Entity is already tracked, just modify it
+                    trackedEntity.State = EntityState.Modified;
+                }
+
+                await _context.SaveChangesAsync();
+                return vocaItem;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new InvalidOperationException($"Không thể cập nhật từ vựng: {ex.InnerException?.Message ?? ex.Message}", ex);
+            }
         }
+
 
         /// <summary>
         /// Xóa VocaItem khỏi cơ sở dữ liệu theo ID

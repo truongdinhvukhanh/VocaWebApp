@@ -1,4 +1,4 @@
-﻿// Đối tượng quản lý từ vựng
+﻿// Đối tượng quản lý từ vựng - Version Fixed
 const VocaItemManager = {
     vocaSetId: null,
 
@@ -94,7 +94,7 @@ const VocaItemManager = {
         });
     },
 
-    // Hiển thị danh sách từ vựng - FIXED với buttons rõ ràng
+    // Hiển thị danh sách từ vựng
     renderVocaItems: function (items) {
         const container = $('#vocaItemsList');
         container.empty();
@@ -104,12 +104,11 @@ const VocaItemManager = {
             return;
         }
 
-        console.log('Rendering', items.length, 'items'); // Debug log
+        console.log('Rendering', items.length, 'items');
 
         items.forEach(function (item, index) {
-            console.log('Rendering item', index, ':', item); // Debug log
+            console.log('Rendering item', index, ':', item);
 
-            // Tạo HTML với buttons rõ ràng và có text backup
             const itemHtml = `
                 <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition vocabulary-item" data-id="${item.id}">
                     <div class="flex justify-between items-start">
@@ -136,7 +135,7 @@ const VocaItemManager = {
             container.append(itemHtml);
         });
 
-        // Gắn sự kiện cho các nút edit và delete - Sử dụng event delegation
+        // Gắn sự kiện cho các nút edit và delete
         container.off('click', '.edit-item-btn').on('click', '.edit-item-btn', function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -165,44 +164,94 @@ const VocaItemManager = {
         $('#unlearnedWordsCount').text(items.filter(i => i.status === 'notlearned').length);
     },
 
-    // Lưu từ vựng (thêm mới hoặc cập nhật)
+    // Lưu từ vựng - Function đã được fix hoàn toàn
+    // Hàm saveVocaItem cải tiến với error handling tốt hơn
     saveVocaItem: function () {
+        console.log('Starting saveVocaItem function');
+
+        // Validate required fields
+        const word = $('#word').val()?.trim();
+        if (!word) {
+            alert('Lỗi: Vui lòng nhập từ vựng.');
+            $('#word').focus();
+            return;
+        }
+
         const itemId = $('#vocaItemId').val();
-        const isNew = !itemId;
+        const isNew = !itemId || itemId === '';
 
-        const vocaItem = {
-            Id: itemId || 0,
-            VocaSetId: this.vocaSetId,
-            Word: $('#word').val(),
-            WordType: $('#wordType').val(),
-            Pronunciation: $('#pronunciation').val(),
-            AudioUrl: $('#audioUrl').val(),
-            Meaning: $('#meaning').val(),
-            ExampleSentence: $('#exampleSentence').val()
-        };
+        console.log('Item ID:', itemId, 'Is new:', isNew);
 
-        const token = $('#vocaItemForm').find('input[name="__RequestVerificationToken"]').val();
         const url = isNew ?
             ($('#addItemUrl').val() || '/VocaItem/AddItem') :
             ($('#updateItemUrl').val() || '/VocaItem/UpdateItem');
 
+        console.log('Using URL:', url);
+
+        const token = $('#vocaItemForm').find('input[name="__RequestVerificationToken"]').val();
+        if (!token) {
+            alert('Lỗi: Không tìm thấy CSRF token. Vui lòng tải lại trang.');
+            return;
+        }
+
+        // Thu thập dữ liệu form với validation
+        const formData = {
+            __RequestVerificationToken: token,
+            VocaSetId: parseInt(VocaItemManager.vocaSetId) || 0,
+            Word: word,
+            WordType: $('#wordType').val()?.trim() || '',
+            Pronunciation: $('#pronunciation').val()?.trim() || '',
+            AudioUrl: $('#audioUrl').val()?.trim() || '',
+            Meaning: $('#meaning').val()?.trim() || '',
+            ExampleSentence: $('#exampleSentence').val()?.trim() || ''
+        };
+
+        // Thêm ID cho trường hợp chỉnh sửa
+        if (!isNew) {
+            formData.Id = parseInt(itemId) || 0;
+            if (formData.Id <= 0) {
+                alert('Lỗi: ID từ vựng không hợp lệ.');
+                return;
+            }
+        }
+
+        console.log('Sending formData:', formData);
+
+        // Disable button để tránh double submit
+        const submitBtn = $('#vocaItemForm').find('button[type="submit"]');
+        const originalText = submitBtn.text();
+        submitBtn.prop('disabled', true).text('Đang lưu...');
+
         $.ajax({
             url: url,
             type: 'POST',
+            data: formData,
             dataType: 'json',
-            data: vocaItem,
-            headers: {
-                'RequestVerificationToken': token
-            },
+            timeout: 30000, // 30 second timeout
             success: function (response) {
+                console.log('Save response:', response);
+
                 if (response && response.success) {
                     $('#vocaItemModal').addClass('hidden');
                     VocaItemManager.loadVocaItems();
-                    if (response.message) {
-                        console.log('Success:', response.message);
-                    }
+
+                    const message = response.message || (isNew ? 'Thêm từ vựng thành công!' : 'Cập nhật từ vựng thành công!');
+                    alert('Thành công: ' + message);
                 } else {
-                    const errorMsg = response && response.message ? response.message : 'Không thể lưu từ vựng';
+                    let errorMsg = 'Không thể lưu từ vựng';
+
+                    if (response && response.message) {
+                        errorMsg = response.message;
+                    }
+
+                    // Hiển thị chi tiết lỗi validation nếu có
+                    if (response && response.errors) {
+                        const errorDetails = Object.entries(response.errors)
+                            .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
+                            .join('\n');
+                        errorMsg += '\n\nChi tiết lỗi:\n' + errorDetails;
+                    }
+
                     alert('Lỗi: ' + errorMsg);
                     console.error('Save item failed:', response);
                 }
@@ -214,10 +263,41 @@ const VocaItemManager = {
                     responseText: xhr.responseText,
                     error: error
                 });
-                alert('Đã xảy ra lỗi khi lưu từ vựng.');
+
+                let errorMessage = 'Đã xảy ra lỗi khi lưu từ vựng.';
+
+                if (status === 'timeout') {
+                    errorMessage = 'Yêu cầu bị timeout. Vui lòng thử lại.';
+                } else if (xhr.status === 400) {
+                    try {
+                        const errorResponse = JSON.parse(xhr.responseText);
+                        errorMessage = errorResponse.message || 'Dữ liệu không hợp lệ.';
+                        if (errorResponse.errors) {
+                            const errorDetails = Object.entries(errorResponse.errors)
+                                .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
+                                .join('\n');
+                            errorMessage += '\n\nChi tiết lỗi:\n' + errorDetails;
+                        }
+                    } catch (e) {
+                        errorMessage = 'Dữ liệu không hợp lệ hoặc định dạng phản hồi không mong muốn.';
+                    }
+                } else if (xhr.status === 403) {
+                    errorMessage = 'Lỗi xác thực CSRF (token không hợp lệ). Vui lòng tải lại trang.';
+                } else if (xhr.status === 404) {
+                    errorMessage = 'Không tìm thấy endpoint API. Vui lòng kiểm tra cấu hình.';
+                } else if (xhr.status === 500) {
+                    errorMessage = 'Lỗi máy chủ. Vui lòng thử lại sau.';
+                }
+
+                alert('Lỗi: ' + errorMessage);
+            },
+            complete: function () {
+                // Re-enable button
+                submitBtn.prop('disabled', false).text(originalText);
             }
         });
     },
+
 
     // Sửa từ vựng
     editItem: function (itemId) {
@@ -268,21 +348,24 @@ const VocaItemManager = {
 
         const token = $('#vocaItemForm').find('input[name="__RequestVerificationToken"]').val();
 
+        if (!token) {
+            alert('Lỗi: Không tìm thấy CSRF token. Vui lòng tải lại trang.');
+            return;
+        }
+
         $.ajax({
             url: $('#deleteItemUrl').val() || '/VocaItem/DeleteItem',
             type: 'POST',
-            dataType: 'json',
-            data: { id: itemId },
-            headers: {
-                'RequestVerificationToken': token
+            data: {
+                id: itemId,
+                __RequestVerificationToken: token
             },
+            dataType: 'json',
             success: function (response) {
                 if (response && response.success) {
                     VocaItemManager.loadVocaItems();
-                    if (response.message) {
-                        console.log('Delete success:', response.message);
-                        alert('Thành công: Đã xóa từ vựng!');
-                    }
+                    const message = response.message || 'Đã xóa từ vựng thành công!';
+                    alert('Thành công: ' + message);
                 } else {
                     const errorMsg = response && response.message ? response.message : 'Không thể xóa từ vựng';
                     alert('Lỗi: ' + errorMsg);
@@ -292,11 +375,17 @@ const VocaItemManager = {
             error: function (xhr, status, error) {
                 console.error('AJAX Error deleting item:', {
                     status: xhr.status,
-                    statusText: xhr.statusText,
-                    responseText: xhr.responseText,
+                    statusText: xhr.responseText,
                     error: error
                 });
-                alert('Đã xảy ra lỗi khi xóa từ vựng.');
+                let errorMessage = 'Đã xảy ra lỗi khi xóa từ vựng.';
+                if (xhr.status === 403) {
+                    errorMessage = 'Lỗi xác thực CSRF. Vui lòng tải lại trang.';
+                } else if (xhr.status === 500) {
+                    errorMessage = 'Lỗi máy chủ. Vui lòng thử lại sau.';
+                }
+
+                alert('Lỗi: ' + errorMessage);
             }
         });
     },
@@ -333,17 +422,25 @@ const VocaItemManager = {
 
         const token = $('#vocaItemForm').find('input[name="__RequestVerificationToken"]').val();
 
+        if (!token) {
+            alert('Lỗi: Không tìm thấy CSRF token. Vui lòng tải lại trang.');
+            return;
+        }
+
+        const payload = {
+            VocaSetId: VocaItemManager.vocaSetId,
+            Items: items,
+            __RequestVerificationToken: token
+        };
+
         $.ajax({
             url: $('#importItemsUrl').val() || '/VocaItem/ImportItems',
             type: 'POST',
             dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                VocaSetId: VocaItemManager.vocaSetId,
-                Items: items
-            }),
-            headers: {
-                'RequestVerificationToken': token
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(payload),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('RequestVerificationToken', token);
             },
             success: function (response) {
                 if (response && response.success) {
@@ -352,7 +449,7 @@ const VocaItemManager = {
                     VocaItemManager.loadVocaItems();
                     const message = response.message ||
                         `Đã import ${response.data?.imported || 0} từ vựng thành công. ${response.data?.duplicates || 0} từ bị bỏ qua do trùng lặp.`;
-                    alert(message);
+                    alert('Thành công: ' + message);
                 } else {
                     const errorMsg = response && response.message ? response.message : 'Không thể import từ vựng';
                     alert('Lỗi: ' + errorMsg);
@@ -365,7 +462,15 @@ const VocaItemManager = {
                     statusText: xhr.responseText,
                     error: error
                 });
-                alert('Đã xảy ra lỗi khi import từ vựng.');
+
+                let errorMessage = 'Đã xảy ra lỗi khi import từ vựng.';
+                if (xhr.status === 403) {
+                    errorMessage = 'Lỗi xác thực CSRF. Vui lòng tải lại trang.';
+                } else if (xhr.status === 500) {
+                    errorMessage = 'Lỗi máy chủ. Vui lòng thử lại sau.';
+                }
+
+                alert('Lỗi: ' + errorMessage);
             }
         });
     },
