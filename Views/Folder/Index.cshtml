@@ -1,183 +1,422 @@
-﻿@model IEnumerable<VocaWebApp.Models.Folder>
+﻿@model IEnumerable<object>
 
 @{
     ViewData["Title"] = "Bộ từ vựng của tôi";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var activeTab = ViewBag.ActiveTab?.ToString() ?? "folders";
+    var folders = activeTab == "folders" ? Model.Cast<VocaWebApp.Models.Folder>() : null;
+    var vocaSets = activeTab == "vocasets" ? Model.Cast<VocaWebApp.Models.VocaSet>() : null;
 }
 
 <!-- Header -->
 <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8">
     <div class="container mx-auto px-4">
         <h1 class="text-3xl font-bold mb-2">Bộ từ vựng của tôi</h1>
-        <p class="text-blue-100 text-lg">Quản lý và tổ chức các folder chứa bộ từ vựng của bạn</p>
+        <p class="text-blue-100 text-lg">Quản lý và tổ chức các folder cùng bộ từ vựng của bạn</p>
 
         <div class="mt-4">
             <a href="@Url.Action("Create")" class="inline-flex items-center px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-colors font-semibold">
                 <i class="fas fa-folder-plus mr-2"></i>Tạo Folder Mới
             </a>
+            <a href="@Url.Action("Create", "VocaSet")" class="inline-flex items-center px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-semibold ml-3">
+                <i class="fas fa-plus mr-2"></i>Tạo Bộ Từ Vựng
+            </a>
         </div>
     </div>
 </div>
 
-<!-- Search and Filter Controls -->
-<div class="container mx-auto px-4 py-6">
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-        <div class="flex flex-col md:flex-row md:items-center md::justify-between gap-4">
-            <!-- Search -->
-            <div class="flex-1 max-w-md">
-                <form method="get" asp-action="Search" class="relative">
-                    <input type="text"
-                           name="keyword"
-                           value="@ViewBag.SearchKeyword"
-                           placeholder="Tìm kiếm folder..."
-                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    <input type="hidden" name="sortBy" value="@ViewBag.SortBy" />
-                    <input type="hidden" name="ascending" value="@ViewBag.Ascending" />
-                    <input type="hidden" name="page" value="@ViewBag.CurrentPage" />
-                    <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
-                </form>
-
-                @if (!string.IsNullOrEmpty(ViewBag.SearchKeyword))
-                {
-                    <div class="mt-2">
-                        <a href="@Url.Action("Index", new { sortBy = ViewBag.SortBy, ascending = ViewBag.Ascending, page = 1, pageSize = ViewBag.PageSize })" class="text-sm text-blue-600 hover:text-blue-800">
-                            <i class="fas fa-times mr-1"></i>Xóa bộ lọc
-                        </a>
-                    </div>
-                }
-            </div>
-
-            <!-- Sort Options (đã loại bỏ UpdatedAt) -->
-            <div class="flex items-center space-x-2">
-                <span class="text-sm text-gray-600">Sắp xếp theo:</span>
-                @{
-                    var sortOptions = new Dictionary<string, string>
-                {
-                {"CreatedAt", "Ngày tạo"},
-                {"Name", "Tên folder"}
-                };
-                }
-
-                @foreach (var option in sortOptions)
-                {
-                    var isActive = ViewBag.SortBy?.ToString() == option.Key;
-                    var ascending = ViewBag.Ascending?.ToString().ToLower() == "true";
-                    <a href="@Url.Action("Index", new { search = ViewBag.SearchKeyword, sortBy = option.Key, ascending = isActive ? !ascending : true })"
-                       class="@(isActive ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700") px-3 py-2 rounded-lg text-sm hover:bg-blue-500 hover:text-white transition-colors">
-                        @option.Value
-                        @if (isActive)
-                        {
-                            <i class="fas fa-sort-@(ascending ? "up" : "down") ml-1"></i>
-                        }
-                    </a>
-                }
-            </div>
+<!-- Tab Navigation -->
+<div class="container mx-auto px-4 pt-6">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+        <div class="border-b border-gray-200">
+            <nav class="-mb-px flex space-x-8 px-6">
+                <a href="@Url.Action("Index")"
+                   class="tab-button @(activeTab == "folders" ? "border-blue-500 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300") whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                    <i class="fas fa-folder mr-2"></i>
+                    Thư mục
+                </a>
+                <a href="@Url.Action("VocaSets")"
+                   class="tab-button @(activeTab == "vocasets" ? "border-blue-500 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300") whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                    <i class="fas fa-book mr-2"></i>
+                    Tất cả bộ từ vựng
+                </a>
+            </nav>
         </div>
-    </div>
 
-    @if (Model?.Any() == true)
-    {
-        <!-- Folders Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach (var folder in Model)
+        <!-- Tab Content Container -->
+        <div class="p-6">
+            <!-- Folders Tab -->
+            @if (activeTab == "folders")
             {
-                <div class="relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-                    <!-- Nút ba chấm dọc -->
-                    <button type="button"
-                            class="absolute top-4 right-4 p-1 text-gray-500 hover:text-gray-700"
-                            id="options-menu-@folder.Id"
-                            aria-haspopup="true"
-                            aria-expanded="false">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4z" />
-                        </svg>
-                    </button>
+                <div id="folders-tab" class="tab-content">
+                    <!-- Search and Filter Controls for Folders -->
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                        <!-- Search -->
+                        <div class="flex-1 max-w-md">
+                            <form method="get" asp-action="Search" class="relative">
+                                <input type="text"
+                                       name="keyword"
+                                       value="@ViewBag.SearchKeyword"
+                                       placeholder="Tìm kiếm folder..."
+                                       class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <input type="hidden" name="sortBy" value="@ViewBag.SortBy" />
+                                <input type="hidden" name="ascending" value="@ViewBag.Ascending" />
+                                <input type="hidden" name="page" value="@ViewBag.CurrentPage" />
+                                <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
+                            </form>
 
-                    <!-- Dropdown menu “Xóa Folder” -->
-                    <div class="origin-top-right absolute right-4 mt-10 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden"
-                         role="menu"
-                         aria-orientation="vertical"
-                         aria-labelledby="options-menu-@folder.Id">
-                        <a asp-action="DeleteConfirm"
-                           asp-route-id="@folder.Id"
-                           class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                           role="menuitem">Xóa Folder</a>
+                            @if (!string.IsNullOrEmpty(ViewBag.SearchKeyword))
+                            {
+                                <div class="mt-2">
+                                    <a href="@Url.Action("Index", new { sortBy = ViewBag.SortBy, ascending = ViewBag.Ascending, page = 1, pageSize = ViewBag.PageSize })" class="text-sm text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-times mr-1"></i>Xóa bộ lọc
+                                    </a>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Sort Options for Folders -->
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-600">Sắp xếp theo:</span>
+                            @{
+                                var folderSortOptions = new Dictionary<string, string>
+                        {
+                        {"CreatedAt", "Ngày tạo"},
+                        {"Name", "Tên folder"}
+                        };
+                            }
+
+                            @foreach (var option in folderSortOptions)
+                            {
+                                var isActive = ViewBag.SortBy?.ToString() == option.Key;
+                                var ascending = ViewBag.Ascending?.ToString().ToLower() == "true";
+                                <a href="@Url.Action("Index", new { sortBy = option.Key, ascending = isActive ? !ascending : true })"
+                                   class="@(isActive ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700") px-3 py-2 rounded-lg text-sm hover:bg-blue-500 hover:text-white transition-colors">
+                                    @option.Value
+                                    @if (isActive)
+                                    {
+                                        <i class="fas fa-sort-@(ascending ? "up" : "down") ml-1"></i>
+                                    }
+                                </a>
+                            }
+                        </div>
                     </div>
 
-                    <!-- Nội dung card folder -->
-                    <div class="p-6">
-                        <div class="flex items-start justify-between mb-4">
-                            <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-800 mb-2">@folder.Name</h3>
-                                @if (!string.IsNullOrEmpty(folder.Description))
-                                {
-                                    <p class="text-gray-600 text-sm mb-3">@folder.Description</p>
-                                }
+                    @if (folders?.Any() == true)
+                    {
+                        <!-- Folders Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            @foreach (var folder in folders)
+                            {
+                                <div class="relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                                    <!-- Nút ba chấm dọc -->
+                                    <button type="button"
+                                            class="absolute top-4 right-4 p-1 text-gray-500 hover:text-gray-700"
+                                            id="options-menu-@folder.Id"
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4z" />
+                                        </svg>
+                                    </button>
+
+                                    <!-- Dropdown menu "Xóa Folder" -->
+                                    <div class="origin-top-right absolute right-4 mt-10 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden"
+                                         role="menu"
+                                         aria-orientation="vertical"
+                                         aria-labelledby="options-menu-@folder.Id">
+                                        <a asp-action="DeleteConfirm"
+                                           asp-route-id="@folder.Id"
+                                           class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                           role="menuitem">Xóa Folder</a>
+                                    </div>
+
+                                    <!-- Nội dung card folder -->
+                                    <div class="p-6">
+                                        <div class="flex items-start justify-between mb-4">
+                                            <div class="flex-1">
+                                                <h3 class="text-xl font-bold text-gray-800 mb-2">@folder.Name</h3>
+                                                @if (!string.IsNullOrEmpty(folder.Description))
+                                                {
+                                                    <p class="text-gray-600 text-sm mb-3">@folder.Description</p>
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                            <span class="flex items-center">
+                                                <i class="fas fa-book mr-2"></i>
+                                                @(folder.VocaSets?.Count ?? 0) bộ từ
+                                            </span>
+                                            <span class="flex items-center">
+                                                <i class="fas fa-calendar mr-2"></i>
+                                                @folder.CreatedAt.ToString("dd/MM/yyyy")
+                                            </span>
+                                        </div>
+
+                                        <div class="pt-4 border-t border-gray-100">
+                                            <a href="@Url.Action("Details", new { id = folder.Id })"
+                                               class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-center block">
+                                                Xem chi tiết
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Empty State for Folders -->
+                        <div class="text-center py-16">
+                            <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-folder-open text-3xl text-gray-400"></i>
                             </div>
-                        </div>
-
-                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-                            <span class="flex items-center">
-                                <i class="fas fa-book mr-2"></i>
-                                @(folder.VocaSets?.Count ?? 0) bộ từ
-                            </span>
-                            <span class="flex items-center">
-                                <i class="fas fa-calendar mr-2"></i>
-                                @folder.CreatedAt.ToString("dd/MM/yyyy")
-                            </span>
-                        </div>
-
-                        <div class="pt-4 border-t border-gray-100">
-                            <a href="@Url.Action("Details", new { id = folder.Id })"
-                               class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-center block">
-                                Xem chi tiết
+                            <h3 class="text-xl font-semibold text-gray-600 mb-2">Chưa có folder nào</h3>
+                            <p class="text-gray-500 mb-6">Tạo folder đầu tiên để bắt đầu tổ chức bộ từ vựng của bạn</p>
+                            <a href="@Url.Action("Create")"
+                               class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-folder-plus mr-2"></i>Tạo Folder Mới
                             </a>
                         </div>
-                    </div>
+                    }
                 </div>
             }
 
+            <!-- VocaSets Tab -->
+            @if (activeTab == "vocasets")
+            {
+                <div id="vocasets-tab" class="tab-content">
+                    <!-- Search and Filter Controls for VocaSets -->
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                        <!-- Search and Folder Filter -->
+                        <div class="flex-1 max-w-2xl flex gap-4">
+                            <div class="flex-1">
+                                <form method="get" asp-action="SearchVocaSets" class="relative">
+                                    <input type="text"
+                                           name="keyword"
+                                           value="@ViewBag.SearchKeyword"
+                                           placeholder="Tìm kiếm bộ từ vựng..."
+                                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    <input type="hidden" name="sortBy" value="@ViewBag.SortBy" />
+                                    <input type="hidden" name="ascending" value="@ViewBag.Ascending" />
+                                    <input type="hidden" name="page" value="@ViewBag.CurrentPage" />
+                                    <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
+                                    <input type="hidden" name="folderId" value="@ViewBag.FolderId" />
+                                </form>
+                            </div>
+
+                            <!-- Folder Filter -->
+                            <div>
+                                <form method="get" asp-action="VocaSets" id="folderFilterForm">
+                                    <select name="folderId" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="document.getElementById('folderFilterForm').submit()">
+                                        <option value="">Tất cả folder</option>
+                                        @if (ViewBag.Folders != null)
+                                        {
+                                            @foreach (var folder in (IEnumerable<VocaWebApp.Models.Folder>)ViewBag.Folders)
+                                            {
+                                                <option value="@folder.Id" selected="@(ViewBag.FolderId?.ToString() == folder.Id.ToString())">
+                                                    @folder.Name
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                    <input type="hidden" name="sortBy" value="@ViewBag.SortBy" />
+                                    <input type="hidden" name="ascending" value="@ViewBag.Ascending" />
+                                    <input type="hidden" name="page" value="1" />
+                                    <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
+                                </form>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(ViewBag.SearchKeyword) || ViewBag.FolderId != null)
+                            {
+                                <div class="mt-2">
+                                    <a href="@Url.Action("VocaSets", new { sortBy = ViewBag.SortBy, ascending = ViewBag.Ascending, page = 1, pageSize = ViewBag.PageSize })" class="text-sm text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-times mr-1"></i>Xóa bộ lọc
+                                    </a>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Sort Options for VocaSets -->
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-600">Sắp xếp theo:</span>
+                            @{
+                                var vocaSetSortOptions = new Dictionary<string, string>
+                        {
+                        {"LastAccessed", "Truy cập gần đây"},
+                        {"Name", "Tên bộ từ"},
+                        {"CreatedAt", "Ngày tạo"},
+                        {"ViewCount", "Lượt xem"},
+                        {"Folder", "Folder"}
+                        };
+                            }
+
+                            @foreach (var option in vocaSetSortOptions)
+                            {
+                                var isActive = ViewBag.SortBy?.ToString() == option.Key;
+                                var ascending = ViewBag.Ascending?.ToString().ToLower() == "true";
+                                <a href="@Url.Action("VocaSets", new { sortBy = option.Key, ascending = isActive ? !ascending : true, folderId = ViewBag.FolderId })"
+                                   class="@(isActive ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700") px-3 py-2 rounded-lg text-sm hover:bg-blue-500 hover:text-white transition-colors">
+                                    @option.Value
+                                    @if (isActive)
+                                    {
+                                        <i class="fas fa-sort-@(ascending ? "up" : "down") ml-1"></i>
+                                    }
+                                </a>
+                            }
+                        </div>
+                    </div>
+
+                    @if (vocaSets?.Any() == true)
+                    {
+                        <!-- VocaSets Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            @foreach (var vocaSet in vocaSets)
+                            {
+                                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                                    <div class="p-6">
+                                        <!-- Status Badge và Folder -->
+                                        <div class="flex justify-between items-start mb-3">
+                                            <div class="space-y-2">
+                                                @{
+                                                    var statusClass = vocaSet.Status?.ToLower() switch
+                                                    {
+                                                        "public-view" => "bg-green-100 text-green-800",
+                                                        "public-copy" => "bg-yellow-100 text-yellow-800",
+                                                        "private" => "bg-red-100 text-red-800",
+                                                        _ => "bg-gray-100 text-gray-700"
+                                                    };
+                                                }
+                                                <span class="px-3 py-1 rounded-full text-xs font-semibold @statusClass">
+                                                    @(vocaSet.Status switch
+                                                    {
+                                                        "public-view" => "Công khai",
+                                                        "public-copy" => "Có thể sao chép",
+                                                        "private" => "Riêng tư",
+                                                        _ => "Không xác định"
+                                                    })
+                                                </span>
+                                                @if (vocaSet.Folder != null)
+                                                {
+                                                    <div>
+                                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
+                                                            <i class="fas fa-folder mr-1"></i>@vocaSet.Folder.Name
+                                                        </span>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div>
+                                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
+                                                            <i class="fas fa-folder-open mr-1"></i>Chưa phân loại
+                                                        </span>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <span class="text-xs text-gray-500">@vocaSet.ViewCount lượt xem</span>
+                                        </div>
+
+                                        <h3 class="text-lg font-bold text-gray-800 mb-2">@vocaSet.Name</h3>
+                                        @if (!string.IsNullOrEmpty(vocaSet.Description))
+                                        {
+                                            <p class="text-gray-600 text-sm mb-4 h-12 overflow-hidden">@vocaSet.Description</p>
+                                        }
+
+                                        <!-- Progress Bar -->
+                                        @{
+                                            var progress = (vocaSet.VocaItems != null && vocaSet.VocaItems.Any())
+                                            ? (int)Math.Round((double)vocaSet.VocaItems.Count(w => w.Status == "learned") * 100 / vocaSet.VocaItems.Count)
+                                            : 0;
+                                        }
+                                        <div class="mb-4">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <span class="text-sm font-medium text-gray-600">Tiến độ học</span>
+                                                <span class="text-sm font-bold text-blue-700">@progress%</span>
+                                            </div>
+                                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                                <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: @progress%"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex justify-between items-center text-sm text-gray-500 mb-4">
+                                            <span>@(vocaSet.VocaItems?.Count ?? 0) từ</span>
+                                            <span>@(vocaSet.LastAccessed?.ToString("dd/MM/yyyy") ?? vocaSet.CreatedAt.ToString("dd/MM/yyyy"))</span>
+                                        </div>
+                                        <a href="@Url.Action("Display", "VocaSet", new { id = vocaSet.Id })" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-center block font-semibold">
+                                            Học ngay
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Empty State for VocaSets -->
+                        <div class="text-center py-16">
+                            <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-book-open text-3xl text-gray-400"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-600 mb-2">Chưa có bộ từ vựng nào</h3>
+                            <p class="text-gray-500 mb-6">Tạo bộ từ vựng đầu tiên để bắt đầu học</p>
+                            <a href="@Url.Action("Create", "VocaSet")"
+                               class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-plus mr-2"></i>Tạo Bộ Từ Vựng
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
         </div>
+    </div>
 
-        <!-- Pagination -->
-        @if (ViewBag.TotalPages > 1)
-        {
-            <div class="flex justify-center mt-8 space-x-2">
-                @if (ViewBag.HasPreviousPage)
-                {
-                    <a href="@Url.Action("Index", new { search = ViewBag.SearchKeyword, page = ViewBag.CurrentPage - 1, sortBy = ViewBag.SortBy, ascending = ViewBag.Ascending })"
-                       class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Trước</a>
-                }
-
-                @for (int i = Math.Max(1, ViewBag.CurrentPage - 2); i <= Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 2); i++)
-                {
-                    <a href="@Url.Action("Index", new { search = ViewBag.SearchKeyword, page = i, sortBy = ViewBag.SortBy, ascending = ViewBag.Ascending })"
-                       class="@(i == ViewBag.CurrentPage ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700") px-3 py-2 rounded hover:bg-blue-500 hover:text-white">
-                        @i
-                    </a>
-                }
-                @if (ViewBag.HasNextPage)
-                {
-                    <a href="@Url.Action("Index", new { search = ViewBag.SearchKeyword, page = ViewBag.CurrentPage + 1, sortBy = ViewBag.SortBy, ascending = ViewBag.Ascending })"
-                       class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Sau</a>
-                }
-            </div>
-        }
-    }
-    else
+    <!-- Pagination -->
+    @if (ViewBag.TotalPages != null && (int)ViewBag.TotalPages > 1)
     {
-        <!-- Empty State -->
-        <div class="text-center py-16">
-            <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                <i class="fas fa-folder-open text-3xl text-gray-400"></i>
-            </div>
-            <h3 class="text-xl font-semibold text-gray-600 mb-2">Chưa có folder nào</h3>
-            <p class="text-gray-500 mb-6">Tạo folder đầu tiên để bắt đầu tổ chức bộ từ vựng của bạn</p>
-            <a href="@Url.Action("Create")"
-               class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                <i class="fas fa-folder-plus mr-2"></i>Tạo Folder Mới
-            </a>
+        <div class="flex justify-center mt-8 space-x-2">
+            @if ((bool?)ViewBag.HasPreviousPage == true)
+            {
+                var actionName = activeTab == "folders" ? "Index" : "VocaSets";
+                <a href="@Url.Action(actionName, new {
+                    keyword = ViewBag.SearchKeyword,
+                    page = (int)ViewBag.CurrentPage - 1,
+                    sortBy = ViewBag.SortBy,
+                    ascending = ViewBag.Ascending,
+                    folderId = ViewBag.FolderId
+                })"
+                   class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Trước</a>
+            }
+
+            @for (int i = Math.Max(1, (int)ViewBag.CurrentPage - 2); i <= Math.Min((int)ViewBag.TotalPages, (int)ViewBag.CurrentPage + 2); i++)
+            {
+                var actionName = activeTab == "folders" ? "Index" : "VocaSets";
+                <a href="@Url.Action(actionName, new {
+                    keyword = ViewBag.SearchKeyword,
+                    page = i,
+                    sortBy = ViewBag.SortBy,
+                    ascending = ViewBag.Ascending,
+                    folderId = ViewBag.FolderId
+                })"
+                   class="@(i == (int)ViewBag.CurrentPage ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700") px-3 py-2 rounded hover:bg-blue-500 hover:text-white">
+                    @i
+                </a>
+            }
+
+            @if ((bool?)ViewBag.HasNextPage == true)
+            {
+                var actionName = activeTab == "folders" ? "Index" : "VocaSets";
+                <a href="@Url.Action(actionName, new {
+                    keyword = ViewBag.SearchKeyword,
+                    page = (int)ViewBag.CurrentPage + 1,
+                    sortBy = ViewBag.SortBy,
+                    ascending = ViewBag.Ascending,
+                    folderId = ViewBag.FolderId
+                })"
+                   class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Sau</a>
+            }
         </div>
     }
 </div>
@@ -201,7 +440,7 @@
 
 @section Scripts {
     <script>
-        // Bật/tắt dropdown khi click nút ba chấm
+        // Folder dropdown functionality
         document.querySelectorAll('[id^="options-menu-"]').forEach(btn => {
           btn.addEventListener('click', e => {
             e.stopPropagation();
@@ -210,7 +449,7 @@
           });
         });
 
-        // Ẩn dropdown khi click ra ngoài
+        // Hide dropdown when clicking outside
         document.addEventListener('click', () => {
           document.querySelectorAll('[role="menu"]').forEach(menu => {
             menu.classList.add('hidden');

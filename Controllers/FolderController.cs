@@ -50,6 +50,7 @@ namespace VocaWebApp.Controllers
                 ViewBag.HasPreviousPage = (page > 1);
                 ViewBag.HasNextPage = (page < totalPages);
                 ViewBag.SearchKeyword = null; // Clear search keyword when displaying full index
+                ViewBag.ActiveTab = "folders"; // Set active tab
 
                 return View(folders);
             }
@@ -57,6 +58,63 @@ namespace VocaWebApp.Controllers
             {
                 TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải danh sách folder.";
                 return View(new List<Folder>());
+            }
+        }
+
+        /// <summary>
+        /// Hiển thị tất cả VocaSets của user với sắp xếp và phân trang. (Tab VocaSets)
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> VocaSets(string? sortBy = "LastAccessed", bool ascending = false, int page = 1, int pageSize = 20, int? folderId = null)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userId))
+                    return RedirectToAction("Login", "Account");
+
+                // Get all VocaSets for the user
+                var vocaSets = await vocaSetRepository.GetByUserIdAsync(userId);
+
+                // Filter by folder if specified
+                if (folderId.HasValue)
+                {
+                    vocaSets = vocaSets.Where(v => v.FolderId == folderId.Value);
+                }
+
+                // Apply sorting
+                var sortedVocaSets = SortVocaSets(vocaSets, sortBy, ascending);
+
+                // Apply pagination
+                var pagedVocaSets = sortedVocaSets
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                var totalVocaSets = vocaSets.Count();
+                var totalPages = (int)Math.Ceiling((double)totalVocaSets / pageSize);
+
+                // Get folders for filter dropdown
+                var folders = await folderRepository.GetByUserAsync(userId, "Name", true, 1, int.MaxValue);
+
+                ViewBag.CurrentPage = page;
+                ViewBag.TotalPages = totalPages;
+                ViewBag.PageSize = pageSize;
+                ViewBag.SortBy = sortBy;
+                ViewBag.Ascending = ascending;
+                ViewBag.HasPreviousPage = (page > 1);
+                ViewBag.HasNextPage = (page < totalPages);
+                ViewBag.SearchKeyword = null;
+                ViewBag.ActiveTab = "vocasets"; // Set active tab
+                ViewBag.FolderId = folderId;
+                ViewBag.Folders = folders;
+
+                return View("Index", pagedVocaSets);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải danh sách bộ từ vựng.";
+                return View("Index", new List<VocaSet>());
             }
         }
 
@@ -114,6 +172,7 @@ namespace VocaWebApp.Controllers
                 ViewBag.Ascending = ascending;
                 ViewBag.HasPreviousPage = (page > 1);
                 ViewBag.HasNextPage = (page < totalPages);
+                ViewBag.ActiveTab = "folders";
 
                 return View("Index", pagedFolders); // Render Index view with filtered and paginated search results
             }
@@ -125,6 +184,72 @@ namespace VocaWebApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Tìm kiếm VocaSets theo tên và mô tả. (Tab VocaSets)
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> SearchVocaSets(string? keyword, string? sortBy = "LastAccessed", bool ascending = false, int page = 1, int pageSize = 20, int? folderId = null)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userId))
+                    return RedirectToAction("Login", "Account");
+
+                // If keyword is empty or whitespace, redirect to VocaSets to show all VocaSets
+                if (string.IsNullOrWhiteSpace(keyword))
+                {
+                    return RedirectToAction("VocaSets", new { sortBy, ascending, page, pageSize, folderId });
+                }
+
+                // Get all VocaSets for the user
+                var vocaSets = await vocaSetRepository.GetByUserIdAsync(userId);
+
+                // Apply search filter
+                vocaSets = vocaSets.Where(v =>
+                    v.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                    (!string.IsNullOrEmpty(v.Description) && v.Description.Contains(keyword, StringComparison.OrdinalIgnoreCase)) ||
+                    (!string.IsNullOrEmpty(v.Keywords) && v.Keywords.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                );
+
+                // Filter by folder if specified
+                if (folderId.HasValue)
+                {
+                    vocaSets = vocaSets.Where(v => v.FolderId == folderId.Value);
+                }
+
+                // Apply sorting
+                var sortedVocaSets = SortVocaSets(vocaSets, sortBy, ascending);
+
+                // Apply pagination
+                var pagedVocaSets = sortedVocaSets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                var totalVocaSets = vocaSets.Count();
+                var totalPages = (int)Math.Ceiling((double)totalVocaSets / pageSize);
+
+                // Get folders for filter dropdown
+                var folders = await folderRepository.GetByUserAsync(userId, "Name", true, 1, int.MaxValue);
+
+                ViewBag.SearchKeyword = keyword;
+                ViewBag.CurrentPage = page;
+                ViewBag.TotalPages = totalPages;
+                ViewBag.PageSize = pageSize;
+                ViewBag.SortBy = sortBy;
+                ViewBag.Ascending = ascending;
+                ViewBag.HasPreviousPage = (page > 1);
+                ViewBag.HasNextPage = (page < totalPages);
+                ViewBag.ActiveTab = "vocasets";
+                ViewBag.FolderId = folderId;
+                ViewBag.Folders = folders;
+
+                return View("Index", pagedVocaSets);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tìm kiếm bộ từ vựng.";
+                return RedirectToAction("VocaSets", new { sortBy, ascending, page, pageSize, folderId });
+            }
+        }
 
         /// <summary>
         /// Hiển thị form tạo folder mới. (Tạo, chỉnh sửa, xóa folder, quản lý bộ từ vựng)
@@ -376,6 +501,7 @@ namespace VocaWebApp.Controllers
                 "createdat" => ascending ? vocaSets.OrderBy(v => v.CreatedAt) : vocaSets.OrderByDescending(v => v.CreatedAt),
                 "lastaccessed" => ascending ? vocaSets.OrderBy(v => v.LastAccessed ?? DateTime.MinValue) : vocaSets.OrderByDescending(v => v.LastAccessed ?? DateTime.MinValue),
                 "viewcount" => ascending ? vocaSets.OrderBy(v => v.ViewCount) : vocaSets.OrderByDescending(v => v.ViewCount),
+                "folder" => ascending ? vocaSets.OrderBy(v => v.Folder?.Name ?? "Chưa phân loại") : vocaSets.OrderByDescending(v => v.Folder?.Name ?? "Chưa phân loại"),
                 _ => vocaSets.OrderByDescending(v => v.LastAccessed ?? v.CreatedAt), // Mặc định truy cập gần đây
             };
         }
