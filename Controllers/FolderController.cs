@@ -4,33 +4,32 @@ using Microsoft.AspNetCore.Mvc;
 using VocaWebApp.Data.Repositories;
 using VocaWebApp.Models;
 using System.Security.Claims;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace VocaWebApp.Controllers
 {
     /// <summary>
-    /// Controller quản lý folder tổ chức bộ từ vựng
-    /// Triển khai các tính năng: tạo, chỉnh sửa, xóa folder; quản lý bộ từ vựng trong folder
+    /// Controller quản lý folder tổ chức bộ từ vựng. Triển khai các tính năng tạo, chỉnh sửa, xóa folder, quản lý bộ từ vựng trong folder.
     /// </summary>
     [Authorize]
     public class FolderController : Controller
     {
-        private readonly IFolderRepository _folderRepository;
-        private readonly IVocaSetRepository _vocaSetRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IFolderRepository folderRepository;
+        private readonly IVocaSetRepository vocaSetRepository;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public FolderController(
-            IFolderRepository folderRepository,
-            IVocaSetRepository vocaSetRepository,
-            UserManager<ApplicationUser> userManager)
+        public FolderController(IFolderRepository folderRepository, IVocaSetRepository vocaSetRepository, UserManager<ApplicationUser> userManager)
         {
-            _folderRepository = folderRepository;
-            _vocaSetRepository = vocaSetRepository;
-            _userManager = userManager;
+            this.folderRepository = folderRepository;
+            this.vocaSetRepository = vocaSetRepository;
+            this.userManager = userManager;
         }
 
         /// <summary>
-        /// Hiển thị danh sách folder của user với sắp xếp và phân trang
-        /// Trang 4: Bộ từ vựng của tôi (Folder)
+        /// Hiển thị danh sách folder của user với sắp xếp và phân trang. (Trang: Bộ từ vựng của tôi / Folder)
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Index(string? sortBy = "CreatedAt", bool ascending = false, int page = 1, int pageSize = 20)
@@ -39,13 +38,11 @@ namespace VocaWebApp.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userId))
-                {
                     return RedirectToAction("Login", "Account");
-                }
 
-                var folders = await _folderRepository.GetByUserAsync(userId, sortBy, ascending, page, pageSize);
+                // GetByUserAsync already handles pagination and sorting
+                var folders = await folderRepository.GetByUserAsync(userId, sortBy, ascending, page, pageSize);
 
-                // Tính toán thông tin phân trang
                 var totalFolders = await CountUserFoldersAsync(userId);
                 var totalPages = (int)Math.Ceiling((double)totalFolders / pageSize);
 
@@ -54,8 +51,9 @@ namespace VocaWebApp.Controllers
                 ViewBag.PageSize = pageSize;
                 ViewBag.SortBy = sortBy;
                 ViewBag.Ascending = ascending;
-                ViewBag.HasPreviousPage = page > 1;
-                ViewBag.HasNextPage = page < totalPages;
+                ViewBag.HasPreviousPage = (page > 1);
+                ViewBag.HasNextPage = (page < totalPages);
+                ViewBag.SearchKeyword = null; // Clear search keyword when displaying full index
 
                 return View(folders);
             }
@@ -67,40 +65,73 @@ namespace VocaWebApp.Controllers
         }
 
         /// <summary>
-        /// Tìm kiếm folder theo tên và mô tả
-        /// Thanh tìm kiếm theo tên bộ từ, từ khóa
+        /// Tìm kiếm folder theo tên và mô tả. (Thanh tìm kiếm theo tên bộ từ, từ khóa)
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Search(string keyword)
+        public async Task<IActionResult> Search(string? keyword, string? sortBy = "CreatedAt", bool ascending = false, int page = 1, int pageSize = 20)
         {
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userId))
-                {
                     return RedirectToAction("Login", "Account");
-                }
 
+                // If keyword is empty or whitespace, redirect to Index to show all folders with existing pagination/sort
                 if (string.IsNullOrWhiteSpace(keyword))
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new { sortBy, ascending, page, pageSize });
                 }
 
-                var folders = await _folderRepository.SearchAsync(userId, keyword);
-                ViewBag.SearchKeyword = keyword;
+                // SearchAsync returns ALL matching folders, not paginated
+                var folders = await folderRepository.SearchAsync(userId, keyword);
 
-                return View("Index", folders);
+                // Apply sorting to the search results
+                var sortedFolders = folders;
+                if (!string.IsNullOrEmpty(sortBy))
+                {
+                    switch (sortBy.ToLower())
+                    {
+                        case "name":
+                            sortedFolders = ascending ? sortedFolders.OrderBy(f => f.Name) : sortedFolders.OrderByDescending(f => f.Name);
+                            break;
+                        case "createdat":
+                            sortedFolders = ascending ? sortedFolders.OrderBy(f => f.CreatedAt) : sortedFolders.OrderByDescending(f => f.CreatedAt);
+                            break;
+                        default:
+                            sortedFolders = sortedFolders.OrderByDescending(f => f.CreatedAt); // Default sort
+                            break;
+                    }
+                }
+
+                // Apply pagination to the sorted search results
+                var pagedFolders = sortedFolders.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                var totalFolders = folders.Count(); // Total count of search results (before pagination)
+                var totalPages = (int)Math.Ceiling((double)totalFolders / pageSize);
+
+                // Set ViewBag values for Index.cshtml to display search results correctly with pagination/sorting
+                ViewBag.SearchKeyword = keyword;
+                ViewBag.CurrentPage = page;
+                ViewBag.TotalPages = totalPages;
+                ViewBag.PageSize = pageSize;
+                ViewBag.SortBy = sortBy;
+                ViewBag.Ascending = ascending;
+                ViewBag.HasPreviousPage = (page > 1);
+                ViewBag.HasNextPage = (page < totalPages);
+
+                return View("Index", pagedFolders); // Render Index view with filtered and paginated search results
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Có lỗi xảy ra khi tìm kiếm folder.";
-                return RedirectToAction("Index");
+                // Redirect to Index, passing existing sort/pagination to maintain state
+                return RedirectToAction("Index", new { sortBy, ascending, page, pageSize });
             }
         }
 
+
         /// <summary>
-        /// Hiển thị form tạo folder mới
-        /// Tạo, chỉnh sửa, xóa folder quản lý bộ từ vựng
+        /// Hiển thị form tạo folder mới. (Tạo, chỉnh sửa, xóa folder, quản lý bộ từ vựng)
         /// </summary>
         [HttpGet]
         public IActionResult Create()
@@ -109,8 +140,7 @@ namespace VocaWebApp.Controllers
         }
 
         /// <summary>
-        /// Xử lý tạo folder mới
-        /// Tạo, chỉnh sửa, xóa folder quản lý bộ từ vựng
+        /// Xử lý tạo folder mới. (Tạo, chỉnh sửa, xóa folder, quản lý bộ từ vựng)
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -120,17 +150,13 @@ namespace VocaWebApp.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userId))
-                {
                     return RedirectToAction("Login", "Account");
-                }
 
                 if (!ModelState.IsValid)
-                {
                     return View(model);
-                }
 
-                // Kiểm tra tên folder đã tồn tại chưa
-                if (await _folderRepository.CheckNameExistsAsync(userId, model.Name))
+                // Kiểm tra tên folder tồn tại chưa
+                if (await folderRepository.CheckNameExistsAsync(userId, model.Name))
                 {
                     ModelState.AddModelError("Name", "Tên folder đã tồn tại.");
                     return View(model);
@@ -139,15 +165,13 @@ namespace VocaWebApp.Controllers
                 // Tạo folder mới
                 model.UserId = userId;
                 model.CreatedAt = DateTime.UtcNow;
-
-                await _folderRepository.AddAsync(model);
-
+                await folderRepository.AddAsync(model);
                 TempData["SuccessMessage"] = "Tạo folder thành công!";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             catch (InvalidOperationException ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError(string.Empty, ex.Message);
                 return View(model);
             }
             catch (Exception ex)
@@ -158,8 +182,7 @@ namespace VocaWebApp.Controllers
         }
 
         /// <summary>
-        /// Hiển thị form chỉnh sửa folder
-        /// Tạo, chỉnh sửa, xóa folder quản lý bộ từ vựng
+        /// Hiển thị form chỉnh sửa folder. (Tạo, chỉnh sửa, xóa folder, quản lý bộ từ vựng)
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -168,29 +191,25 @@ namespace VocaWebApp.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userId))
-                {
                     return RedirectToAction("Login", "Account");
-                }
 
-                var folder = await _folderRepository.GetByIdAsync(id, userId);
+                var folder = await folderRepository.GetByIdAsync(id, userId);
                 if (folder == null)
                 {
                     TempData["ErrorMessage"] = "Không tìm thấy folder hoặc bạn không có quyền truy cập.";
-                    return RedirectToAction("Index");
+                    return RedirectToAction(nameof(Index));
                 }
-
                 return View(folder);
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải thông tin folder.";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
         }
 
         /// <summary>
-        /// Xử lý cập nhật thông tin folder
-        /// Tạo, chỉnh sửa, xóa folder quản lý bộ từ vựng
+        /// Xử lý cập nhật thông tin folder. (Tạo, chỉnh sửa, xóa folder, quản lý bộ từ vựng)
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -200,32 +219,24 @@ namespace VocaWebApp.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userId))
-                {
                     return RedirectToAction("Login", "Account");
-                }
 
                 if (id != model.Id)
-                {
                     return BadRequest();
-                }
 
                 if (!ModelState.IsValid)
-                {
                     return View(model);
-                }
 
                 // Đảm bảo folder thuộc về user hiện tại
                 model.UserId = userId;
-
-                await _folderRepository.UpdateAsync(model);
-
+                await folderRepository.UpdateAsync(model);
                 TempData["SuccessMessage"] = "Cập nhật folder thành công!";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             catch (KeyNotFoundException ex)
             {
                 TempData["ErrorMessage"] = "Không tìm thấy folder hoặc bạn không có quyền truy cập.";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
@@ -235,8 +246,7 @@ namespace VocaWebApp.Controllers
         }
 
         /// <summary>
-        /// Hiển thị chi tiết folder và danh sách bộ từ vựng bên trong
-        /// Xem danh sách bộ từ vựng trong từng folder
+        /// Hiển thị chi tiết folder và danh sách bộ từ vựng bên trong. (Xem danh sách bộ từ vựng trong từng folder)
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Details(int id, string? sortBy = "LastAccessed", bool ascending = false, int page = 1, int pageSize = 12)
@@ -245,19 +255,17 @@ namespace VocaWebApp.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userId))
-                {
                     return RedirectToAction("Login", "Account");
-                }
 
-                var folder = await _folderRepository.GetWithVocaSetsAsync(id, userId);
+                var folder = await folderRepository.GetWithVocaSetsAsync(id, userId);
                 if (folder == null)
                 {
                     TempData["ErrorMessage"] = "Không tìm thấy folder hoặc bạn không có quyền truy cập.";
-                    return RedirectToAction("Index");
+                    return RedirectToAction(nameof(Index));
                 }
 
                 // Lấy danh sách VocaSet trong folder với phân trang và sắp xếp
-                var vocaSets = await _vocaSetRepository.GetByUserAndFolderAsync(userId, id);
+                var vocaSets = await vocaSetRepository.GetByUserAndFolderAsync(userId, id);
 
                 // Sắp xếp VocaSet theo yêu cầu
                 var sortedVocaSets = SortVocaSets(vocaSets, sortBy, ascending);
@@ -274,21 +282,20 @@ namespace VocaWebApp.Controllers
                 ViewBag.PageSize = pageSize;
                 ViewBag.SortBy = sortBy;
                 ViewBag.Ascending = ascending;
-                ViewBag.HasPreviousPage = page > 1;
-                ViewBag.HasNextPage = page < ViewBag.TotalPages;
+                ViewBag.HasPreviousPage = (page > 1);
+                ViewBag.HasNextPage = (page < ViewBag.TotalPages);
 
                 return View(pagedVocaSets);
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải chi tiết folder.";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
         }
 
         /// <summary>
-        /// Xóa folder (có kiểm tra folder có chứa bộ từ vựng không)
-        /// Tạo, chỉnh sửa, xóa folder quản lý bộ từ vựng
+        /// Xóa folder có kiểm tra folder có chứa bộ từ vựng không. (Tạo, chỉnh sửa, xóa folder, quản lý bộ từ vựng)
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -298,29 +305,26 @@ namespace VocaWebApp.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userId))
-                {
                     return RedirectToAction("Login", "Account");
-                }
 
-                await _folderRepository.DeleteAsync(id, userId);
-
+                await folderRepository.DeleteAsync(id, userId);
                 TempData["SuccessMessage"] = "Xóa folder thành công!";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             catch (InvalidOperationException ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Có lỗi xảy ra khi xóa folder.";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
         }
 
         /// <summary>
-        /// Xác nhận xóa folder - hiển thị thông tin trước khi xóa
+        /// Xác nhận xóa folder - hiển thị thông tin trước khi xóa.
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> DeleteConfirm(int id)
@@ -329,36 +333,34 @@ namespace VocaWebApp.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userId))
-                {
                     return RedirectToAction("Login", "Account");
-                }
 
-                var folder = await _folderRepository.GetWithVocaSetsAsync(id, userId);
+                var folder = await folderRepository.GetWithVocaSetsAsync(id, userId);
                 if (folder == null)
                 {
                     TempData["ErrorMessage"] = "Không tìm thấy folder hoặc bạn không có quyền truy cập.";
-                    return RedirectToAction("Index");
+                    return RedirectToAction(nameof(Index));
                 }
-
                 return View(folder);
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải thông tin folder.";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
         }
 
         #region Private Helper Methods
 
         /// <summary>
-        /// Đếm tổng số folder của user (dùng cho phân trang)
+        /// Đếm tổng số folder của user dùng cho phân trang
         /// </summary>
         private async Task<int> CountUserFoldersAsync(string userId)
         {
             try
             {
-                var folders = await _folderRepository.GetByUserAsync(userId, "CreatedAt", false, 1, int.MaxValue);
+                // GetByUserAsync without page/pageSize will return all folders for the user.
+                var folders = await folderRepository.GetByUserAsync(userId, "CreatedAt", false, 1, int.MaxValue);
                 return folders.Count();
             }
             catch
@@ -368,8 +370,7 @@ namespace VocaWebApp.Controllers
         }
 
         /// <summary>
-        /// Sắp xếp danh sách VocaSet theo yêu cầu
-        /// Sắp xếp bộ từ vựng theo truy cập gần đây, thời gian truy cập lần cuối, số từ học/chưa học
+        /// Sắp xếp danh sách VocaSet theo yêu cầu (Sắp xếp bộ từ vựng theo truy cập gần đây, thời gian truy cập lần cuối, số từ đã học/chưa học)
         /// </summary>
         private IEnumerable<VocaSet> SortVocaSets(IEnumerable<VocaSet> vocaSets, string? sortBy, bool ascending)
         {
@@ -379,10 +380,9 @@ namespace VocaWebApp.Controllers
                 "createdat" => ascending ? vocaSets.OrderBy(v => v.CreatedAt) : vocaSets.OrderByDescending(v => v.CreatedAt),
                 "lastaccessed" => ascending ? vocaSets.OrderBy(v => v.LastAccessed ?? DateTime.MinValue) : vocaSets.OrderByDescending(v => v.LastAccessed ?? DateTime.MinValue),
                 "viewcount" => ascending ? vocaSets.OrderBy(v => v.ViewCount) : vocaSets.OrderByDescending(v => v.ViewCount),
-                _ => vocaSets.OrderByDescending(v => v.LastAccessed ?? v.CreatedAt) // Mặc định: truy cập gần đây
+                _ => vocaSets.OrderByDescending(v => v.LastAccessed ?? v.CreatedAt), // Mặc định truy cập gần đây
             };
         }
-
         #endregion
     }
 }
