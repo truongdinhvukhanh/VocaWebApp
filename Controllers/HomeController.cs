@@ -32,7 +32,8 @@ namespace VocaWebApp.Controllers
         /// Liên kết nhanh đến các tính năng chính: đăng nhập, đăng ký, khám phá bộ từ vựng
         /// Tùy chọn tìm kiếm bộ từ vựng nếu có
         /// </summary>
-        public async Task<IActionResult> Index(string? searchKeyword = null)
+        [HttpGet]
+        public async Task<IActionResult> Index(string? SearchKeyword = null)
         {
             var model = new HomeViewModel();
 
@@ -55,10 +56,10 @@ namespace VocaWebApp.Controllers
             model.PopularVocaSets = await _vocaSetRepository.GetMostPopularAsync(6);
 
             // Tìm kiếm bộ từ vựng nếu có từ khóa
-            if (!string.IsNullOrWhiteSpace(searchKeyword))
+            if (!string.IsNullOrWhiteSpace(SearchKeyword))
             {
-                model.SearchResults = await _vocaSetRepository.SearchAsync(searchKeyword, null, true);
-                model.SearchKeyword = searchKeyword;
+                model.SearchResults = await _vocaSetRepository.SearchAsync(SearchKeyword, null, true);
+                model.SearchKeyword = SearchKeyword;
             }
 
             return View(model);

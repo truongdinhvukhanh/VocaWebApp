@@ -12,17 +12,17 @@
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"g1yckoye4g"},{"Name":"integrity","Value":"sha256-rDSbGL6P7ZahCAN5cUbBOtwrgrM/qlT8GffMtNxVioA="},{"Name":"label","Value":"_content/VocaWebApp/css/site.css"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"9352"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022rDSbGL6P7ZahCAN5cUbBOtwrgrM/qlT8GffMtNxVioA=\u0022"},{"Name":"Last-Modified","Value":"Mon, 16 Jun 2025 05:30:40 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/VocaWebApp/css/styles.8ady0ehwfu.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\styles.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"8ady0ehwfu"},{"Name":"integrity","Value":"sha256-QIDTnpOlTfSDZ6I\u002BaVWdqXTr9CA3RZZVu0ZH1ZIQJVw="},{"Name":"label","Value":"_content/VocaWebApp/css/styles.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"56929"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022QIDTnpOlTfSDZ6I\u002BaVWdqXTr9CA3RZZVu0ZH1ZIQJVw=\u0022"},{"Name":"Last-Modified","Value":"Thu, 19 Jun 2025 08:12:34 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/VocaWebApp/css/styles.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\styles.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-w7cbThuQ8EsZSr1ua3WTdcxMF4hnrZ0idiIXVzAuqGY="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"56980"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022w7cbThuQ8EsZSr1ua3WTdcxMF4hnrZ0idiIXVzAuqGY=\u0022"},{"Name":"Last-Modified","Value":"Thu, 19 Jun 2025 03:48:57 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/VocaWebApp/css/styles.jcsl9rs6je.css">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\styles.css'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"jcsl9rs6je"},{"Name":"integrity","Value":"sha256-w7cbThuQ8EsZSr1ua3WTdcxMF4hnrZ0idiIXVzAuqGY="},{"Name":"label","Value":"_content/VocaWebApp/css/styles.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"56980"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022w7cbThuQ8EsZSr1ua3WTdcxMF4hnrZ0idiIXVzAuqGY=\u0022"},{"Name":"Last-Modified","Value":"Thu, 19 Jun 2025 03:48:57 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-QIDTnpOlTfSDZ6I\u002BaVWdqXTr9CA3RZZVu0ZH1ZIQJVw="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"56929"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022QIDTnpOlTfSDZ6I\u002BaVWdqXTr9CA3RZZVu0ZH1ZIQJVw=\u0022"},{"Name":"Last-Modified","Value":"Thu, 19 Jun 2025 08:12:34 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/VocaWebApp/favicon.61n19gt1b8.ico">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</AssetFile>

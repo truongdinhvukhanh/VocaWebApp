@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VocaWebApp.Data;
-using VocaWebApp.Models;
 using VocaWebApp.Data.Repositories;
+using VocaWebApp.Models;
 
 namespace VocaWebApp.Controllers
 {
