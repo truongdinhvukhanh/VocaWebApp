@@ -1,6 +1,8 @@
 wwwroot\css\site.css
 wwwroot\css\styles.css
 wwwroot\favicon.ico
+wwwroot\images\avatars\3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg
+wwwroot\images\avatars\4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg
 wwwroot\js\site.js
 wwwroot\js\vocaitem-management.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css

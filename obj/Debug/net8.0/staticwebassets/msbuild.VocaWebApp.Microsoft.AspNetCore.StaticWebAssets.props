@@ -30,8 +30,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>hj9il9sujo</Fingerprint>
-      <Integrity>zTkbqfGB37IYcT5/MHM0yq/9uoLTbcxIUcW6iEEvNnc=</Integrity>
+      <Fingerprint>cd3l61bkw3</Fingerprint>
+      <Integrity>UB6S7nT1JTgJVwuSTvL6ZWAPTT81KyIZzzpt/bXa8Ig=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\styles.css'))</OriginalItemSpec>
@@ -53,6 +53,42 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\avatars\3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>VocaWebApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/VocaWebApp</BasePath>
+      <RelativePath>images/avatars/3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>enpld0todg</Fingerprint>
+      <Integrity>GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\avatars\3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\avatars\4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>VocaWebApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/VocaWebApp</BasePath>
+      <RelativePath>images/avatars/4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>enpld0todg</Fingerprint>
+      <Integrity>GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\avatars\4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))">
       <SourceType>Package</SourceType>

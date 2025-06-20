@@ -12,17 +12,17 @@
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"g1yckoye4g"},{"Name":"integrity","Value":"sha256-rDSbGL6P7ZahCAN5cUbBOtwrgrM/qlT8GffMtNxVioA="},{"Name":"label","Value":"_content/VocaWebApp/css/site.css"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"9352"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022rDSbGL6P7ZahCAN5cUbBOtwrgrM/qlT8GffMtNxVioA=\u0022"},{"Name":"Last-Modified","Value":"Mon, 16 Jun 2025 05:30:40 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/VocaWebApp/css/styles.cd3l61bkw3.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\styles.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"cd3l61bkw3"},{"Name":"integrity","Value":"sha256-UB6S7nT1JTgJVwuSTvL6ZWAPTT81KyIZzzpt/bXa8Ig="},{"Name":"label","Value":"_content/VocaWebApp/css/styles.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"57217"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022UB6S7nT1JTgJVwuSTvL6ZWAPTT81KyIZzzpt/bXa8Ig=\u0022"},{"Name":"Last-Modified","Value":"Fri, 20 Jun 2025 17:29:24 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/VocaWebApp/css/styles.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\styles.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-zTkbqfGB37IYcT5/MHM0yq/9uoLTbcxIUcW6iEEvNnc="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"57365"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022zTkbqfGB37IYcT5/MHM0yq/9uoLTbcxIUcW6iEEvNnc=\u0022"},{"Name":"Last-Modified","Value":"Fri, 20 Jun 2025 02:46:48 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/VocaWebApp/css/styles.hj9il9sujo.css">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\styles.css'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"hj9il9sujo"},{"Name":"integrity","Value":"sha256-zTkbqfGB37IYcT5/MHM0yq/9uoLTbcxIUcW6iEEvNnc="},{"Name":"label","Value":"_content/VocaWebApp/css/styles.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"57365"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022zTkbqfGB37IYcT5/MHM0yq/9uoLTbcxIUcW6iEEvNnc=\u0022"},{"Name":"Last-Modified","Value":"Fri, 20 Jun 2025 02:46:48 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-UB6S7nT1JTgJVwuSTvL6ZWAPTT81KyIZzzpt/bXa8Ig="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"57217"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022UB6S7nT1JTgJVwuSTvL6ZWAPTT81KyIZzzpt/bXa8Ig=\u0022"},{"Name":"Last-Modified","Value":"Fri, 20 Jun 2025 17:29:24 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/VocaWebApp/favicon.61n19gt1b8.ico">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</AssetFile>
@@ -35,6 +35,30 @@
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-Jtxf9L\u002B5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM="}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"5430"},{"Name":"Content-Type","Value":"image/x-icon"},{"Name":"ETag","Value":"\u0022Jtxf9L\u002B5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=\u0022"},{"Name":"Last-Modified","Value":"Mon, 16 Jun 2025 05:30:40 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/VocaWebApp/images/avatars/3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.enpld0todg.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\avatars\3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"enpld0todg"},{"Name":"integrity","Value":"sha256-GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk="},{"Name":"label","Value":"_content/VocaWebApp/images/avatars/3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"70808"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=\u0022"},{"Name":"Last-Modified","Value":"Fri, 20 Jun 2025 17:32:35 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/VocaWebApp/images/avatars/3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\avatars\3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"70808"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=\u0022"},{"Name":"Last-Modified","Value":"Fri, 20 Jun 2025 17:32:35 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/VocaWebApp/images/avatars/4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.enpld0todg.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\avatars\4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"enpld0todg"},{"Name":"integrity","Value":"sha256-GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk="},{"Name":"label","Value":"_content/VocaWebApp/images/avatars/4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"70808"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=\u0022"},{"Name":"Last-Modified","Value":"Fri, 20 Jun 2025 02:59:04 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/VocaWebApp/images/avatars/4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\avatars\4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"70808"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=\u0022"},{"Name":"Last-Modified","Value":"Fri, 20 Jun 2025 02:59:04 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/VocaWebApp/js/site.3r8b2a0bt1.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</AssetFile>

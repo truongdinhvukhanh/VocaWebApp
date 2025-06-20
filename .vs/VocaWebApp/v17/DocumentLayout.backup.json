@@ -3,20 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|c:\\users\\user\\onedrive\\dokumenty\\visual studio 2022\\vocawebapp\\views\\manage\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|solutionrelative:views\\manage\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|c:\\users\\user\\onedrive\\dokumenty\\visual studio 2022\\vocawebapp\\views\\manage\\changepassword.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|solutionrelative:views\\manage\\changepassword.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|c:\\users\\user\\onedrive\\dokumenty\\visual studio 2022\\vocawebapp\\controllers\\managecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|solutionrelative:controllers\\managecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|c:\\users\\user\\onedrive\\dokumenty\\visual studio 2022\\vocawebapp\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|c:\\users\\user\\onedrive\\dokumenty\\visual studio 2022\\vocawebapp\\models\\manageviewmodels\\profileviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|solutionrelative:models\\manageviewmodels\\profileviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|c:\\users\\user\\onedrive\\dokumenty\\visual studio 2022\\vocawebapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|c:\\users\\user\\onedrive\\dokumenty\\visual studio 2022\\vocawebapp\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3DE6A7B9-9D21-41E1-A992-F53D80AE09F7}|VocaWebApp.csproj|solutionrelative:views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,58 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T02:18:01.831Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Profile.cshtml",
-              "DocumentMoniker": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Views\\Manage\\Profile.cshtml",
-              "RelativeDocumentMoniker": "Views\\Manage\\Profile.cshtml",
-              "ToolTip": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Views\\Manage\\Profile.cshtml",
-              "RelativeToolTip": "Views\\Manage\\Profile.cshtml",
-              "ViewState": "AgIAACQBAAAAAAAAAAAQwEsBAAAAAAAAAAAAAA==",
+              "Title": "ChangePassword.cshtml",
+              "DocumentMoniker": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Views\\Manage\\ChangePassword.cshtml",
+              "RelativeDocumentMoniker": "Views\\Manage\\ChangePassword.cshtml",
+              "ToolTip": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Views\\Manage\\ChangePassword.cshtml",
+              "RelativeToolTip": "Views\\Manage\\ChangePassword.cshtml",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAAAGoAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-20T02:16:40.796Z",
+              "WhenOpened": "2025-06-20T17:33:44.523Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ManageController.cs",
-              "DocumentMoniker": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Controllers\\ManageController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ManageController.cs",
-              "ToolTip": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Controllers\\ManageController.cs",
-              "RelativeToolTip": "Controllers\\ManageController.cs",
-              "ViewState": "AgIAAKIAAAAAAAAAAAAQwLoAAABDAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T02:11:14.909Z",
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAlwFYAAABHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-20T17:28:18.726Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "ProfileViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Models\\ManageViewModels\\ProfileViewModel.cs",
-              "RelativeDocumentMoniker": "Models\\ManageViewModels\\ProfileViewModel.cs",
-              "ToolTip": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Models\\ManageViewModels\\ProfileViewModel.cs",
-              "RelativeToolTip": "Models\\ManageViewModels\\ProfileViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T02:10:24.238Z",
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Views\\Dashboard\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Dashboard\\Index.cshtml",
+              "ToolTip": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\Views\\Dashboard\\Index.cshtml",
+              "RelativeToolTip": "Views\\Dashboard\\Index.cshtml",
+              "ViewState": "AgIAAIYAAAAAAAAAAAAlwKMAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-20T04:20:02.705Z",
               "EditorCaption": ""
             },
             {

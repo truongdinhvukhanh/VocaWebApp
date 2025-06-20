@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "gIkxfMpPWMUw9kohbyOKYil5tzx0yqAbbk3a0xg1+Gw=",
+  "Hash": "1x/Nq+YEiFy5usYQf4lvyuOh3TknHGD1DWKTdlSF25Y=",
   "Source": "VocaWebApp",
   "BasePath": "_content/VocaWebApp",
   "Mode": "Default",
@@ -1354,8 +1354,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "hj9il9sujo",
-      "Integrity": "zTkbqfGB37IYcT5/MHM0yq/9uoLTbcxIUcW6iEEvNnc=",
+      "Fingerprint": "cd3l61bkw3",
+      "Integrity": "UB6S7nT1JTgJVwuSTvL6ZWAPTT81KyIZzzpt/bXa8Ig=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\styles.css"
@@ -1380,6 +1380,48 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\images\\avatars\\3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg",
+      "SourceId": "VocaWebApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\",
+      "BasePath": "_content/VocaWebApp",
+      "RelativePath": "images/avatars/3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "enpld0todg",
+      "Integrity": "GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\avatars\\3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\images\\avatars\\4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg",
+      "SourceId": "VocaWebApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\",
+      "BasePath": "_content/VocaWebApp",
+      "RelativePath": "images/avatars/4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "enpld0todg",
+      "Integrity": "GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\avatars\\4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg"
     },
     {
       "Identity": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\js\\site.js",
@@ -2705,6 +2747,51 @@
       ]
     },
     {
+      "Route": "css/styles.cd3l61bkw3.css",
+      "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\css\\styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "57217"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UB6S7nT1JTgJVwuSTvL6ZWAPTT81KyIZzzpt/bXa8Ig=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 20 Jun 2025 17:29:24 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "cd3l61bkw3"
+        },
+        {
+          "Name": "label",
+          "Value": "css/styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-UB6S7nT1JTgJVwuSTvL6ZWAPTT81KyIZzzpt/bXa8Ig="
+        }
+      ]
+    },
+    {
       "Route": "css/styles.css",
       "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\css\\styles.css",
       "Selectors": [],
@@ -2715,7 +2802,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "57365"
+          "Value": "57217"
         },
         {
           "Name": "Content-Type",
@@ -2723,11 +2810,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"zTkbqfGB37IYcT5/MHM0yq/9uoLTbcxIUcW6iEEvNnc=\""
+          "Value": "\"UB6S7nT1JTgJVwuSTvL6ZWAPTT81KyIZzzpt/bXa8Ig=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 20 Jun 2025 02:46:48 GMT"
+          "Value": "Fri, 20 Jun 2025 17:29:24 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2737,52 +2824,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-zTkbqfGB37IYcT5/MHM0yq/9uoLTbcxIUcW6iEEvNnc="
-        }
-      ]
-    },
-    {
-      "Route": "css/styles.hj9il9sujo.css",
-      "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\css\\styles.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "57365"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"zTkbqfGB37IYcT5/MHM0yq/9uoLTbcxIUcW6iEEvNnc=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Fri, 20 Jun 2025 02:46:48 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "hj9il9sujo"
-        },
-        {
-          "Name": "label",
-          "Value": "css/styles.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-zTkbqfGB37IYcT5/MHM0yq/9uoLTbcxIUcW6iEEvNnc="
+          "Value": "sha256-UB6S7nT1JTgJVwuSTvL6ZWAPTT81KyIZzzpt/bXa8Ig="
         }
       ]
     },
@@ -5085,6 +5127,170 @@
         {
           "Name": "integrity",
           "Value": "sha256-16aFlqtpsG9RyieKZUUUjkJpqTgcJtWXwT312I4Iz1s="
+        }
+      ]
+    },
+    {
+      "Route": "images/avatars/3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.enpld0todg.jpg",
+      "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\images\\avatars\\3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "70808"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 20 Jun 2025 17:32:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "enpld0todg"
+        },
+        {
+          "Name": "label",
+          "Value": "images/avatars/3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk="
+        }
+      ]
+    },
+    {
+      "Route": "images/avatars/3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg",
+      "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\images\\avatars\\3ca53f18-c7e7-481e-865c-e9b1dc9c5f14_e5f7bf14-e73f-4eb9-8807-f7cad4646565_Avatar.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "70808"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 20 Jun 2025 17:32:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk="
+        }
+      ]
+    },
+    {
+      "Route": "images/avatars/4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.enpld0todg.jpg",
+      "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\images\\avatars\\4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "70808"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 20 Jun 2025 02:59:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "enpld0todg"
+        },
+        {
+          "Name": "label",
+          "Value": "images/avatars/4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk="
+        }
+      ]
+    },
+    {
+      "Route": "images/avatars/4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg",
+      "AssetFile": "C:\\Users\\User\\OneDrive\\Dokumenty\\Visual Studio 2022\\VocaWebApp\\wwwroot\\images\\avatars\\4e8550ba-bccb-4abb-8068-0e45ed24ea72_84773e17-eb1c-4696-be86-a0072fbca9e8_Avatar.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "70808"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 20 Jun 2025 02:59:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-GnLkLd5iL7UEy13nLkjGnrcPXpGqUZn5ahLSwNYgZHk="
         }
       ]
     },
