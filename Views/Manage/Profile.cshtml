@@ -71,7 +71,6 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
                             </label>
-                            <input type="file" id="avatar-upload" class="hidden" accept="image/*" onchange="previewAvatar(this)" />
                         </div>
                     </div>
 
@@ -173,43 +172,53 @@
                                     <!-- Daily Goal -->
                                     <div class="space-y-2">
                                         <label class="block text-gray-600 font-medium">Mục tiêu hằng ngày</label>
-                                        <select name="DailyGoal" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
-                                            <!option value="5" @(Model.DailyGoal == 5 ? "selected" : "")>5 từ mỗi ngày</!option>
-                                            <!option value="10" @(Model.DailyGoal == 10 ? "selected" : "")>10 từ mỗi ngày</!option>
-                                            <!option value="20" @(Model.DailyGoal == 20 ? "selected" : "")>20 từ mỗi ngày</!option>
-                                            <!option value="30" @(Model.DailyGoal == 30 ? "selected" : "")>30 từ mỗi ngày</!option>
-                                            <!option value="50" @(Model.DailyGoal == 50 ? "selected" : "")>50 từ mỗi ngày</!option>
-                                        </select>
-                                    </div>
-
-                                    <!-- Preferred Language -->
-                                    <div class="space-y-2">
-                                        <label class="block text-gray-600 font-medium">Ngôn ngữ giao diện</label>
-                                        <select name="PreferredLanguage" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
-                                            <!option value="vi" @(Model.PreferredLanguage == "vi" ? "selected" : "")>Tiếng Việt</!option>
-                                            <!option value="en" @(Model.PreferredLanguage == "en" ? "selected" : "")>English</!option>
-                                        </select>
-                                    </div>
-
-                                    <!-- Theme -->
-                                    <div class="space-y-2">
-                                        <label class="block text-gray-600 font-medium">Giao diện</label>
-                                        <select name="Theme" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
-                                            <!option value="light" @(Model.Theme == "light" ? "selected" : "")>Sáng</!option>
-                                            <!option value="dark" @(Model.Theme == "dark" ? "selected" : "")>Tối</!option>
-                                            <!option value="auto" @(Model.Theme == "auto" ? "selected" : "")>Tự động</!option>
+                                        <select asp-for="DailyGoal" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
+                                            <option value="5">5 từ mỗi ngày</option>
+                                            <option value="10">10 từ mỗi ngày</option>
+                                            <option value="20">20 từ mỗi ngày</option>
+                                            <option value="30">30 từ mỗi ngày</option>
+                                            <option value="50">50 từ mỗi ngày</option>
                                         </select>
                                     </div>
 
                                     <!-- Flashcard Session Size -->
                                     <div class="space-y-2">
                                         <label class="block text-gray-600 font-medium">Số từ mỗi phiên học</label>
-                                        <select name="FlashcardSessionSize" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
-                                            <!option value="10" @(Model.FlashcardSessionSize == 10 ? "selected" : "")>10 từ</!option>
-                                            <!option value="15" @(Model.FlashcardSessionSize == 15 ? "selected" : "")>15 từ</!option>
-                                            <!option value="20" @(Model.FlashcardSessionSize == 20 ? "selected" : "")>20 từ</!option>
-                                            <!option value="25" @(Model.FlashcardSessionSize == 25 ? "selected" : "")>25 từ</!option>
-                                            <!option value="30" @(Model.FlashcardSessionSize == 30 ? "selected" : "")>30 từ</!option>
+                                        <select asp-for="FlashcardSessionSize" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
+                                            <option value="10">10 từ</option>
+                                            <option value="15">15 từ</option>
+                                            <option value="20">20 từ</option>
+                                            <option value="25">25 từ</option>
+                                            <option value="30">30 từ</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Preferred Language -->
+                                    <div class="space-y-2">
+                                        <label class="block text-gray-600 font-medium">Ngôn ngữ ưu tiên</label>
+                                        <select asp-for="PreferredLanguage" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
+                                            <option value="vi">Tiếng Việt</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Theme -->
+                                    <div class="space-y-2">
+                                        <label class="block text-gray-600 font-medium">Giao diện</label>
+                                        <select asp-for="Theme" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
+                                            <option value="light">Sáng</option>
+                                            <option value="dark">Tối</option>
+                                            <option value="auto">Tự động</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Default Flashcard Mode -->
+                                    <div class="space-y-2 md:col-span-2">
+                                        <label class="block text-gray-600 font-medium">Chế độ Flashcard mặc định</label>
+                                        <select asp-for="DefaultFlashcardMode" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
+                                            <option value="word-to-meaning">Từ → Nghĩa</option>
+                                            <option value="meaning-to-word">Nghĩa → Từ</option>
+                                            <option value="mixed">Trộn lẫn</option>
                                         </select>
                                     </div>
                                 </div>
@@ -219,53 +228,43 @@
                                     <label class="block text-gray-600 font-medium">Tùy chọn thông báo</label>
                                     <div class="space-y-3">
                                         <label class="flex items-center">
-                                            <input type="checkbox" name="EmailNotifications" value="true" @(Model.EmailNotifications ? "checked" : "") class="w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700 focus:ring-2" />
+                                            <input type="checkbox" asp-for="EmailNotifications" class="w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700 focus:ring-2" />
                                             <span class="ml-3 text-gray-600">Nhận thông báo qua email</span>
                                         </label>
                                         <label class="flex items-center">
-                                            <input type="checkbox" name="WebNotifications" value="true" @(Model.WebNotifications ? "checked" : "") class="w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700 focus:ring-2" />
+                                            <input type="checkbox" asp-for="WebNotifications" class="w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700 focus:ring-2" />
                                             <span class="ml-3 text-gray-600">Nhận thông báo trên web</span>
                                         </label>
                                         <label class="flex items-center">
-                                            <input type="checkbox" name="AutoPlayAudio" value="true" @(Model.AutoPlayAudio ? "checked" : "") class="w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700 focus:ring-2" />
+                                            <input type="checkbox" asp-for="AutoPlayAudio" class="w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700 focus:ring-2" />
                                             <span class="ml-3 text-gray-600">Tự động phát âm thanh khi học</span>
                                         </label>
                                         <label class="flex items-center">
-                                            <input type="checkbox" name="ShowPronunciation" value="true" @(Model.ShowPronunciation ? "checked" : "") class="w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700 focus:ring-2" />
+                                            <input type="checkbox" asp-for="ShowPronunciation" class="w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700 focus:ring-2" />
                                             <span class="ml-3 text-gray-600">Hiển thị phiên âm</span>
                                         </label>
                                         <label class="flex items-center">
-                                            <input type="checkbox" name="ShowWordType" value="true" @(Model.ShowWordType ? "checked" : "") class="w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700 focus:ring-2" />
+                                            <input type="checkbox" asp-for="ShowWordType" class="w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700 focus:ring-2" />
                                             <span class="ml-3 text-gray-600">Hiển thị từ loại</span>
                                         </label>
                                     </div>
                                 </div>
 
-                                <!-- Default Flashcard Mode -->
-                                <div class="space-y-2">
-                                    <label class="block text-gray-600 font-medium">Chế độ flashcard mặc định</label>
-                                    <select name="DefaultFlashcardMode" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
-                                        <!option value="word-to-meaning" @(Model.DefaultFlashcardMode == "word-to-meaning" ? "selected" : "")>Từ → Nghĩa</!option>
-                                        <!option value="meaning-to-word" @(Model.DefaultFlashcardMode == "meaning-to-word" ? "selected" : "")>Nghĩa → Từ</!option>
-                                        <!option value="mixed" @(Model.DefaultFlashcardMode == "mixed" ? "selected" : "")>Trộn lẫn</!option>
-                                    </select>
-                                </div>
-
                                 <!-- Default Review Interval -->
                                 <div class="space-y-2">
                                     <label class="block text-gray-600 font-medium">Khoảng cách ôn tập mặc định (ngày)</label>
-                                    <select name="DefaultReviewInterval" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
-                                        <!option value="1" @(Model.DefaultReviewInterval == 1 ? "selected" : "")>1 ngày</!option>
-                                        <!option value="3" @(Model.DefaultReviewInterval == 3 ? "selected" : "")>3 ngày</!option>
-                                        <!option value="7" @(Model.DefaultReviewInterval == 7 ? "selected" : "")>7 ngày</!option>
-                                        <!option value="14" @(Model.DefaultReviewInterval == 14 ? "selected" : "")>14 ngày</!option>
-                                        <!option value="30" @(Model.DefaultReviewInterval == 30 ? "selected" : "")>30 ngày</!option>
+                                    <select asp-for="DefaultReviewInterval" class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:border-blue-700 focus:ring-2 focus:ring-blue-200 focus:outline-none">
+                                        <option value="1">1 ngày</option>
+                                        <option value="3">3 ngày</option>
+                                        <option value="7">7 ngày</option>
+                                        <option value="14">14 ngày</option>
+                                        <option value="30">30 ngày</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <!-- Hidden field for avatar -->
-                            <input type="hidden" name="NewProfileImageUrl" id="avatar-file-input" />
+                            <!-- Hidden field for avatar file -->
+                            <input type="file" asp-for="AvatarFile" id="avatar-upload" class="hidden" accept="image/*" />
 
                             <!-- Action Buttons -->
                             <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
@@ -291,23 +290,42 @@
 </div>
 
 @section Scripts {
-        await Html.PartialAsync("_ValidationScriptsPartial");
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
     <script>
-        function previewAvatar(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+        document.addEventListener('DOMContentLoaded', function () {
+            const avatarUploadInput = document.getElementById('avatar-upload');
+            const avatarPreview = document.getElementById('avatar-preview');
 
-                reader.onload = function(e) {
-                    const preview = document.getElementById('avatar-preview');
-                    preview.innerHTML = `<img src="${e.target.result}" alt="Profile Preview" class="w-32 h-32 rounded-full mx-auto object-cover shadow-lg border-4 border-blue-700" />`;
+            if (avatarUploadInput && avatarPreview) {
+                avatarUploadInput.addEventListener('change', function (event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        // Validate file size (max 2MB)
+                        if (file.size > 2 * 1024 * 1024) {
+                            alert('Kích thước file không được vượt quá 2MB');
+                            this.value = '';
+                            return;
+                        }
 
-                    // Set the base64 data to hidden input
-                    document.getElementById('avatar-file-input').value = e.target.result;
-                }
+                        // Validate file type
+                        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                        if (!allowedTypes.includes(file.type)) {
+                            alert('Chỉ chấp nhận file ảnh định dạng JPG, PNG, GIF');
+                            this.value = '';
+                            return;
+                        }
 
-                reader.readAsDataURL(input.files[0]);
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            avatarPreview.innerHTML = `<img src="${e.target.result}" alt="Profile Preview" class="w-32 h-32 rounded-full mx-auto object-cover shadow-lg border-4 border-blue-700" />`;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
             }
-        }
+        });
     </script>
 }
